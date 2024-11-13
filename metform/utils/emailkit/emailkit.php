@@ -51,6 +51,12 @@ if( !class_exists('\Wpmet\Libs\Emailkit') ) {
 		}
 	
 	
+		/**
+		 * Added script and style for Edit with EmailKit in admin head
+		 * 
+		 * @access public
+		 * @return void
+		 */
 		public function emailkit_admin_head() {
 			?>
 			<style>
@@ -198,93 +204,8 @@ if( !class_exists('\Wpmet\Libs\Emailkit') ) {
 				$action . '_' . $pluginSlug
 			);
 		}
-		/**
-		 * Collect installed and activated plugins
-		 * 
-		 * @access public
-		 * @return void
-		 */
-		public function collect_installed_plugins() {
-	
-			if( !function_exists('get_plugins') ) {
-				include_once  ABSPATH . 'wp-admin/includes/plugin.php';
-			}
-	
-			foreach ( get_plugins() as $key => $plugin ) {
-				array_push( $this->installed_plugins, $key );
-			}
-		}
 	
 		/**
-		 * Collect activated plugins
-		 * 
-		 * @access public
-		 * @return void
-		 */
-		public function collect_activated_plugins() {
-			foreach ( apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) as $plugin ) {
-				array_push( $this->activated_plugins, $plugin );
-			}
-		}
-	
-		/**
-		 * Check if plugin is installed
-		 * 
-		 * @access public
-		 * @param string
-		 * @return bool
-		 */
-		public function check_installed_plugin( $name ) {
-	
-			return in_array( $name, $this->installed_plugins );
-		}
-	
-		/**
-		 * Check if plugin is activated
-		 * 
-		 * @access public
-		 * @param string
-		 * @return bool
-		 */
-		public function check_activated_plugin( $name ) {
-			return in_array( $name, $this->activated_plugins );
-		}
-	
-		/**
-		 * Get plugin status
-		 * 
-		 * @access public
-		 * @param string
-		 * @return array
-		 */
-		public function get_plugin_status( $name ) {
-			$data = [
-				"url"              => "",
-				"activation_url"   => "",
-				"installation_url" => "",
-				"title"            => "",
-				"status"           => "",
-			];
-	
-			if ( $this->check_installed_plugin( $name ) ) {
-				if ( $this->check_activated_plugin( $name ) ) {
-					$data['title']  = __( 'Activated', 'metform' );
-					$data['status'] = "activated";
-				} else {
-					$data['title']          = __( 'Activate Now', 'metform' );
-					$data['status']         = 'installed';
-					$data['activation_url'] = $this->activation_url( $name );
-				}
-			} else {
-				$data['title']            = __( 'Install Now', 'metform' );
-				$data['status']           = 'not_installed';
-				$data['installation_url'] = $this->installation_url( $name );
-				$data['activation_url']   = $this->activation_url( $name );
-			}
-	
-			return $data;
-		}
-			/**
 		 * Get plugin activation url
 		 * 
 		 * @access public

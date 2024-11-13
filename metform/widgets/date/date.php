@@ -604,7 +604,7 @@ Class MetForm_Input_Date extends Widget_Base{
 
 			<${props.Flatpickr}
 					name="<?php echo esc_attr( $mf_input_name ); ?>"
-					className="mf-input mf-date-input mf-left-parent <?php echo esc_attr( $class ); ?>"
+					className="mf-input mf-date-input mf-left-parent <?php echo esc_attr($mf_input_range_date == 'yes' ? 'mf-date-range' : ''); ?> <?php echo esc_attr( $class ); ?>"
 					placeholder="<?php echo esc_attr(\MetForm\Utils\Util::react_entity_support($mf_input_placeholder, $render_on_editor )); ?>"
 					options=${<?php echo json_encode( $dateConfig ); ?>}
 					value=${parent.getValue('<?php echo esc_attr( $mf_input_name ); ?>')}

@@ -3,7 +3,7 @@ Contributors: xpeedstudio, ataurr, emranio
 Tags: Form builder, contact form, Elementor contact form, contact form builder, Elementor forms builder, booking form builder, registration form builder, feedback form builder, drag and drop builder
 Requires at least: 5.0
 Tested up to: 6.6
-Stable tag: 3.9.0
+Stable tag: 3.9.1
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -32,7 +32,7 @@ Moreover, you will find lots of demos of multi-step, conditional, feedback, even
 
 ## USEFUL LINKS
 
-> **[Landing Page + Form Demo](https://products.wpmet.com/metform/)** |  **[Need Support?](http://wpmet.com/support-help/)** | **[Documentation](https://wpmet.com/knowledgebase/metform/)** | **[Video Tutorials](https://www.youtube.com/watch?v=zg1QIouKO_Q&list=PL3t2OjZ6gY8NoB_48DwWKUDRtBEuBOxSc&ab_channel=Wpmet)** |  [ **Buy Pro** ](https://products.wpmet.com/metform/pricing/) | **[Request a Feature](https://wpmet.com/plugin/metform/roadmaps#ideas)**
+> **[Landing Page + Form Demo](https://products.wpmet.com/metform/)** |  **[Need Support?](http://wpmet.com/support-help/)** | **[Documentation](https://wpmet.com/doc/metform/)** | **[Video Tutorials](https://www.youtube.com/watch?v=zg1QIouKO_Q&list=PL3t2OjZ6gY8NoB_48DwWKUDRtBEuBOxSc&ab_channel=Wpmet)** |  [ **Buy Pro** ](https://products.wpmet.com/metform/pricing/) | **[Request a Feature](https://wpmet.com/plugin/metform/roadmaps#ideas)**
 
 ## Mobile-Friendly and Responsive
 
@@ -225,6 +225,11 @@ Check out [Tutorials, Tips & Tricks](https://wpmet.com/blog)! 👌
 
 
 == Changelog ==
+
+Version: 3.9.1 // 2024-11-13
+Fixed: Date widget design issue.
+Fixed: Get value form url is not working for range date widget.
+Tweaked: FAQs and documentation section updated.
 
 Version: 3.9.0 // 2024-08-21
 Removed: Edit with EmailKit button from WooCommerce email settings
@@ -890,3 +895,4 @@ But you can see this video https://www.youtube.com/watch?v=rvawKRgLC14
 = How can I report security bugs? =
 
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/metform)
+
