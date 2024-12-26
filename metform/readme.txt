@@ -1,26 +1,30 @@
 === MetForm - Contact Form, Survey, Quiz, & Custom Form Builder for Elementor ===
 Contributors: xpeedstudio, ataurr, emranio
-Tags: Form builder, contact form, Elementor contact form, contact form builder, Elementor forms builder, booking form builder, registration form builder, feedback form builder, drag and drop builder
+Tags: form builder, Elementor contact form, contact form builder, Elementor forms builder, custom form
 Requires at least: 5.0
-Tested up to: 6.6
-Stable tag: 3.9.1
+Tested up to: 6.7
+Stable tag: 3.9.2
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
-Metform is the ultimate Elementor forms builder. With this quick contact form builder, you can build any kind of fast and secure contact form. It is a drag and drop builder that also functions great as a booking form builder, registration form builder, calculation form builder, feedback form builder, etc. Moreover, you can customize all your forms with the Elementor builder based on your preferences.
+Metform is your go-to drag-and-drop form builder for Elementor. Create fast, secure, and stylish forms with ease.
 
 == Description ==
 
-MetForm, the drag-and-drop WordPress contact form builder is an addon for [Elementor](https://elementor.com/). This Elementor form builder plugin provides an intuitive real-time form-building experience, allowing anyone of any expertise level to create professionally designed website forms.
+[MetForm](https://wpmet.com/plugin/metform/), the drag-and-drop WordPress contact form builder is an addon for Elementor. This Elementor form builder plugin provides an intuitive real-time form-building experience, allowing anyone of any expertise level to create professionally designed website forms.
 
 It enables the fastest and most secure experience for managing and customizing multiple contact forms - without any code.
 
-## The Best Elementor Form Builder Plugin for WordPress Website - Empowering 3,00,000+ Active Users.
+## The Best Elementor Form Builder Plugin for WordPress Website - Empowering 400,000+ Active Users.
 
-Metform reinforces Elementor and assists you in making volunteer applications, event forms, loan applications, restaurant reservations, admission forms, newsletter signups, data erasure requests, product order forms, WooCoomerce checkout, subscribe forms, patient forms, suggestion forms, survey forms, post survey forms, and so many.
+Metform reinforces the Elementor page builder and assists you in making volunteer applications, event forms, loan applications, restaurant reservations, admission forms, newsletter signups, data erasure requests, product order forms, WooCoomerce checkout, subscribe forms, patient forms, suggestion forms, survey forms, post survey forms, and so many custom forms.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/8R4-Q14cu-w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## USEFUL LINKS
+
+> [Explore the Features](https://wpmet.com/plugin/metform/features/) |  [Need Support?](http://wpmet.com/support-help/)| [Check Documentation](https://wpmet.com/doc/metform/) | [Video Tutorials](https://www.youtube.com/watch?v=zg1QIouKO_Q&list=PL3t2OjZ6gY8NoB_48DwWKUDRtBEuBOxSc&ab_channel=Wpmet) |  [ Buy Pro ](https://products.wpmet.com/metform/pricing/) | [Check Roadmap and Request a Feature](https://wpmet.com/plugin/metform/roadmaps#ideas)
 
 ## Flexibility
 
@@ -30,13 +34,9 @@ Here, the exceptional thing is that you can create groups of your personalized f
 
 Moreover, you will find lots of demos of multi-step, conditional, feedback, event, job application, booking, custom social signup, product registration, etc. forms in this WordPress beginner-friendly WordPress contact form builder.
 
-## USEFUL LINKS
-
-> **[Landing Page + Form Demo](https://products.wpmet.com/metform/)** |  **[Need Support?](http://wpmet.com/support-help/)** | **[Documentation](https://wpmet.com/doc/metform/)** | **[Video Tutorials](https://www.youtube.com/watch?v=zg1QIouKO_Q&list=PL3t2OjZ6gY8NoB_48DwWKUDRtBEuBOxSc&ab_channel=Wpmet)** |  [ **Buy Pro** ](https://products.wpmet.com/metform/pricing/) | **[Request a Feature](https://wpmet.com/plugin/metform/roadmaps#ideas)**
-
 ## Mobile-Friendly and Responsive
 
-Metform builds with Elementor and it will work with Elementor without any issue. and responsive can be controlled from the Elementor page builder. and Your smart order or any online form will look great on all resolutions and devices: mobile, tablet, and desktop.
+Metform builds with Elementor and will work with Elementor without any issue and responsiveness can be controlled by the Elementor page builder. With this custom form builder your smart order or any online form will look great on all resolutions and devices: mobile, tablet, and desktop.
 
 ## Embed Anywhere
 
@@ -62,7 +62,7 @@ Now Free HubSpot integration is also available in MetForm. It ensures flawless c
 
 You can use MailChimp in your contact form so that, you can collect and send leads from WordPress to MailChimp. Also, create MailChimp signup or lead generation forms and boxes with a custom style and expand your lead list.
 
-## **✨**Top Features
+## ✨Top Features
 
 - **Built with Elementor:** MetForm is based on Elementor. This means this contact form builder offers an Elementor-like intuitive drag-and-drop workflow and real-time preview of your customizations. And, this budget-friendly email building tool with impressive form-building functionality powered by Elementor Builder has no learning curve. 
 
@@ -134,7 +134,7 @@ So, beginners can easily create a query form to collect reporting and other form
 
 ## Our Premium Features
 
-- **Multi-Step Form:** Divide your large form into multiple sections to make it more user-friendly for customers to increase the completion rate. 
+- **Multi-Step Form:** Divide your large form into multiple sections to make it more user-friendly for customers to increase the completion rate.
 
 - **Conditional logic:** Allows users to select one category and the given question will appear only for that section otherwise it will remain invisible. Here comes our most unique field “Conditional Logic”.
 [ **Conditional logic** ](https://www.youtube.com/watch?v=UDQOCwO7lhI) - [ **Conditional logic demo 1** ](https://products.wpmet.com/metform/pro-demos/conditional-form-1/) -  [ **Conditional logic demo 2** ](https://products.wpmet.com/metform/pro-demos/conditional-form-2/) - [ **Conditional logic demo 3** ](https://products.wpmet.com/metform/pro-demos/conditional-form-3/) -  [ **Conditional logic demo 4** ](https://products.wpmet.com/metform/pro-demos/conditional-form-4/)
@@ -195,13 +195,17 @@ So, beginners can easily create a query form to collect reporting and other form
 
 Learn [How to Install and Activate MetForm](https://www.youtube.com/watch?v=Ft1E1_FNtws&list=PL3t2OjZ6gY8NoB_48DwWKUDRtBEuBOxSc&index=13)
 
-### » DOCUMENTATION AND SUPPORT
+### 😍 BACKED BY A TRUSTED TEAM
 
- - 📞 [Contact Our Support](https://wpmet.com/support-ticket-form/)
- - 🙋🏼‍♂️ [Join Our Facebook Community](https://www.facebook.com/groups/wpmet/)
- - 📑 [Check Documentation](https://wpmet.com/doc/metform/)
- - 🔜 [Check Roadmap](https://wpmet.com/plugin/metform/roadmaps/)
+Metform is brought to you by **Wpmet, a name trusted by 10,00,000+ satisfied users worldwide**.
 
+### » SOCIAL MEDIA SUPPORT
+
+  🙋🏼‍♂️ Join Our [Facebook Community](https://www.facebook.com/groups/wpmet/)
+  👍 Like our [Facebook Page](https://www.facebook.com/wpmetcom)
+🌐 Follow us on  [X (Twitter)](https://x.com/wpmetcom)
+🌐 Follow us on [Instagram](https://www.instagram.com/wpmetcom?igsh=MXBueWl2aGg1M2dmbQ==)
+🌐 Connect on [LinkedIn](https://www.linkedin.com/company/wpmet/)
 👉 Rate us on [WordPress](https://wordpress.org/support/plugin/metform/reviews/#new-post)
 
 ### 💥 OUR OTHER PLUGINS
@@ -212,19 +216,31 @@ If you like using the MetForm form builder, then consider checking out our other
 
 ⭕ [ShopEngine](https://wpmet.com/plugin/shopengine/)   It is an absolute WooCommerce Solution. You will have a great experience with this WooCommerce Builder for Elementor and Gutenberg.
 
-⭕ [GetGenie Ai](https://wordpress.org/plugins/getgenie)  GetGenie AI is an AI-powered Content & SEO Assistant. You can access it as a WordPress plugin and a SaaS model. The tool also offers a chatbot called [GenieChat](https://getgenie.ai/geniechat/).
+⭕ [GetGenie Ai](https://getgenie.ai/)  GetGenie AI is an AI-powered Content & SEO Assistant. You can access it as a WordPress plugin and a SaaS model. The tool also offers a chatbot called [GenieChat](https://getgenie.ai/geniechat/) and an AI image generator named [Genie Image](https://getgenie.ai/genie-image/).
 
 ⭕ [Wp Social](https://wpmet.com/plugin/wp-social/)  Power your WordPress site by using WP Social. It will assist you in adding a Social Login, Social Counter, and Social Login to your website.
 
 ⭕ [Wp FundEngine](https://products.wpmet.com/crowdfunding/)  Now, creating a crowdfunding and donation site with WordPress is easier. WP FundEngine provides you with all the functionalities to ease the processes.
 
-⭕ [Wp Ultimate Review](https://products.wpmet.com/review/)  Check out the quick plugin, and manage and style customer reviews according to your preferences.
+⭕ [GutenKit](https://wpmet.com/plugin/gutenkit/) It helps to transform Gutenberg block editor into a full-fledged page builder.
 
-Visit  [wpmet](https://wpmet.com/)  to learn more about how to get the best out of WordPress using our plugins. 
-Check out [Tutorials, Tips & Tricks](https://wpmet.com/blog)! 👌
+⭕ RoxSlider - It is a powerful tool for slider creation. You can design stunning sliders with ease.
 
+⭕ [EmailKit](https://wpmet.com/plugin/emailkit/) - To craft stunning and responsive emails for WooCommerce and WordPress, EmailKit is the top email builder.
+
+⭕ [Wp Ultimate Review](https://wpmet.com/plugin/wp-ultimate-review/) - Check out the quick plugin, and manage and style customer reviews according to your preferences.
+
+⭕ [TableKit](https://wordpress.org/plugins/table-builder-block/) – Make fully-customizable multipurpose table & generate data table within Gutenberg block editor.
+
+**Visit**  [wpmet](https://wpmet.com/)  to learn more about how to get the best out of WordPress using our plugins. 
+**Check out** [Tutorials, Tips & Tricks](https://wpmet.com/blog)! 👌
 
 == Changelog ==
+Version: 3.9.2 // 2024-12-25
+Added: Submit button, Next Step, and Previous Step widgets on focus style control.
+Fixed: Calculation fields minimum and maximum fraction issue.
+Fixed: Multistep form fields does not navigate by tab key press.
+Fixed: Simple repeater widget select option issue with Multistep form.
 
 Version: 3.9.1 // 2024-11-13
 Fixed: Date widget design issue.
@@ -641,15 +657,15 @@ Fixed: Select widget Option disabling issue
 Fixed: Summary widget shows Image (base64) values with <img> element
 Added: Summary title gets label if available. getInputLabel() API.
 Fixed: Checkbox option text Typography issue
-Added: Input Warning Text color & Typography in common-controls, Checkbox, GDPR Consent, Radio, Recaptcha, Simple Captcha
+Added: Input Warning Text color & Typography in common controls, Checkbox, GDPR Consent, Radio, Recaptcha, Simple Captcha
 Removed: Word Length Validation on Telephone Widget & Email Widget
 Fixed: Text area line break properly shows on E-Mail & Entry
 Fixed: Metform New form Selector button position sticky
 Fixed: "Hubspot" spelling in multiple places
 Tweak: Overall code improvements
 Fixed: File upload issue
-Fixed: Calculation field with woocommerce cart add conflict issue
-Tweak: Multiple file add backend entry formattings
+Fixed: Calculation field with WooCommerce cart add conflict issue
+Tweak: Multiple files add backend entry formatting
 New: Styling Controls for Like Dislike Widget.
 Fixed: Active value not working in Like Dislike Widget
 Fixed: Line break support for Text area Widget in Form Entry View.
@@ -703,14 +719,14 @@ Fixed: 24hrs fixed on time widget
 Fixed: Shortcode Null Coalescing Operator error fixed for old php support
 
 Version 1.3.1
-New: Added 24H control on Date widget
+New: Added 24H control on the Date widget
 New: Added scroll to top when changing the step on multistep
 Fixed: Prev and next step issues fixed
 Improved: CSS and JS
 
 Version 1.3.0
 New: Localization Option for Date Field
-New: Added calculation numberFormat() function
+New: Added calculation number format() function
 Fixed: HTML Entities for File Upload
 Fixed: active campaign error fixed
 Fixed: improved calculation
@@ -718,8 +734,8 @@ Fixed: Multistep pressing enter to change the step fix
 Fixed: stripe payment issue fixed
 
 Version 1.3.0-beta6
-Fixed: mobile datepicker issues fixed
-Fixed: next and prev issues fixed on multistep
+Fixed: mobile date picker issues fixed
+Fixed: next and prev. issues fixed on multistep
 Fixed: multistep tab title issue fixed
 
 Version 1.3.0-beta5
@@ -754,7 +770,7 @@ New: Added Response message at the top of the form by default
 Version 1.3.0-beta1
 New: All form widgets are supported by React JS
 Huge optimization
-""MetForm 1.3.0-beta1 is a major update. We have reconstructed the widgets with react and huge optimization for future proof. If you faced any issue with our form builder, please contact our support team from here https://wpmet.com/support-ticket""
+MetForm 1.3.0-beta1 is a major update. We have reconstructed the widgets with react and huge optimization for future proof. If you faced any issue with our form builder, please contact our support team from here: https://wpmet.com/support-ticket
 
 Version v1.2.3
 New: .pot file added
@@ -795,7 +811,6 @@ Added: Conversion and views in entries tabs
 Fixed: reCAPTCHA version 2 issue
 Improved: Validation
 Re-arranged controls
-
 
 
 Version 1.1.8
@@ -851,7 +866,7 @@ e.g.  This plugin requires an Elementor builder.
 
 == Frequently Asked Questions ==
 
-=What type of WordPress form you can make with MetForm form builder?=
+=What type of WordPress form can you make with MetForm form builder?=
 MetForm allows you to make WordPress forms with a new experience. With the most flexible drag and drop feature, the form builder supports your Elementor site to become a powerful site. Some form types the Elementor forms builder offers are - 
 -Contact Form
 -Multi Step Form
@@ -881,7 +896,7 @@ Yes. Metform has various Newsletter integrations, such as Mailchimp, AWeber, Act
 
 =Does MetForm include spam protection?=
 
-Of course!. This drag and drop builder ensures spam protection. Some of the form templates come with the latest reCAPTCHA v2 and v3 protection, and MetForm also offers a powerful reCAPTCHA widget. [Preview](https://prnt.sc/e5j4WxDNuhmh)
+Of course! This drag and drop builder ensures spam protection. Some of the form templates come with the latest reCAPTCHA v2 and v3 protection, and MetForm also offers a powerful reCAPTCHA widget. [Preview](https://prnt.sc/e5j4WxDNuhmh)
 
 =Does MetForm integrate with other WordPress plugins and services?=
 MetForm doesn't give you trouble working while there are multiple other WordPress plugins installed. Without struggling, you can smoothly run other services on your site and work with this amazing contact form builder.

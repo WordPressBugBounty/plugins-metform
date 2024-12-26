@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: MetForm 3.9.1\n"
+"Project-Id-Version: MetForm 3.9.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/metform\n"
-"POT-Creation-Date: 2024-11-13 06:01:21+00:00\n"
+"POT-Creation-Date: 2024-12-26 05:35:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2748,7 +2748,7 @@ msgstr ""
 msgid "Input List"
 msgstr ""
 
-#: traits/button-controls.php:157 traits/button-controls.php:450
+#: traits/button-controls.php:157 traits/button-controls.php:480
 #: traits/common-controls.php:386 traits/common-controls.php:578
 #: traits/common-controls.php:609 traits/common-controls.php:959
 #: widgets/checkbox/checkbox.php:259 widgets/email/email.php:195
@@ -2774,8 +2774,8 @@ msgstr ""
 msgid "Typography"
 msgstr ""
 
-#: traits/button-controls.php:195 traits/button-controls.php:293
-#: traits/button-controls.php:374 traits/common-controls.php:643
+#: traits/button-controls.php:195 traits/button-controls.php:323
+#: traits/button-controls.php:404 traits/common-controls.php:643
 #: widgets/checkbox/checkbox.php:300 widgets/file-upload/file-upload.php:324
 #: widgets/gdpr-consent/gdpr-consent.php:345
 #: widgets/listing-optin/listing-optin.php:185 widgets/radio/radio.php:320
@@ -2784,26 +2784,31 @@ msgid "Normal"
 msgstr ""
 
 #: traits/button-controls.php:202 traits/button-controls.php:231
-#: widgets/checkbox/checkbox.php:282 widgets/gdpr-consent/gdpr-consent.php:327
+#: traits/button-controls.php:261 widgets/checkbox/checkbox.php:282
+#: widgets/gdpr-consent/gdpr-consent.php:327
 #: widgets/listing-optin/listing-optin.php:167 widgets/radio/radio.php:303
 #: widgets/switch/switch.php:221 widgets/switch/switch.php:402
 msgid "Text Color"
 msgstr ""
 
-#: traits/button-controls.php:224 traits/button-controls.php:317
-#: traits/button-controls.php:399 traits/common-controls.php:706
+#: traits/button-controls.php:224 traits/button-controls.php:347
+#: traits/button-controls.php:429 traits/common-controls.php:706
 #: widgets/file-upload/file-upload.php:355 widgets/select/select.php:441
 msgid "Hover"
 msgstr ""
 
-#: traits/button-controls.php:260 traits/common-controls.php:146
+#: traits/button-controls.php:254 traits/common-controls.php:765
+msgid "Focus"
+msgstr ""
+
+#: traits/button-controls.php:290 traits/common-controls.php:146
 #: traits/common-controls.php:177 widgets/switch/switch.php:236
 #: widgets/switch/switch.php:320 widgets/switch/switch.php:417
 #: widgets/switch/switch.php:501
 msgid "None"
 msgstr ""
 
-#: traits/button-controls.php:342 traits/common-controls.php:291
+#: traits/button-controls.php:372 traits/common-controls.php:291
 #: traits/common-controls.php:847 widgets/file-upload/file-upload.php:431
 #: widgets/range/range.php:300 widgets/range/range.php:379
 #: widgets/rating/rating.php:229 widgets/select/select.php:290
@@ -2811,15 +2816,15 @@ msgstr ""
 msgid "Border Radius"
 msgstr ""
 
-#: traits/button-controls.php:381 traits/button-controls.php:406
+#: traits/button-controls.php:411 traits/button-controls.php:436
 msgid "Icon Color"
 msgstr ""
 
-#: traits/button-controls.php:424
+#: traits/button-controls.php:454
 msgid "Font Size"
 msgstr ""
 
-#: traits/button-controls.php:467
+#: traits/button-controls.php:497
 msgid "Vertical Align"
 msgstr ""
 
@@ -3038,10 +3043,6 @@ msgstr ""
 #: widgets/file-upload/file-upload.php:375 widgets/select/select.php:430
 #: widgets/select/select.php:464 widgets/select/select.php:498
 msgid "Background"
-msgstr ""
-
-#: traits/common-controls.php:765
-msgid "Focus"
 msgstr ""
 
 #: traits/common-controls.php:975
@@ -4573,52 +4574,52 @@ msgctxt "Post Type Singular Name"
 msgid "Form"
 msgstr ""
 
-#: traits/button-controls.php:257
+#: traits/button-controls.php:287
 msgctxt "Border Control"
 msgid "Border Type"
 msgstr ""
 
-#: traits/button-controls.php:261 widgets/switch/switch.php:237
+#: traits/button-controls.php:291 widgets/switch/switch.php:237
 #: widgets/switch/switch.php:321 widgets/switch/switch.php:418
 #: widgets/switch/switch.php:502
 msgctxt "Border Control"
 msgid "Solid"
 msgstr ""
 
-#: traits/button-controls.php:262 widgets/switch/switch.php:238
+#: traits/button-controls.php:292 widgets/switch/switch.php:238
 #: widgets/switch/switch.php:322 widgets/switch/switch.php:419
 #: widgets/switch/switch.php:503
 msgctxt "Border Control"
 msgid "Double"
 msgstr ""
 
-#: traits/button-controls.php:263 widgets/switch/switch.php:239
+#: traits/button-controls.php:293 widgets/switch/switch.php:239
 #: widgets/switch/switch.php:323 widgets/switch/switch.php:420
 #: widgets/switch/switch.php:504
 msgctxt "Border Control"
 msgid "Dotted"
 msgstr ""
 
-#: traits/button-controls.php:264 widgets/switch/switch.php:240
+#: traits/button-controls.php:294 widgets/switch/switch.php:240
 #: widgets/switch/switch.php:324 widgets/switch/switch.php:421
 #: widgets/switch/switch.php:505
 msgctxt "Border Control"
 msgid "Dashed"
 msgstr ""
 
-#: traits/button-controls.php:265 widgets/switch/switch.php:241
+#: traits/button-controls.php:295 widgets/switch/switch.php:241
 #: widgets/switch/switch.php:325 widgets/switch/switch.php:422
 #: widgets/switch/switch.php:506
 msgctxt "Border Control"
 msgid "Groove"
 msgstr ""
 
-#: traits/button-controls.php:277
+#: traits/button-controls.php:307
 msgctxt "Border Control"
 msgid "Width"
 msgstr ""
 
-#: traits/button-controls.php:303 traits/button-controls.php:326
+#: traits/button-controls.php:333 traits/button-controls.php:356
 msgctxt "Border Control"
 msgid "Color"
 msgstr ""

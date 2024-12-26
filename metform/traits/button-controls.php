@@ -247,6 +247,36 @@ trait Button_Controls{
 	    );
 
 		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'mf_btn_tab_button_focus',
+			[
+				'label' =>esc_html__( 'Focus', 'metform' ),
+			]
+		);
+
+		$this->add_responsive_control(
+			'mf_btn_focus_color',
+			[
+				'label' =>esc_html__( 'Text Color', 'metform' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#FFFFFF',
+				'selectors' => [
+					'{{WRAPPER}} .metform-btn:focus' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+	    $this->add_group_control(
+		    Group_Control_Background::get_type(),
+		    array(
+			    'name'     => 'mf_btn_bg_focus_color',
+			    'default' => '#337ab7',
+			    'selector' => '{{WRAPPER}} .metform-btn:focus',
+		    )
+	    );
+
+		$this->end_controls_tab();
         $this->end_controls_tabs();
     }
 
