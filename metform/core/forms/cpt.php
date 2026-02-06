@@ -426,6 +426,26 @@ class Cpt extends \MetForm\Base\Cpt
             'mf_google_sheet_client_secret' => [
                 'name' => 'mf_google_sheet_client_secret'
             ],
+            // dropbox
+            'mf_dropbox' => [
+                'name' => 'mf_dropbox'
+            ],
+            'mf_dropbox_list_id' => [
+                'name' => 'mf_dropbox_list_id'
+            ],
+            'mf_dropbox_app_id' => [
+                'name' => 'mf_dropbox_app_id'
+            ],
+            'mf_dropbox_app_secret' => [
+                'name' => 'mf_dropbox_app_secret'
+            ],
+            // google drive
+            'mf_google_drive' => [
+                'name' => 'mf_google_drive'
+            ],
+            'mf_google_drive_folder_list_id' => [
+                'name' => 'mf_google_drive_folder_list_id'
+            ],
             // email verification
             'email_verification_enable' => [
                 'name'  => 'email_verification_enable'

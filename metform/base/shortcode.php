@@ -257,8 +257,20 @@ class Shortcode
 		if(!isset($_COOKIE['bWYtY29va2ll'])) {
 			$status = false;
 		}
-		// token not matched return false 
-		if((isset($_COOKIE['bWYtY29va2ll']) && !password_verify($token_str, sanitize_text_field(wp_unslash($_COOKIE['bWYtY29va2ll']))))) {
+		// Retrieve the stored token hash from transient
+		$stored_token_hash = get_transient('transient_mf_token_hash_'.$post_id);
+		
+		// token not matched return false - use secure hash comparison
+		if(isset($_COOKIE['bWYtY29va2ll']) && !empty($stored_token_hash)) {
+			$provided_token = sanitize_text_field(wp_unslash($_COOKIE['bWYtY29va2ll']));
+			$provided_token_hash = hash('sha256', $provided_token);
+			
+			// Use timing-safe comparison
+			if(!hash_equals($stored_token_hash, $provided_token_hash)) {
+				$status = false;
+			}
+		} elseif(isset($_COOKIE['bWYtY29va2ll'])) {
+			// Cookie exists but no stored hash - reject
 			$status = false;
 		}
 		

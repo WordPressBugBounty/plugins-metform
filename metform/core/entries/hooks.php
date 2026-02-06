@@ -28,16 +28,10 @@ class Hooks
 		
         $columns['referral'] = esc_html__('Referral','metform');
 
-        if(class_exists('\MetForm_Pro\Plugin')) {
-            $columns['email_verified'] = esc_html__('Email Verified','metform');
-        }
+        $columns['email_verified'] = esc_html__('Email Verified','metform');
 
         $columns['date'] = esc_html($date_column);
-
-        // Show PDF export column when pro plugin is activated
-        if(in_array('metform-pro/metform-pro.php', apply_filters('active_plugins', get_option('active_plugins')))):
-            $columns['export_actions'] = esc_html__('Export Actions', 'metform');
-        endif;
+        $columns['export_actions'] = esc_html__('Export Actions', 'metform');
 
         
         return $columns;
@@ -73,19 +67,35 @@ class Hooks
                 break;
             
             case 'email_verified':
-                $email_verified = get_post_meta($post_id, 'email_verified', true);
-                if($email_verified == true) {
-                    echo "<button type='button' style='background:#00cd00;box-shadow:1px 1px 5px rgba(0, 205, 0, 0.3);border:none;color:white;padding:2px 6px 3px;border-radius: 5px;font-weight:400'>".esc_html__('Yes', 'metform')."</button>";
-                }else {
-                    echo "<button type='button' style='background:#888;border:none;color:white;padding:2px 6px 3px;border-radius: 5px;font-weight:400'>".esc_html__('No', 'metform')."</button>";
-                }
+                if(class_exists('\MetForm_Pro\Plugin')) :
+                    $email_verified = get_post_meta($post_id, 'email_verified', true);
+                    if($email_verified == true) : ?>
+                        <button type='button' style='background:#00cd00;box-shadow:1px 1px 5px rgba(0, 205, 0, 0.3);border:none;color:white;padding:2px 6px 3px;border-radius: 5px;font-weight:400'><?php echo esc_html__('Yes', 'metform'); ?></button>
+                    <?php else : ?>
+                        <button type='button' style='background:#888;border:none;color:white;padding:2px 6px 3px;border-radius: 5px;font-weight:400'><?php echo esc_html__('No', 'metform'); ?></button>
+                    <?php endif;
+                else: ?>
+                    <div class="mf-entry-pro mf-svg-container">
+                        <div class="mf-svg-inner mf-upgrade-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none"><path d="M10.225 6.025h-8.4a1.2 1.2 0 0 0-1.2 1.2v4.2a1.2 1.2 0 0 0 1.2 1.2h8.4a1.2 1.2 0 0 0 1.2-1.2v-4.2a1.2 1.2 0 0 0-1.2-1.2m-7.2 0v-2.4a3 3 0 1 1 6 0v2.4" stroke="#E81454" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <div class="mf-svg-text"><?php echo esc_html__('Upgrade', 'metform'); ?></div>
+                        </div>
+                    </div>
+                <?php endif;
                 break;
 
             case 'export_actions':
                 // Show PDF export button when pro plugin is activated
-                if(in_array('metform-pro/metform-pro.php', apply_filters('active_plugins', get_option('active_plugins')))):
-                    echo "<button class='metform-pdf-export-btn attr-btn attr-btn-primary' data-id=". esc_attr($post_id) ." data-nonce ='". esc_attr(wp_create_nonce('metform-pdf-export'))."' data-rest-api=".esc_url($entry_api).'='.esc_attr($post_id).">".esc_html__('PDF Export', 'metform')." <i class='pdf-spinner'></i></button"; 
-                endif;
+                if(class_exists('\MetForm_Pro\Plugin')) : ?>
+                    <button class='metform-pdf-export-btn attr-btn attr-btn-primary' data-id='<?php echo esc_attr($post_id); ?>' data-nonce='<?php echo esc_attr(wp_create_nonce('metform-pdf-export')); ?>' data-rest-api='<?php echo esc_url($entry_api) . '=' . esc_attr($post_id); ?>'><?php echo esc_html__('PDF Export', 'metform'); ?> <i class='pdf-spinner'></i></button>
+                <?php else : ?>
+                  <div class="mf-entry-pro mf-svg-container mf-tooltip-wrapper" data-tooltip="<?php echo esc_attr__('Upgrade for premium access.', 'metform'); ?>">
+                        <div class="mf-svg-inner mf-export-pdf-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none"><path d="M10.225 6.025h-8.4a1.2 1.2 0 0 0-1.2 1.2v4.2a1.2 1.2 0 0 0 1.2 1.2h8.4a1.2 1.2 0 0 0 1.2-1.2v-4.2a1.2 1.2 0 0 0-1.2-1.2m-7.2 0v-2.4a3 3 0 1 1 6 0v2.4" stroke="#2271B1" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <div class="mf-svg-text"><?php echo esc_html__('Export PDF', 'metform'); ?></div>
+                        </div>
+                    </div>
+                <?php endif;
         }
     }
 

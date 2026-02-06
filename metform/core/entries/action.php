@@ -455,7 +455,7 @@ class Action
             $this->entry_id = wp_insert_post($defaults);
 
             update_post_meta($this->entry_id, 'mf_page_id', $page_id);
-            $entry_serial_no = get_option('metform_last_entry_serial_no');
+            $entry_serial_no = (int) get_option('metform_last_entry_serial_no', 0);
             $all_data = array_merge($all_data, ['mf_id' => ++$entry_serial_no, 'mf_form_name' => $this->title]);
             update_option('metform_last_entry_serial_no', $entry_serial_no);
             update_post_meta($this->entry_id, 'metform_entries_serial_no', $entry_serial_no);
@@ -740,7 +740,69 @@ class Action
 
             }
         }
+        
+        // google drive
+        if(class_exists('\MetForm_Pro\Core\Integrations\Google_Drive\MF_Google_Drive')) {            
+            if(isset($this->form_settings['mf_google_drive']) && $this->form_settings['mf_google_drive'] == 1) {
+                $google_drive_folder_list_id = isset($this->form_settings['mf_google_drive_folder_list_id']) ? 
+                    ["folder_id" => $this->form_settings['mf_google_drive_folder_list_id']] : null;
+                
+                // Filter file_upload_info to only include mf-file-upload widget data
+                $filtered_file_upload_info = isset($this->file_upload_info['mf-file-upload']) ? 
+                    ['mf-file-upload' => $this->file_upload_info['mf-file-upload']] : [];
+                
+                if (!empty($filtered_file_upload_info) && !empty($google_drive_folder_list_id)) {
+                    $drive = \MetForm_Pro\Core\Integrations\Google_Drive\MF_Google_Drive::instance()->insert_file(
+                        $this->form_id, 
+                        $this->title, 
+                        $this->form_data, 
+                        $filtered_file_upload_info, 
+                        $this->get_fields($this->form_id), 
+                        $google_drive_folder_list_id
+                    );
+                    
+                    if ($drive === false) {
+                        $this->response->error[] = esc_html__('Google Drive upload failed: SSL certificate or OAuth credentials problem', 'metform');
+                        $this->response->status = 0;
+                        return $this->response;
+                    }
+                }
+            }
+        }
 
+        // dropbox file upload
+        if (class_exists('\MetForm_Pro\Core\Integrations\Dropbox\MF_Dropbox')) {
+            if (isset($this->form_settings['mf_dropbox']) && $this->form_settings['mf_dropbox'] == '1') {
+                
+                $dropbox_folder_path = isset($this->form_settings['mf_dropbox_list_id']) ? $this->form_settings['mf_dropbox_list_id'] : '';
+                
+                // Only process files from mf-file-upload widget
+                if (!empty($dropbox_folder_path) && isset($this->file_upload_info['mf-file-upload']) && is_array($this->file_upload_info['mf-file-upload'])) {
+                    $dropbox = \MetForm_Pro\Core\Integrations\Dropbox\MF_Dropbox::instance();
+                    
+                    // Process each uploaded file from mf-file-upload widget
+                    foreach ($this->file_upload_info['mf-file-upload'] as $file) {
+                        if (!is_array($file)) {
+                            continue;
+                        }
+                        
+                        // Check for 'file' key (actual structure) or 'file_path' key (legacy)
+                        $file_path = isset($file['file']) ? $file['file'] : (isset($file['file_path']) ? $file['file_path'] : '');
+                        
+                        if (!empty($file_path) && file_exists($file_path)) {
+                            // Use 'name' key from file array, fallback to basename
+                            $file_name = isset($file['name']) ? $file['name'] : basename($file_path);
+                            $upload_result = $dropbox->upload_file(
+                                $file_path,
+                                $dropbox_folder_path,
+                                $file_name
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        
         $form_settings = $this->form_settings;
         $form_id = $this->form_id;
 
@@ -803,10 +865,22 @@ class Action
         //## set stransient token for data access checking 
         set_transient('transient_mf_form_data_entry_id_'.$this->entry_id, $this->entry_id, 15*60);
         
-        $mf_make_str_for_hashing = $this->entry_id.get_current_user_id();
-        $mf_hashed_str_for_access_check = password_hash($mf_make_str_for_hashing,PASSWORD_DEFAULT);
-        // setup cookie for current submission.
-        setcookie(base64_encode('mf-cookie'), $mf_hashed_str_for_access_check, time()+(60*15),'/');
+       // Generate a cryptographically secure random token
+        $mf_secure_token = wp_generate_password(32, false);
+        // Store the hashed token in a transient keyed by entry ID
+        $mf_token_hash = hash('sha256', $mf_secure_token);
+        set_transient('transient_mf_token_hash_'.$this->entry_id, $mf_token_hash, 15*60);
+        
+        // Set the raw token as an HttpOnly, Secure, SameSite cookie
+        $cookie_options = array(
+            'expires' => time() + (60 * 15),
+            'path' => '/',
+            'domain' => '',
+            'secure' => is_ssl(),
+            'httponly' => true,
+            'samesite' => 'Strict'
+        );
+        setcookie(base64_encode('mf-cookie'), $mf_secure_token, $cookie_options);
     }
 
     private function update()

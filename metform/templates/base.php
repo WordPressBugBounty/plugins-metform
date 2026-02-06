@@ -13,7 +13,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Simple Contact Form 1',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/1/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/contact-form-1/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/contact-information-style-01/',
                 'file' => \MetForm\Plugin::instance()->plugin_dir() . 'templates/1/content.json',
             ],
             'template-2' => [
@@ -22,7 +22,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Simple Contact Form 2',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/2/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/contact-form-2/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/contact-information-style-02/',
                 'file' => \MetForm\Plugin::instance()->plugin_dir() . 'templates/2/content.json',
                 
             ],
@@ -41,7 +41,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Admission Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/4/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/admission-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/admission-form/',
                 'file' => \MetForm\Plugin::instance()->plugin_dir() . 'templates/4/content.json',
             ],
             'template-5' => [
@@ -50,7 +50,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Booking Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/5/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/booking-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/booking-form-template/',
                 'file' => \MetForm\Plugin::instance()->plugin_dir() . 'templates/5/content.json',
             ],
             'template-6' => [
@@ -59,7 +59,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Event Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/6/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/event-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/event-form-style-01/',
                 'file' => '',
             ],
             'template-7' => [
@@ -68,7 +68,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Job Application Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/7/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/job-application-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/job-application-form-style-01/',
                 'file' => '',
             ],
             'template-8' => [
@@ -77,7 +77,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Job Listing Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/8/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/job-listing-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/job-listing-form/',
                 'file' => '',
             ],
             'template-9' => [
@@ -86,7 +86,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Loan Application Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/9/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/loan-application-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/loan-application-form-style-01/',
                 'file' => '',
             ],
             'template-10' => [
@@ -95,7 +95,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Newsletter Signup Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/10/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/newsletter-signup-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/newsletter-signup-form/',
                 'file' => '',
             ],
             'template-11' => [
@@ -104,7 +104,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Patient Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/11/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/patient-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/patient-form/',
                 'file' => '',
             ],
             'template-12' => [
@@ -113,7 +113,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Personal Data Erasure Request',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/12/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/personal-data-erasure-request/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/data-erasure-request/',
                 'file' => '',
             ],
             'template-13' => [
@@ -122,7 +122,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Product Order Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/13/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/product-order-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/product-order-form-style-01/',
                 'file' => '',
             ],
             'template-14' => [
@@ -131,7 +131,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Rating Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/14/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/rating-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/rating-form/',
                 'file' => '',
             ],
             'template-15' => [
@@ -140,7 +140,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Report A Bug Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/15/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/report-a-bug-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/report-a-bug-form-template/',
                 'file' => '',
             ],
             'template-16' => [
@@ -149,7 +149,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Request For Leave Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/16/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/request-for-leave-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/request-for-leave-form/',
                 'file' => '',
             ],
             'template-17' => [
@@ -158,7 +158,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Request For Quote Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/17/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/request-for-quote-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/request-for-quote-form/',
                 'file' => '',
             ],
             'template-18' => [
@@ -167,7 +167,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Restaurant Reservation Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/18/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/restaurant-reservation-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/restaurant-reservation-form-style-01/',
                 'file' => '',
             ],
             'template-19' => [
@@ -176,7 +176,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Suggestion Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/19/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/suggestion-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/suggestion-form/',
                 'file' => '',
             ],
             'template-20' => [
@@ -185,7 +185,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Support Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/20/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/support-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/support-form/',
                 'file' => '',
             ],
             'template-21' => [
@@ -194,7 +194,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Volunteer Application Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/21/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/volunteer-application-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/volunteer-application-style-01/',
                 'file' => '',
             ],
             'template-22' => [
@@ -203,7 +203,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Website Feedback',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/22/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/website-feedback/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/feedback-form/',
                 'file' => '',
             ],
             'template-23' => [
@@ -212,7 +212,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Subscribe Form 1',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/23/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/demos/subscribe-form-1/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/subscribe-form-style-01/',
                 'file' => '',
             ],
             'template-24' => [
@@ -221,7 +221,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Subscribe Form 2',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/24/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/demos/subscribe-form-2/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/subscribe-form-style-02/',
                 'file' => '',
             ],
             'template-25' => [
@@ -230,7 +230,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Food Order Form',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/25/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/pro-demos/food-order-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/pro-demos/food-order-form/',
                 'file' => '',
             ],
             'template-26' => [
@@ -239,7 +239,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Conditional Form 1',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/26/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/pro-demos/conditional-form-1/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/conditional-form-style-01/',
                 'file' => '',
             ],
             'template-27' => [
@@ -248,7 +248,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Conditional Form 2',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/27/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/pro-demos/conditional-form-2/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/conditional-style-02/',
                 'file' => '',
             ],
             'template-28' => [
@@ -257,7 +257,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Conditional Form 3',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/28/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/pro-demos/conditional-form-3/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/conditional-style-03/',
                 'file' => '',
             ],
             'template-29' => [
@@ -266,7 +266,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Conditional Form 4',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/29/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/pro-demos/conditional-form-4/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/conditional-style-04/',
                 'file' => '',
             ],
             'template-30' => [
@@ -275,7 +275,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Conditional Form 5',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/30/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/pro-demos/conditional-form-5/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/conditional-style-05/',
                 'file' => '',
             ],
             'template-31' => [
@@ -284,7 +284,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Conditional Form 6',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/31/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/pro-demos/conditional-form-6/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/conditional-style-06/',
                 'file' => '',
             ],
             'template-32' => [
@@ -293,7 +293,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Calculation Form 1',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/32/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/pro-demos/calculation-form-1/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/calculation-style-01/',
                 'file' => '',
             ],
             'template-33' => [
@@ -302,7 +302,7 @@ Class Base{
                 'form_type' => 'general-form',
                 'title' => 'Calculation Form 2',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/33/preview-thumb.svg',
-                'demo-url'  => 'https://products.wpmet.com/metform/pro-demos/calculation-form-2/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/calculation-style-02/',
                 'file' => '',
             ],
             'template-39' => [
@@ -311,7 +311,7 @@ Class Base{
                 'form_type' => 'quiz-form',
                 'title' => 'Essential Oil and Wellness Quiz',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/39/preview-thumb.svg',
-                'demo-url'  => 'https://wpmet.com/plugin/metform/metform-form/essential-oil-and-wellness-quiz/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/essential-oil-and-wellness-quiz/',
                 'file' => \MetForm\Plugin::instance()->plugin_dir() . 'templates/39/content.json',
             ],
             'template-40' => [
@@ -320,7 +320,7 @@ Class Base{
                 'form_type' => 'quiz-form',
                 'title' => 'General Knowledge Quiz',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/40/preview-thumb.svg',
-                'demo-url'  => 'https://wpmet.com/plugin/metform/metform-form/general-knowledge-quiz-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/general-knowledge-quiz/',
                 'file' => \MetForm\Plugin::instance()->plugin_dir() . 'templates/40/content.json',
             ],
             'template-41' => [
@@ -329,7 +329,7 @@ Class Base{
                 'form_type' => 'quiz-form',
                 'title' => 'Conditional Logic Quiz',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/41/preview-thumb.svg',
-                'demo-url'  => 'https://wpmet.com/plugin/metform/metform-form/conditional-logic-quiz/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/conditional-logic-quiz/',
                 'file' => \MetForm\Plugin::instance()->plugin_dir() . 'templates/41/content.json',
             ],
             'template-42' => [
@@ -338,7 +338,7 @@ Class Base{
                 'form_type' => 'quiz-form',
                 'title' => 'Biology Quiz',
                 'preview-thumb' => \MetForm\Plugin::instance()->plugin_url() . 'templates/42/preview-thumb.svg',
-                'demo-url'  => 'https://wpmet.com/plugin/metform/metform-form/biology-quiz-form/',
+                'demo-url'  => 'https://wpmet.com/plugin/metform/templates/biology-quiz-form-template/',
                 'file' => \MetForm\Plugin::instance()->plugin_dir() . 'templates/42/content.json',
             ],
            

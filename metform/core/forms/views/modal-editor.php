@@ -1,21 +1,62 @@
-<?php defined('ABSPATH') || exit; ?>
-<?php
-    $width = class_exists('MetForm_Pro\Base\Package') ? '760px' : '600px';
-?>
-<?php
-    $bottom_margin = class_exists('MetForm_Pro\Base\Package') ? '20px' : '6px';
-?>
-<?php
+<?php defined('ABSPATH') || exit; 
+
+    $width = '760px';
+    $bottom_margin = '20px';
     $bottom_spacing = has_action('after_confirmation_mail_to_user_switch') ? 'mf-form-bottom-spacing' : '';
-?>
-
-<?php
     $refresh_icon_path = '<path fill="#4D4E50" d="M13.425 3.774A6.25 6.25 0 0 0 10.704.781 6.72 6.72 0 0 0 6.712.055 6.313 6.313 0 0 0 3.084 1.87L1.27 3.593V1.325A.715.715 0 0 0 .544.6C.091.6 0 .962 0 1.325v4.082c0 .09.09.09.09.09s0 .091.091.091l.091.091.09.09h4.083c.363 0 .725-.271.725-.634s-.362-.726-.725-.726H2.358l1.724-1.633c.726-.725 1.814-1.27 2.812-1.45 1.088-.182 2.177.09 3.175.543.907.545 1.723 1.361 2.177 2.359.453.998.544 2.086.272 3.175a5.26 5.26 0 0 1-1.633 2.72c-.816.817-1.905 1.27-2.993 1.27-1.089.091-2.177-.271-3.084-.816-.908-.635-1.633-1.45-1.996-2.54-.09-.272-.454-.544-.816-.362-.363.09-.545.544-.363.816.453 1.27 1.36 2.45 2.449 3.175 1.088.726 2.268 1.088 3.538 1.088h.362c1.361-.09 2.722-.634 3.72-1.542 1.088-.907 1.814-2.086 2.086-3.447a5.573 5.573 0 0 0-.363-3.99Z"/>';
-?>
-<?php
     $close_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"><path stroke="#545558" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 1 1 11M1 1l10 10"/></svg>';
-?>
 
+    if(!function_exists('mf_dummy_simple_input')){
+        function mf_dummy_simple_input( $params ){ 
+            ?>
+            <div class="mf-input-group mf-form-bottom-spacing">
+                <?php
+                if ( isset( $params['label'] ) && ! empty( $params['label'] ) ) : ?>
+                    <label style="color: #9D9EA1" for="attr-input-label" class="attr-input-label">
+                        <?php echo esc_html( $params['label'] ); ?>
+                    </label>
+                <?php endif; ?>
+                <input 
+                    disabled
+                    type="text" 
+                    class="attr-form-control" 
+                    placeholder="<?php echo isset( $params['placeholder'] ) && ! empty( $params['placeholder'] ) ? esc_attr( $params['placeholder'] ) : ''; ?>"
+                >
+                <?php if ( isset( $params['help'] ) && ! empty( $params['help'] ) ) : ?>
+                <span class="mf-input-help">
+                    <?php echo esc_html( $params['help'] ); ?>
+                </span>
+                <?php endif;  ?>
+            </div>
+            <?php
+            }
+        }
+
+        if(!function_exists('mf_dummy_switch_input')){
+            function mf_dummy_switch_input( $params ){
+                ?>
+                <div class="mf-input-group mf-box-style mf-setting-disabled-input-wrapper">
+                    <div class="mf-pro-badge mf-pro-badge-wrapper">
+                        <div class="mf-svg-container">
+                            <div class="mf-svg-inner mf-upgrade-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none"><path d="M10.225 6.025h-8.4a1.2 1.2 0 0 0-1.2 1.2v4.2a1.2 1.2 0 0 0 1.2 1.2h8.4a1.2 1.2 0 0 0 1.2-1.2v-4.2a1.2 1.2 0 0 0-1.2-1.2m-7.2 0v-2.4a3 3 0 1 1 6 0v2.4" stroke="#E81454" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <div class="mf-svg-text"><?php echo esc_html__('Upgrade', 'metform'); ?></div>
+                            </div>
+                        </div>
+                        <div class="tooltip">Please upgrade to use this feature.</div>
+                    </div>
+                    <label class="attr-input-label">
+                        <input type="checkbox" disabled class="mf-admin-control-input">
+                        <span>
+                            <?php echo isset( $params['label'] ) && ! empty( $params['label'] ) ? esc_html( $params['label'] ) : ''; ?>
+                        </span>
+                    </label>
+                    <span style="color: #9D9EA1" class='mf-input-help'><?php echo isset( $params['help'] ) && ! empty( $params['help'] ) ? esc_html( $params['help'] ) : ''; ?></span>
+                </div>
+                <?php
+            }
+        }
+?>
 
 <div class="attr-modal attr-fade" id="metform_form_modal" tabindex="-1" role="dialog" aria-labelledby="metform_form_modalLabel" style="display:none;">
     <div class="attr-modal-dialog attr-modal-dialog-centered" style="width: <?php echo esc_attr($width); ?>"; id="metform-form-modalinput-form" role="document">
@@ -41,12 +82,15 @@
                         </li>
                         <li role="presentation"><a href="#mf-integration" aria-controls="integration" role="tab" data-toggle="tab"><?php esc_html_e('Integration', 'metform'); ?></a>
                         </li>
-                        <?php if (class_exists('MetForm_Pro\Base\Package')) : ?>
-                            <li role="presentation"><a href="#mf-payment" aria-controls="payment" role="tab" data-toggle="tab"><?php esc_html_e('Payment', 'metform'); ?></a>
-                            </li>
-                            <li role="presentation"><a href="#mf-crm" aria-controls="crm" role="tab" data-toggle="tab"><?php esc_html_e('CRM', 'metform'); ?></a></li>
+                        <li role="presentation"><a href="#mf-payment" aria-controls="payment" role="tab" data-toggle="tab"><?php esc_html_e('Payment', 'metform'); ?></a>
+                        </li>
+                        <li role="presentation"><a href="#mf-crm" aria-controls="crm" role="tab" data-toggle="tab"><?php esc_html_e('CRM', 'metform'); ?></a></li>
+                        <?php if ( !class_exists('MetForm_Pro\Base\Package') ) : ?>
+                        <li role="presentation"><a href="#mf-dummy-auth" aria-controls="dummy-auth" role="tab" data-toggle="tab"><?php esc_html_e('Auth', 'metform'); ?></a>
+                        </li>
+                        <li role="presentation"><a href="#mf-dummy-post" aria-controls="dummy-post" role="tab" data-toggle="tab"><?php esc_html_e('Post', 'metform'); ?></a>
+                        </li>
                         <?php endif; ?>
-
                         <?php do_action('mf_form_settings_tab'); ?>
                     </ul>
                 </div>
@@ -74,8 +118,15 @@
                                     </label>
                                     <span class='mf-input-help'><?php esc_html_e('Quiz summary will be shown to user after form submission with success message.', 'metform'); ?></span>
                                 </div>
+                            <?php else: ?>
+                            <?php mf_dummy_switch_input([
+                                    'label' => 'Show Quiz Summary',
+                                    'help' => 'Quiz summary will be shown to user after form submission with success message.',
+                                    'badge' => 'Pro',
+                                ]); ?>
                             <?php endif; ?>
 
+                            <?php if(\MetForm\Utils\Util::is_using_feature('require_login') || class_exists('MetForm_Pro\Base\Package')): ?>
                             <div class="mf-input-group mf-box-style">
                                 <label class="attr-input-label">
                                     <input type="checkbox" value="1" name="require_login" class="mf-admin-control-input mf-form-modalinput-require_login">
@@ -83,7 +134,15 @@
                                 </label>
                                 <span class='mf-input-help'><?php esc_html_e('Without login, users can\'t submit the form.', 'metform'); ?></span>
                             </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => 'Required Login',
+                                    'help' => 'Without login, users can\'t submit the form.',
+                                    'badge' => 'Pro',
+                                ]); ?>
+                            <?php endif; ?>
 
+                            <?php if(\MetForm\Utils\Util::is_using_feature('capture_user_browser_data') || class_exists('MetForm_Pro\Base\Package')): ?>
                             <div class="mf-input-group mf-box-style">
                                 <label class="attr-input-label">
                                     <input type="checkbox" value="1" name="capture_user_browser_data" class="mf-admin-control-input mf-form-modalinput-capture_user_browser_data">
@@ -91,6 +150,13 @@
                                 </label>
                                 <span class='mf-input-help'><?php esc_html_e('Store user\'s browser data (ip, browser name, etc)', 'metform'); ?></span>
                             </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => 'Capture User Browser Data',
+                                    'help' => 'Store user\'s browser data (ip, browser name, etc)',
+                                    'badge' => 'Pro',
+                                ]); ?>
+                            <?php endif; ?>
 
                             <div class="mf-input-group mf-box-style">
                                 <label class="attr-input-label">
@@ -116,6 +182,7 @@
                                 </div>
                             </div>
 
+                            <?php if(\MetForm\Utils\Util::is_using_feature('limit_total_entries_status') || class_exists('MetForm_Pro\Base\Package')): ?>
                             <div class="mf-input-group mf-box-style">
                                 <div class="mf-input-group-inner">
                                     <label class="attr-input-label">
@@ -128,7 +195,15 @@
                                 </div>
                                 <span class='mf-input-help mf-limit-help'><?php esc_html_e('Limit the total number of submissions for this form.', 'metform'); ?></span>
                             </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => 'Limit Total Entries',
+                                    'help' => 'Limit the total number of submissions for this form.',
+                                    'badge' => 'Pro',
+                                ]); ?>
+                            <?php endif; ?>
 
+                            <?php if(\MetForm\Utils\Util::is_using_feature('count_views') || class_exists('MetForm_Pro\Base\Package')): ?>
                             <div class="mf-input-group mf-box-style">
                                 <label class="attr-input-label">
                                     <input type="checkbox" value="1" name="count_views" class="mf-admin-control-input mf-form-modalinput-count_views">
@@ -136,7 +211,15 @@
                                 </label>
                                 <span class='mf-input-help'><?php esc_html_e('Track form views.', 'metform'); ?></span>
                             </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => 'Count views',
+                                    'help' => 'Track form views.',
+                                    'badge' => 'Pro',
+                                ]); ?>
+                            <?php endif; ?>
 
+                            <?php if( \MetForm\Utils\Util::is_using_feature('mf_stop_vertical_scrolling') || ( class_exists('MetForm_Pro\Base\Package') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier()))): ?>
                             <div class="mf-input-group mf-box-style">
                                 <label class="attr-input-label">
                                     <input type="checkbox" value="1" name="mf_stop_vertical_scrolling" class="mf-admin-control-input mf-form-modalinput-stop_vertical_scrolling">
@@ -144,19 +227,37 @@
                                 </label>
                                 <span class='mf-input-help'><?php esc_html_e('Stop scrolling effect when submitting the form.', 'metform'); ?></span>
                             </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => 'Stop Vertical Scrolling',
+                                    'help' => 'Stop scrolling effect when submitting the form.',
+                                    'badge' => 'Pro',
+                                ]); ?>
+                            <?php endif; ?>
 
                             <div class="mf-input-group mf-form-top-spacing" style="margin-bottom: <?php echo esc_attr($bottom_margin); ?>";>
                                 <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('Redirect To:', 'metform'); ?></label>
                                 <input type="text" name="redirect_to" class="mf-form-modalinput-redirect_to attr-form-control" placeholder="<?php esc_html_e('Redirection link', 'metform'); ?>">
                                 <span class='mf-input-help'><?php esc_html_e('Users will be redirected to the this link after submission.', 'metform'); ?></span>
                             </div>
+                             <?php if (!class_exists('MetForm_Pro\Base\Package')) :
+                                mf_dummy_switch_input([
+                                    'label' => 'Show Quiz Summary',
+                                    'badge' => 'Pro',
+                                ]);
+                                mf_dummy_switch_input([
+                                    'label' => 'Redirect form data',
+                                    'badge' => 'Pro',
+                                ]);
+                             endif; ?>
 
                             <?php do_action('mf_add_url_databypass_input');  ?>
                         </div>
                     </div>
                     <div role="tabpanel" class="attr-tab-pane" id="mf-confirmation">
                         <div class="attr-modal-body" id="metform_form_modal_body">
-                            <div class="mf-input-group mf-form-user-enable-confirmation mf-box-style">
+                            <?php if(\MetForm\Utils\Util::is_using_feature('enable_user_notification') || class_exists('MetForm_Pro\Base\Package')): ?>
+                            <div class="mf-input-group mf-box-style">
                                 <label class="attr-input-label">
                                     <input type="checkbox" value="1" name="enable_user_notification" class="mf-admin-control-input mf-form-user-enable">
                                     <span><?php esc_html_e('Confirmation mail to user :', 'metform'); ?></span>
@@ -166,6 +267,13 @@
                                     <strong><?php esc_html_e('The form must have at least one Email widget and it should be required.', 'metform'); ?></strong>
                                 </span>
                             </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => 'Confirmation mail to user',
+                                    'help' => 'Want to send a submission copy to user by email? Active this one. The form must have at least one Email widget and it should be required.',
+                                    'badge' => 'Pro',
+                                ]); ?>
+                            <?php endif; ?>
                             
                             <div class="mf-input-group mf-form-user-confirmation ">
                                 <?php do_action('after_confirmation_mail_to_user_switch'); ?>
@@ -195,12 +303,27 @@
                                 <span class='mf-input-help'><?php esc_html_e('Enter here your message to include it in email body. Which will be send to user.', 'metform'); ?></span>
                             </div>
 
-                            <div class="mf-input-group">
-                                <label class="attr-input-label mf-form-user-submission-copy-label mf-form-bottom-spacing">
+                            <?php if(\MetForm\Utils\Util::is_using_feature('user_email_attach_submission_copy') || class_exists('MetForm_Pro\Base\Package')): ?>
+                            <div class="mf-input-group mf-box-style">
+                                <label class="attr-input-label">
                                     <input type="checkbox" value="1" name="user_email_attach_submission_copy" class="mf-admin-control-input mf-form-user-submission-copy">
                                     <span><?php esc_html_e('Want to send a copy of submitted form to user ?', 'metform'); ?></span>
                                 </label>
                             </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => 'Want to send a copy of submitted form to user ?',
+                                    'badge' => 'Pro',
+                                ]); ?>
+                            <?php endif; ?>
+
+                            <?php if ( ! class_exists('MetForm_Pro\Base\Package') ) : 
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('Email verification:', 'metform'),
+                                    'help' => esc_html__('Want to send an email verification mail to the user by email? Active this one.The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'badge' => 'Pro',
+                                ]);
+                            endif; ?>
 
                             <?php do_action('get_metform_email_verification_settings') ?>
                         </div>
@@ -280,35 +403,7 @@
                                 </label>
                             </div>
 
-                            <?php if (class_exists('MetForm_Pro\Core\Integrations\Rest_Api')) : ?>
-                                <div class="mf-box-style">
-                                    <div class="mf-input-group mf-input-group-inner">
-                                        <label class="attr-input-label">
-                                            <input type="checkbox" value="1" name="mf_rest_api" class="mf-admin-control-input mf-form-modalinput-rest_api">
-                                            <span><?php esc_html_e('REST API:', 'metform'); ?></span>
-                                        </label>
-                                        <span class='mf-input-help'><?php esc_html_e('Send entry data to third party api/webhook', 'metform'); ?></span>
-                                    </div>
-
-                                    <div class="mf-input-group mf-input-rest-api-group mf-form-top-spacing">
-                                        <div class="mf-rest-api">
-                                            <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('URL/Webhook:', 'metform'); ?></label>
-                                            <input type="text" name="mf_rest_api_url" class="mf-rest-api-url attr-form-control" placeholder="<?php esc_html_e('Rest api url/webhook', 'metform'); ?>">
-                                            <span class='mf-input-help'><?php esc_html_e('Enter rest api url/webhook here.', 'metform'); ?></span>
-                                        </div>
-                                        <div class="mf-rest-api-key">
-                                            <div id='rest_api_method' style="margin-bottom: 4px;">
-                                                <select name="mf_rest_api_method" class="mf-rest-api-method attr-form-control">
-                                                    <option value="POST"><?php esc_html_e('POST', 'metform'); ?></option>
-                                                    <option value="GET"><?php esc_html_e('GET', 'metform'); ?></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endif ?>
-
-                            <?php if (class_exists('\MetForm\Core\Integrations\Mail_Chimp')) : ?>
+                            <?php if ( class_exists('MetForm_Pro\Base\Package') || \MetForm\Utils\Util::is_using_settings_option('mf_mailchimp_api_key')) : ?>
                                 <div class="mf-box-style">
                                     <div class="mf-input-group">
                                         <label class="attr-input-label">
@@ -334,7 +429,70 @@
                                         <input type="hidden" name="mf_mailchimp_list_id" class="mf-mailchimp-list-id attr-form-control" placeholder="<?php esc_html_e('Mailchimp contact list id', 'metform'); ?>">
                                     </div>
                                 </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => 'Mail Chimp:',
+                                    'help' => 'Integrate mailchimp with this form. The form must have at least one Email widget and it should be required.',
+                                    'badge' => 'Pro',
+                                ]); ?>
+                            <?php endif; ?>
+
+                            <?php if(\MetForm\Utils\Util::is_using_feature('mf_slack') || (class_exists('MetForm_Pro\Base\Package') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier()))): ?>
+                                <div class="mf-box-style">
+                                    <div class="mf-input-group">
+                                        <label class="attr-input-label">
+                                            <input type="checkbox" value="1" name="mf_slack" class="mf-admin-control-input mf-form-modalinput-slack">
+                                            <span><?php esc_html_e('Slack:', 'metform'); ?></span>
+                                        </label>
+                                        <span class='mf-input-help'><?php esc_html_e('Integrate slack with this form. ', 'metform'); ?><strong><?php esc_html_e('slack info.', 'metform'); ?></strong></span>
+                                    </div>
+
+                                    <div class="mf-input-group mf-slack mf-form-top-spacing">
+                                        <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('Slack webhook:', 'metform'); ?></label>
+                                        <input type="text" name="mf_slack_webhook" class="mf-slack-web-hook attr-form-control" placeholder="<?php esc_html_e('Slack webhook', 'metform'); ?>">
+                                        <span class='mf-input-help'><?php esc_html_e('Enter here slack web hook. ', 'metform'); ?><a href="http://slack.com/apps/A0F7XDUAZ-incoming-webhooks"><?php esc_html_e('create from here', 'metform'); ?></a></span>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => 'Slack:',
+                                    'help' => 'Integrate slack with this form.',
+                                    'badge' => 'Pro',
+                                ]); ?>
                             <?php endif ?>
+                            <?php if (class_exists('MetForm_Pro\Core\Integrations\Rest_Api') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_top_tier() || \MetForm\Utils\Util::is_using_feature('mf_rest_api'))) : ?>
+                                <div class="mf-box-style">
+                                    <div class="mf-input-group mf-input-group-inner">
+                                        <label class="attr-input-label">
+                                            <input type="checkbox" value="1" name="mf_rest_api" class="mf-admin-control-input mf-form-modalinput-rest_api">
+                                            <span><?php esc_html_e('REST API:', 'metform'); ?></span>
+                                        </label>
+                                        <span class='mf-input-help'><?php esc_html_e('Send entry data to third party api/webhook', 'metform'); ?></span>
+                                    </div>
+
+                                    <div class="mf-input-group mf-input-rest-api-group mf-form-top-spacing">
+                                        <div class="mf-rest-api">
+                                            <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('URL/Webhook:', 'metform'); ?></label>
+                                            <input type="text" name="mf_rest_api_url" class="mf-rest-api-url attr-form-control" placeholder="<?php esc_html_e('Rest api url/webhook', 'metform'); ?>">
+                                            <span class='mf-input-help'><?php esc_html_e('Enter rest api url/webhook here.', 'metform'); ?></span>
+                                        </div>
+                                        <div class="mf-rest-api-key">
+                                            <div id='rest_api_method' style="margin-bottom: 4px;">
+                                                <select name="mf_rest_api_method" class="mf-rest-api-method attr-form-control">
+                                                    <option value="POST"><?php esc_html_e('POST', 'metform'); ?></option>
+                                                    <option value="GET"><?php esc_html_e('GET', 'metform'); ?></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php else:
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('REST API:', 'metform'),
+                                    'help' => esc_html__('Send entry data to third parti api/webhook.', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                            endif; ?>
 
                             <?php if (class_exists('\MetForm_Pro\Core\Integrations\Google_Sheet\WF_Google_Sheet')) : ?>
                                 <div class="mf-box-style">
@@ -376,8 +534,79 @@
                                         </div>
                                     </div>
                                 </div>
-                            <?php endif; ?>
+                            <?php else:    
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('Google Sheet:', 'metform'),
+                                    'help' => esc_html__('Integrate google sheet with this form.', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                            endif; ?>
+                            
+                            <?php if (class_exists(\MetForm_Pro\Base\Package::class) && class_exists('\MetForm_Pro\Core\Integrations\Dropbox\Dropbox_Access_Token')  && (\MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) : ?>
+                                <div class="mf-box-style">
+                                    <div class="mf-input-group">
+                                        <label class="attr-input-label">
+                                            <input type="checkbox" value="1" name="mf_dropbox" class="mf-admin-control-input mf-form-modal_input-dropbox">
+                                            <span><?php esc_html_e('Dropbox:', 'metform'); ?></span>
+                                        </label>
+                                        <span class='mf-input-help'><?php esc_html_e('Integrate dropbox with this form. ', 'metform'); ?><strong><a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-general_options'; ?>"><?php esc_html_e('Configure Dropbox.', 'metform'); ?></a></strong></span>
+                                    </div>
 
+                                    <div class="mf-input-group mf-dropbox-selection" style="margin-bottom: 4px;">
+                                        <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('Folder List:', 'metform'); ?>
+                                            <span class="refresh-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" fill="none" class="metfrom-btn-refresh-dropbox-folder-list">
+                                                    <?php \MetForm\Utils\Util::metform_content_renderer( $refresh_icon_path); ?>
+                                                </svg>
+                                            </span>
+                                        </label>
+                                        <select class="attr-form-control mf-dropbox-folder-list">
+                                        </select>
+                                        <input type="hidden" name="mf_dropbox_list_id" class="mf-dropbox-folder-list-id attr-form-control" placeholder="<?php esc_html_e('Dropbox list title', 'metform'); ?>">
+                                    </div>
+                                </div>
+                            <?php else:    
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('Dropbox:', 'metform'),
+                                    'help' => esc_html__('Integrate dropbox with this form.', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                            endif; ?>
+                            <?php if ( class_exists('\MetForm_Pro\Core\Integrations\Google_Drive\MF_Google_Drive') ) : ?>
+                                <div class="mf-box-style">
+                                    <div class="mf-input-group">
+                                        <label class="attr-input-label">
+                                            <input type="checkbox" value="1" name="mf_google_drive" class="mf-admin-control-input mf-form-modal_input-google_drive">
+                                            <span><?php esc_html_e('Google Drive:', 'metform'); ?></span>
+                                        </label>
+                                        <span class='mf-input-help'><?php esc_html_e('Integrate google drive with this form. ', 'metform'); ?><strong><a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-google_sheet_integration'; ?>"><?php esc_html_e('Configure Google Drive.', 'metform'); ?></a></strong></span>
+                                    </div>
+
+                                    <div class="mf-google-drive-folder-selection-div">
+                                        <div class="mf-input-group mf-google-drive-folder-selection mf-form-top-spacing mf-form-bottom-spacing">
+                                            <label for="attr-input-label" class="attr-input-label">
+                                                <span><?php esc_html_e('Folder List:', 'metform'); ?></span>
+                                                <span class="refresh-icon  metfrom-btn-refresh-google-drive-folder-list">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" fill="none" class="metfrom-btn-refresh-hubsopt-list">
+                                                        <?php \MetForm\Utils\Util::metform_content_renderer( $refresh_icon_path); ?>
+                                                    </svg>
+                                                </span>
+                                            </label>
+
+                                            <select class="attr-form-control mf-google-drive-folder-list">
+
+                                            </select>
+                                            <input type="hidden" name="mf_google_drive_folder_list_id" class="mf-google-drive-folder-list-id attr-form-control" placeholder="<?php esc_html_e('Google Drive folder list id', 'metform'); ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php else:    
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('Google Drive :', 'metform'),
+                                    'help' => esc_html__('Integrate google drive file upload', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                            endif; ?>
                             <?php if (did_action('xpd_metform_pro/plugin_loaded')) :
 
                                 if (class_exists('\MetForm_Pro\Core\Integrations\Mail_Poet')) : ?>
@@ -412,6 +641,7 @@
                                     </div>
                                 <?php endif; ?>
 
+                                <?php if ((class_exists('MetForm_Pro\Base\Package') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_feature('mf_mail_aweber') || \MetForm\Utils\Util::is_using_settings_option('met_form_aweber_mail_access_token_key')) : ?>
                                 <div class="mf-box-style">
                                     <div class="mf-input-group">
                                         <label class="attr-input-label">
@@ -441,7 +671,9 @@
                                         <div id="mf-aweber-fields"></div>
                                     </div>
                                 </div>
+                                <?php endif; ?>
 
+                                <?php if ((class_exists('\MetForm_Pro\Core\Integrations\Convert_Kit') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_settings_option('mf_ckit_api_key')) : ?>
                                 <div class="mf-box-style">
                                     <div class="mf-input-group">
                                         <label class="attr-input-label">
@@ -469,10 +701,66 @@
                                         </span>
                                     </div>
                                 </div>
-                            <?php endif ?>
+                                <?php endif; ?>
+                            <?php else:
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('MailPoet:', 'metform'),
+                                    'help' => esc_html__('Integrate MailPoet with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('SMS Integrations (Twilio):', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('SMS User:', 'metform'),
+                                    'help' => esc_html__('Integrate SMS confirmation with this form.The form must have at least one mobile number widget and it should be required.', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('SMS Admin:', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                            endif; ?>
                             <?php do_action('get_automixy_settings_content'); ?>
 
-                            <?php if (class_exists('\MetForm_Pro\Core\Integrations\Email\Getresponse\Get_Response')) : ?>
+                            <!-- Aweber integration with tier check -->
+                            <?php if (!((class_exists('MetForm_Pro\Base\Package') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_feature('mf_mail_aweber'))) :
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('Aweber:', 'metform'),
+                                    'help' => esc_html__('Integrate aweber with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                            endif; ?>
+
+                            <!-- ConvertKit integration with tier check -->
+                            <?php if (!((class_exists('\MetForm_Pro\Core\Integrations\Convert_Kit') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_settings_option('mf_ckit_api_key'))) :
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('ConvertKit:', 'metform'),
+                                    'help' => esc_html__('Integrate convertKit with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                            endif; ?>
+
+                            <!-- GetResponse integration with tier check -->
+                            <?php if (!((class_exists('\MetForm_Pro\Core\Integrations\Email\Getresponse\Get_Response') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_settings_option('mf_get_response_api_key'))) :
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('GetResponse:', 'metform'),
+                                    'help' => esc_html__('Integrate GetResponse with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                            endif; ?>
+
+                            <!-- Zapier integration with tier check -->
+                            <?php if (!((class_exists('\MetForm_Pro\Core\Integrations\Zapier') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_feature('mf_zapier'))) :
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('Zapier:', 'metform'),
+                                    'help' => esc_html__('Integrate zapier with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                            endif; ?>
+
+                            <?php if ((class_exists('\MetForm_Pro\Core\Integrations\Email\Getresponse\Get_Response') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_settings_option('mf_get_response_api_key')) : ?>
                                 <div class="mf-box-style">
                                     <div class="mf-input-group">
                                         <label class="attr-input-label">
@@ -504,7 +792,7 @@
 
                             <?php endif; ?>
 
-                            <?php if (class_exists('\MetForm_Pro\Core\Integrations\Email\Activecampaign\Active_Campaign')) : ?>
+                            <?php if (class_exists('\MetForm_Pro\Core\Integrations\Email\Activecampaign\Active_Campaign') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_top_tier() || \MetForm\Utils\Util::is_using_settings_option('mf_active_campaign_api_key'))) : ?>
 
                                 <?php
                                 $cached_email_list = get_option(\MetForm_Pro\Core\Integrations\Email\Activecampaign\Active_Campaign::CK_ACT_CAMP_EMAIL_LIST_CACHE_KEY, []);
@@ -566,7 +854,13 @@
                                         </span>
                                     </div>
                                 </div>
-                            <?php endif ?>
+                            <?php else: 
+                                mf_dummy_switch_input([
+                                    'label' => esc_html__('ActiveCampaign:', 'metform'),
+                                    'help' => esc_html__('Integrate ActiveCampaign with this form. The form must have at least one Email widget and it should be required.', 'metform'),
+                                    'badge' =>'Pro'
+                                ]);
+                            endif; ?>
 
                             <?php
                                 if (function_exists('mailster')) {
@@ -605,7 +899,7 @@
                                 }
                             ?>
 
-                            <?php if (class_exists('\MetForm_Pro\Core\Integrations\Zapier')) : ?>
+                            <?php if ((class_exists('\MetForm_Pro\Core\Integrations\Zapier') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier())) || \MetForm\Utils\Util::is_using_feature('mf_zapier')) : ?>
                                 <div class="mf-box-style">
                                     <div class="mf-input-group">
                                         <label class="attr-input-label">
@@ -623,62 +917,49 @@
                                 </div>
                             <?php endif ?>
 
-                            <?php if (class_exists('\MetForm\Core\Integrations\Slack')) : ?>
-                                <div class="mf-box-style">
-                                    <div class="mf-input-group">
-                                        <label class="attr-input-label">
-                                            <input type="checkbox" value="1" name="mf_slack" class="mf-admin-control-input mf-form-modalinput-slack">
-                                            <span><?php esc_html_e('Slack:', 'metform'); ?></span>
-                                        </label>
-                                        <span class='mf-input-help'><?php esc_html_e('Integrate slack with this form. ', 'metform'); ?><strong><?php esc_html_e('slack info.', 'metform'); ?></strong></span>
-                                    </div>
-
-                                    <div class="mf-input-group mf-slack mf-form-top-spacing">
-                                        <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('Slack webhook:', 'metform'); ?></label>
-                                        <input type="text" name="mf_slack_webhook" class="mf-slack-web-hook attr-form-control" placeholder="<?php esc_html_e('Slack webhook', 'metform'); ?>">
-                                        <span class='mf-input-help'><?php esc_html_e('Enter here slack web hook. ', 'metform'); ?><a href="http://slack.com/apps/A0F7XDUAZ-incoming-webhooks"><?php esc_html_e('create from here', 'metform'); ?></a></span>
-                                    </div>
-                                </div>
-                            <?php endif ?>
-
                             <?php do_action('metform_sms_integration_editor_markup') ?>
                         </div>
                     </div>
 
-                    <?php if (class_exists('MetForm_Pro\Base\Package')) : ?>
-                        <div role="tabpanel" class="attr-tab-pane" id="mf-payment">
-                            <div class="attr-modal-body" id="metform_form_modal_body">
-                                <?php
-                                $currencies = [
-                                    'AUD' => 'Australian dollar',
-                                    'BRL' => 'Brazilian real',
-                                    'CAD' => 'Canadian dollar',
-                                    'CNY' => 'Chinese Renmenbi',
-                                    'CZK' => 'Czech koruna',
-                                    'DKK' => 'Danish krone',
-                                    'EUR' => 'Euro',
-                                    'HKD' => 'Hong Kong dollar',
-                                    'HUF' => 'Hungarian forint',
-                                    'ILS' => 'Israeli new shekel',
-                                    'JPY' => 'Japanese yen',
-                                    'MYR' => 'Malaysian ringgit',
-                                    'MXN' => 'Mexican peso',
-                                    'TWD' => 'New Taiwan dollar',
-                                    'NZD' => 'New Zealand dollar',
-                                    'NOK' => 'Norwegian krone',
-                                    'PHP' => 'Philippine peso',
-                                    'PLN' => 'Polish złoty',
-                                    'GBP' => 'Pound sterling',
-                                    'RUB' => 'Russian ruble',
-                                    'SGD' => 'Singapore dollar',
-                                    'SEK' => 'Swedish krona',
-                                    'CHF' => 'Swiss franc',
-                                    'THB' => 'Thai baht',
-                                    'USD' => 'United States dollar',
-                                ]
+                    <div role="tabpanel" class="attr-tab-pane" id="mf-payment">
+                        <div class="attr-modal-body" id="metform_form_modal_body">
+                            <?php 
+                            $currencies = [
+                                'AUD' => 'Australian dollar',
+                                'BRL' => 'Brazilian real',
+                                'CAD' => 'Canadian dollar',
+                                'CNY' => 'Chinese Renmenbi',
+                                'CZK' => 'Czech koruna',
+                                'DKK' => 'Danish krone',
+                                'EUR' => 'Euro',
+                                'HKD' => 'Hong Kong dollar',
+                                'HUF' => 'Hungarian forint',
+                                'ILS' => 'Israeli new shekel',
+                                'JPY' => 'Japanese yen',
+                                'MYR' => 'Malaysian ringgit',
+                                'MXN' => 'Mexican peso',
+                                'TWD' => 'New Taiwan dollar',
+                                'NZD' => 'New Zealand dollar',
+                                'NOK' => 'Norwegian krone',
+                                'PHP' => 'Philippine peso',
+                                'PLN' => 'Polish złoty',
+                                'GBP' => 'Pound sterling',
+                                'RUB' => 'Russian ruble',
+                                'SGD' => 'Singapore dollar',
+                                'SEK' => 'Swedish krona',
+                                'CHF' => 'Swiss franc',
+                                'THB' => 'Thai baht',
+                                'USD' => 'United States dollar',
+                            ];
 
-                                ?>
+                            // Check if at least one payment method is available
+                            $paypal_available = (class_exists('\MetForm_Pro\Core\Integrations\Payment\Paypal') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier() || \MetForm\Utils\Util::is_using_settings_option('mf_paypal_email') || \MetForm\Utils\Util::is_using_feature('mf_paypal')));
 
+                            $stripe_available = (class_exists('\MetForm_Pro\Core\Integrations\Payment\Stripe') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier() || \MetForm\Utils\Util::is_using_settings_option('mf_stripe_live_publishiable_key') || \MetForm\Utils\Util::is_using_settings_option('mf_stripe_test_secret_key') || \MetForm\Utils\Util::is_using_feature('mf_stripe')));
+                            $show_currency = $paypal_available || $stripe_available;
+                            ?>
+
+                            <?php if ($show_currency) : ?>
                                 <div class="mf-input-group mf-form-bottom-spacing">
                                     <label class="attr-input-label">
                                         Default currency
@@ -689,37 +970,62 @@
                                         <?php } ?>
                                     </select>
                                 </div>
+                            <?php endif; ?>
 
-                                <?php if (class_exists('\MetForm_Pro\Core\Integrations\Payment\Paypal')) : ?>
-                                    <div class="mf-input-group mf-box-style">
-                                        <label class="attr-input-label">
-                                            <input type="checkbox" value="1" name="mf_paypal" class="mf-admin-control-input mf-form-modalinput-paypal">
-                                            <span><?php esc_html_e('Paypal:', 'metform'); ?></span>
-                                        </label>
-                                        <span class='mf-input-help'><?php esc_html_e('Integrate paypal payment with this form. ', 'metform'); ?>
-                                            <a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-payment_options'; ?>"><?php esc_html_e('Configure paypal payment.', 'metform'); ?></a>
-                                        </span>
-                                    </div>
-                                <?php endif ?>
+                            <?php if ($paypal_available) : ?>
+                                <div class="mf-input-group mf-box-style">
+                                    <label class="attr-input-label">
+                                        <input type="checkbox" value="1" name="mf_paypal" class="mf-admin-control-input mf-form-modalinput-paypal">
+                                        <span><?php esc_html_e('Paypal:', 'metform'); ?></span>
+                                    </label>
+                                    <span class='mf-input-help'><?php esc_html_e('Integrate paypal payment with this form. ', 'metform'); ?>
+                                        <a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-payment_options'; ?>"><?php esc_html_e('Configure paypal payment.', 'metform'); ?></a>
+                                    </span>
+                                </div>
+                            <?php endif ?>
 
+                            <?php if ($stripe_available) : ?>
+                                <div class="mf-input-group mf-box-style">
+                                    <label class="attr-input-label">
+                                        <input type="checkbox" value="1" name="mf_stripe" class="mf-admin-control-input mf-form-modalinput-stripe">
+                                        <span><?php esc_html_e('Stripe:', 'metform'); ?></span>
+                                    </label>
+                                    <span class='mf-input-help'><?php esc_html_e('Integrate stripe payment with this form. ', 'metform'); ?><a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-payment_options'; ?>"><?php esc_html_e('Configure stripe payment.', 'metform'); ?></a></span>
+                                </div>
+                            <?php endif ?>
 
-                                <?php if (class_exists('\MetForm_Pro\Core\Integrations\Payment\Stripe')) : ?>
-                                    <div class="mf-input-group mf-box-style">
-                                        <label class="attr-input-label">
-                                            <input type="checkbox" value="1" name="mf_stripe" class="mf-admin-control-input mf-form-modalinput-stripe">
-                                            <span><?php esc_html_e('Stripe:', 'metform'); ?></span>
-                                        </label>
-                                        <span class='mf-input-help'><?php esc_html_e('Integrate stripe payment with this form. ', 'metform'); ?><a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-payment_options'; ?>"><?php esc_html_e('Configure stripe payment.', 'metform'); ?></a></span>
-                                    </div>
-                                <?php endif ?>
+                            <?php if (!$show_currency) :
+                                mf_dummy_simple_input(
+                                    [
+                                        'label' => esc_html__('Default Currency', 'metform'),
+                                        'placeholder' => esc_html__('Select default currency', 'metform'),
+                                        'badge' => 'Pro'
+                                    ]
+                                );
+                            endif; ?>
+
+                            <?php if (!$paypal_available) :
+                                mf_dummy_switch_input(
+                                    [
+                                        'label' => esc_html__('Paypal:', 'metform'),
+                                        'help' => esc_html__('Integrate paypal payment with this form.', 'metform')                                    ]
+                                );
+                            endif; ?>
+
+                            <?php if (!$stripe_available) :
+                                mf_dummy_switch_input(
+                                    [
+                                        'label' => esc_html__('Stripe:', 'metform'),
+                                        'help' => esc_html__('Integrate stripe payment with this form.', 'metform')                                    ]
+                                );
+                            endif; ?>
                             </div>
                         </div>
-                    <?php endif; ?>
 
                     <div role="tabpanel" class="attr-tab-pane" id="mf-crm">
                         <div class="attr-modal-body" id="metform_form_modal_body">
-
-                            <?php if (class_exists('\MetForm_Pro\Core\Integrations\Crm\Zoho\Integration')) : ?>
+                            <?php if (class_exists('MetForm_Pro\Base\Package')) :
+                                if (class_exists('\MetForm_Pro\Core\Integrations\Crm\Zoho\Integration') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_top_tier() || \MetForm\Utils\Util::is_using_settings_option('mf_zoho_data_center') || \MetForm\Utils\Util::is_using_feature('mf_zoho'))) : ?>
                                 <!-- Zoho integration  -->
                                 <div class="mf-input-group mf-box-style">
                                     <label class="attr-input-label">
@@ -768,8 +1074,12 @@
                                     </div>
 
                                 </div>
-                            <?php endif; ?>
-
+                            <?php else: 
+                                mf_dummy_switch_input([
+                                    'label' => 'Zoho Contact:',
+                                    'help' => 'Integrate Zoho Contact with this form.',
+                                ]);
+                           endif; ?>
                             <!-- Helpscout integration -->
 
                             <?php if (class_exists('\MetForm_Pro\Core\Integrations\Crm\Helpscout\Helpscout')) : ?>
@@ -808,8 +1118,49 @@
 
                                 <?php do_action('metform_fluent_crm_editor_markup') ?>
                             </div>
+                           <?php else:
+                                mf_dummy_switch_input([
+                                    'label' => 'Zoho Contact:',
+                                    'help' => 'Integrate Zoho Contact with this form.',
+                                ]);
+                                mf_dummy_switch_input([
+                                    'label' => 'Helpscout:',
+                                    'help' => 'Integrate Helpscout with this form.',
+                                ]);
+                                mf_dummy_switch_input([
+                                    'label' => 'Fluent:',
+                                    'help' => 'Integrate fluent with this form.The form must have at least one Email widget and it should be required.',
+                                ]);
+                            endif; 
+                            ?>
                         </div>
                     </div>
+                    <?php if (!class_exists('MetForm_Pro\Base\Package')) : ?>
+                        <div role="tabpanel" class="attr-tab-pane" id="mf-dummy-auth">
+                            <div class="attr-modal-body" id="metform_form_modal_body">
+                                <?php
+                                    mf_dummy_switch_input([
+                                        'label' => 'Login',
+                                        'help' => 'Enable or disable login system.',
+                                    ]);
+                                    mf_dummy_switch_input([
+                                        'label' => 'Registration',
+                                        'help' => 'Enable or disable user registration.',
+                                    ]);
+                                ?>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="attr-tab-pane" id="mf-dummy-post">
+                            <div class="attr-modal-body" id="metform_form_modal_body">
+                                <?php
+                                    mf_dummy_switch_input([
+                                        'label' => 'Form to Post',
+                                        'help' => 'Create a post from form entries.',
+                                    ]); 
+                                    ?>
+                            </div>
+                        </div>
+                    <?php endif;  ?>
 
                     <?php do_action('mf_form_settings_tab_content'); ?>
                 </div>

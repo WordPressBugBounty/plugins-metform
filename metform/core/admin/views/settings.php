@@ -1,8 +1,19 @@
 <?php
 
+namespace MetForm\Core\Admin\Views;
+
+use MetForm\Core\Admin\Base;
+use MetForm\Core\Integrations\Mail_Chimp;
+use MetForm\Utils\Util;
+use MetForm_Pro\Base\Package;
+use MetForm_Pro\Core\Integrations\Payment\Paypal;
+use MetForm_Pro\Core\Integrations\Payment\Stripe;
+use MetForm_Pro\Core\Integrations\Google_Sheet\WF_Google_Sheet;
+use MetForm_Pro\Core\Integrations\Google_Sheet\Google_Access_Token;
+use MetForm_Pro\Core\Integrations\Dropbox\Dropbox_Access_Token;
 defined('ABSPATH') || exit;
 
-$settings = \MetForm\Core\Admin\Base::instance()->get_settings_option();
+$settings = Base::instance()->get_settings_option();
 
 include __DIR__ . "/icons.php";
 include __DIR__ . "/integrations.php";
@@ -89,7 +100,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 									<span class="mf-setting-subtitle"><?php echo esc_html__('All dashboard info here', 'metform'); ?></span>
 								</div>
 								<div>
-									<span class="mf-setting-tab-icon"><?php \MetForm\Utils\Util::metform_content_renderer( $icons['dashboard'] ); ?></span>
+									<span class="mf-setting-tab-icon"><?php Util::metform_content_renderer( $icons['dashboard'] ); ?></span>
 								</div>
 							</a>
 						</li>
@@ -98,10 +109,10 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 							<a href="#mf-general_options" class="mf-setting-nav-link">
 								<div class="mf-setting-tab-content">
 									<span class="mf-setting-title"><?php echo esc_html__('General', 'metform'); ?></span>
-									<span class="mf-setting-subtitle"><?php echo esc_html__('All General info here', 'metform'); ?></span>
+									<span class="mf-setting-subtitle"><?php echo esc_html__('reCAPTCHA, Map, and Smart Form Settings.', 'metform'); ?></span>
 								</div>
 								<div>
-									<span class="mf-setting-tab-icon"><?php \MetForm\Utils\Util::metform_content_renderer( $icons['general'] ); ?></span>
+									<span class="mf-setting-tab-icon"><?php Util::metform_content_renderer( $icons['general'] ); ?></span>
 								</div>
 							</a>
 						</li>
@@ -110,10 +121,10 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 							<a href="#mf-payment_options" class="mf-setting-nav-link">
 								<div class="mf-setting-tab-content">
 									<span class="mf-setting-title"><?php echo esc_html__('Payment', 'metform'); ?></span>
-									<span class="mf-setting-subtitle"><?php echo esc_html__('All payment info here', 'metform'); ?></span>
+									<span class="mf-setting-subtitle"><?php echo esc_html__('Set up the Payment Gateways', 'metform'); ?></span>
 								</div>
 								<div>
-									<span class="mf-setting-tab-icon"><?php \MetForm\Utils\Util::metform_content_renderer( $icons['payment'] ); ?></span>
+									<span class="mf-setting-tab-icon"><?php Util::metform_content_renderer( $icons['payment'] ); ?></span>
 								</div>
 							</a>
 						</li>
@@ -121,21 +132,21 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 							<a href="#mf-newsletter_integration" class="mf-setting-nav-link">
 								<div class="mf-setting-tab-content">
 									<span class="mf-setting-title"><?php echo esc_html__('Newsletter Integration', 'metform'); ?></span>
-									<span class="mf-setting-subtitle"><?php echo esc_html__('All newsletter integration info here', 'metform'); ?></span>
+									<span class="mf-setting-subtitle"><?php echo esc_html__('Configure all newsletter integration.', 'metform'); ?></span>
 								</div>
 								<div>
-									<span class="mf-setting-tab-icon"><?php \MetForm\Utils\Util::metform_content_renderer( $icons['newsletter_integration'] ); ?></span>
+									<span class="mf-setting-tab-icon"><?php Util::metform_content_renderer( $icons['newsletter_integration'] ); ?></span>
 								</div>
 							</a>
 						</li>
 						<li>
 							<a href="#mf-google_sheet_integration" class="mf-setting-nav-link">
 								<div class="mf-setting-tab-content">
-									<span class="mf-setting-title"><span><?php echo esc_html__('Google Sheet Integration', 'metform'); ?></span></span>
-									<span class="mf-setting-subtitle"><?php echo esc_html__('All sheets info here', 'metform'); ?></span>
+									<span class="mf-setting-title"><span><?php echo esc_html__('Google Integration', 'metform'); ?></span></span>
+									<span class="mf-setting-subtitle"><?php echo esc_html__('Configure Google sheets & drive APIs', 'metform'); ?></span>
 								</div>
 								<div>
-									<span class="mf-setting-tab-icon"><?php \MetForm\Utils\Util::metform_content_renderer( $icons['google_sheet_integration'] ); ?></span>
+									<span class="mf-setting-tab-icon"><?php Util::metform_content_renderer( $icons['google_sheet_integration'] ); ?></span>
 								</div>
 							</a>
 						</li>
@@ -445,7 +456,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 								<div class="mf-settings-single-section">
 									<div class="recaptha-tab list-item">
 										<div class="tab-header">
-											<h4 class="list-item-header"><?php esc_attr_e('ReCaptcha Settings', 'metform') ?></h4>
+											<h4 class="list-item-header"><?php esc_attr_e('reCAPTCHA Settings', 'metform') ?></h4>
 										</div>
 										<div class="attr-row" style="margin: 0 -10px;">
 											<div class="attr-col-lg-6">
@@ -462,7 +473,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 														</select>
 													</div>
 													<p class="description">
-														<?php esc_html_e('Select google reCaptcha version which one want to use.', 'metform'); ?>
+														<?php esc_html_e('Select Google reCAPTCHA version which one want to use.', 'metform'); ?>
 													</p>
 												</div>
 											</div>
@@ -479,7 +490,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 																	</label>
 																	<input type="text" name="mf_recaptcha_site_key" value="<?php echo esc_attr((isset($settings['mf_recaptcha_site_key'])) ? $settings['mf_recaptcha_site_key'] : ''); ?>" class="mf-setting-input attr-form-control mf-recaptcha-site-key" placeholder="<?php esc_html_e('Insert site key', 'metform'); ?>">
 																	<p class="description">
-																		<?php esc_html_e('Create google reCaptcha site key from reCaptcha admin panel. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://www.google.com/recaptcha/admin/'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
+																		<?php esc_html_e('Create Google reCAPTCHA site key from reCAPTCHA admin panel. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://www.google.com/recaptcha/admin/'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
 																	</p>
 																</div>
 															</div>
@@ -489,7 +500,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 																	</label>
 																	<input type="text" name="mf_recaptcha_secret_key" value="<?php echo esc_attr((isset($settings['mf_recaptcha_secret_key'])) ? $settings['mf_recaptcha_secret_key'] : ''); ?>" class="mf-setting-input attr-form-control mf-recaptcha-secret-key" placeholder="<?php esc_html_e('Insert secret key', 'metform'); ?>">
 																	<p class="description">
-																		<?php esc_html_e('Create google reCaptcha secret key from reCaptcha admin panel. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://www.google.com/recaptcha/admin/'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
+																		<?php esc_html_e('Create Google reCAPTCHA secret key from reCAPTCHA admin panel. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://www.google.com/recaptcha/admin/'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
 																	</p>
 																</div>
 															</div>
@@ -504,7 +515,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 																	</label>
 																	<input type="text" name="mf_recaptcha_site_key_v3" value="<?php echo esc_attr((isset($settings['mf_recaptcha_site_key_v3'])) ? $settings['mf_recaptcha_site_key_v3'] : ''); ?>" class="mf-setting-input attr-form-control mf-recaptcha-site-key" placeholder="<?php esc_html_e('Insert site key', 'metform'); ?>">
 																	<p class="description">
-																		<?php esc_html_e('Create google reCaptcha site key from reCaptcha admin panel. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://www.google.com/recaptcha/admin/'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
+																		<?php esc_html_e('Create Google reCAPTCHA site key from reCaptcha admin panel. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://www.google.com/recaptcha/admin/'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
 																	</p>
 																</div>
 															</div>
@@ -514,7 +525,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 																	</label>
 																	<input type="text" name="mf_recaptcha_secret_key_v3" value="<?php echo esc_attr((isset($settings['mf_recaptcha_secret_key_v3'])) ? $settings['mf_recaptcha_secret_key_v3'] : ''); ?>" class="mf-setting-input attr-form-control mf-recaptcha-secret-key" placeholder="<?php esc_html_e('Insert secret key', 'metform'); ?>">
 																	<p class="description">
-																		<?php esc_html_e('Create google reCaptcha secret key from reCaptcha admin panel. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://www.google.com/recaptcha/admin/'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
+																		<?php esc_html_e('Create Google reCAPTCHA secret key from reCaptcha admin panel. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://www.google.com/recaptcha/admin/'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
 																	</p>
 																</div>
 															</div>
@@ -524,8 +535,124 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 											</div>
 										</div>
 									</div>
+									<?php if (class_exists(Package::class) && class_exists('\MetForm_Pro\Core\Integrations\Dropbox\Dropbox_Access_Token')  && (Util::is_mid_tier() || Util::is_top_tier())) : ?>
+										<div class="mf-dropbox-tab list-item">
+											<div class="tab-header">
+												<h4 class="list-item-header"><?php esc_attr_e('Dropbox Settings', 'metform') ?></h4>
+											</div>
 
-									<?php if (class_exists('\MetForm_Pro\Base\Package')) : ?>
+											<div class="attr-row">
+												<div class="attr-col-lg-12" style="padding: 0px;">
+													<div class="mf-dropbox-settings-wrapper">
+														<div class="attr-row">
+															<div class="attr-col-lg-6">
+																<div class="mf-setting-input-group">
+																	<label class="mf-setting-label"><?php esc_html_e('App ID:', 'metform'); ?>
+																	</label>
+																	<input type="text" name="mf_dropbox_app_id" value="<?php echo esc_attr((isset($settings['mf_dropbox_app_id'])) ? $settings['mf_dropbox_app_id'] : ''); ?>" class="mf-setting-input attr-form-control mf-dropbox-app-id" placeholder="<?php esc_html_e('Insert App ID', 'metform'); ?>">
+																	<p class="description">
+																		<?php esc_html_e('Create App ID from Dropbox developers panel. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://www.dropbox.com/developers'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
+																	</p>
+																</div>
+															</div>
+															<div class="attr-col-lg-6">
+																<div class="mf-setting-input-group">
+																	<label class="mf-setting-label"><?php esc_html_e('App Secret:', 'metform'); ?>
+																	</label>
+																	<input type="text" name="mf_dropbox_app_secret" value="<?php echo esc_attr((isset($settings['mf_dropbox_app_secret'])) ? $settings['mf_dropbox_app_secret'] : ''); ?>" class="mf-setting-input attr-form-control mf-dropbox-secret-key" placeholder="<?php esc_html_e('Insert app secret', 'metform'); ?>">
+																	<p class="description">
+																		<?php esc_html_e('Create Dropbox App secret from Dropbox developers panel. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://www.dropbox.com/developers'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
+																	</p>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<?php 
+											$dropbox = new Dropbox_Access_Token();
+											$dropbox_connected = get_option('mf_dropbox_access_token');
+											
+											if ($dropbox_connected) : ?>
+												<div style="display: flex; align-items: center; gap: 10px; margin-top: 20px;">
+													<a href="<?php echo esc_url(add_query_arg('mf_dropbox_disconnect', '1', admin_url('admin.php?page=metform-menu-settings'))); ?>" class="mf-admin-setting mf-admin-setting-dropbox" onclick="return confirm('<?php esc_attr_e('Are you sure you want to disconnect Dropbox?', 'metform'); ?>');">
+														<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M8.33333 1.06335C8.02867 1.02161 7.717 1 7.4 1C3.86538 1 1 3.68629 1 7C1 10.3137 3.86538 13 7.4 13C7.717 13 8.02867 12.9784 8.33333 12.9367" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.3335 5.33333L13.0002 6.99999L11.3335 8.66666M6.3335 6.99999H12.5943" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> <?php esc_html_e('Disconnect Dropbox', 'metform'); ?>
+													</a>
+												</div>
+											<?php else : ?>
+												<ol class="xs_social_ol">
+													<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Dropbox developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://wpmet.com/doc/dropbox-file-upload/" target="_blank">Documentation</a></li>
+													<li><span class="pointer">2</span><?php echo esc_html__('Must add the following URL to the "Valid OAuth redirect URIs" field:', 'metform') ?> <strong style="font-weight:500;"><?php echo esc_url(admin_url('admin.php?page=metform-menu-settings')) ?></strong></li>
+													<li><span class="pointer">3</span><?php echo esc_html__('After getting the App ID & App Secret, put those information', 'metform') ?></li>
+													<li><span class="pointer">4</span><?php echo esc_html__('Click on "Save Changes"', 'metform') ?></li>
+													<li><span class="pointer">5</span><?php echo esc_html__('Click on "Connect Your Dropbox Account"', 'metform') ?></li>
+												</ol>
+												<a class="mf-admin-setting mf-admin-setting-dropbox" href="<?php echo esc_url($dropbox->get_code()); ?>">
+													<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+													<path d="M7.08663 6.21467L7.21077 6.09053C8.39799 4.90326 10.3229 4.90326 11.5101 6.09053C12.6974 7.27775 12.6974 9.20267 11.5101 10.3899L9.79041 12.1096C8.60319 13.2969 6.67827 13.2969 5.49102 12.1096C4.30378 10.9224 4.30378 8.99747 5.49102 7.81025L5.76963 7.53167" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+													<path d="M11.8312 6.46841L12.1097 6.18983C13.297 5.00257 13.297 3.07768 12.1097 1.89043C10.9225 0.70319 8.99759 0.70319 7.81037 1.89043L6.09065 3.61019C4.90338 4.79743 4.90338 6.72233 6.09065 7.90955C7.27787 9.09683 9.20279 9.09683 10.39 7.90955L10.5141 7.78541" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+													<path d="M1.00049 4.60008L2.80049 5.20008M1.60049 7.90008L2.80049 7.00008M2.50049 2.20007L3.40049 3.40007" stroke="rgba(13, 20, 39, 1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+												</svg>
+													<?php esc_attr_e('Connect Your Dropbox Account', 'metform'); ?>
+												</a>
+											<?php endif; ?>
+										</div>
+									<?php else :
+
+										$dropbox_alert_heading = esc_html__('Dropbox is a premium feature—Get MetForm Pro to use it!', 'metform');
+										$dropbox_alert_description = esc_html__('Get full access to premium features by upgrading today.', 'metform');
+
+										if (class_exists(Package::class) && (!Util::is_mid_tier() || !Util::is_top_tier())){
+											$dropbox_alert_heading = esc_html__('Dropbox Is Exclusive To Mid Tiers!', 'metform');
+											$dropbox_alert_description = esc_html__('Get access by upgrading to MetForm Professional Plan.', 'metform');
+										}
+									?>
+									<div class="mf-pro-missing-wrapper" id="mf-dropbox-tab">
+										<div class="mf-pro-missing">
+											<div class="dropbox-tab list-item">
+												<div class="tab-header">
+													<h4 class="list-item-header"><?php esc_html_e('Dropbox', 'metform') ?></h4>
+												</div>
+												<div class="mf-pro-alert">
+													<div class="pro-content">
+														<h5 class="alert-heading"><?php echo esc_html($dropbox_alert_heading); ?></h5>
+														<p class="alert-description"><?php echo esc_html($dropbox_alert_description); ?></p>
+													</div>
+													<div class="pro-btn">
+														<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
+																<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+																<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+															</svg> Upgrade </a>
+													</div>
+												</div>
+												<div class="attr-row">
+													<div class="attr-col-lg-6">
+														<?php
+														mf_dummy_simple_input('API:', 'Insert Dropbox API key', 'Create Dropbox APP ID from Dropbox developers panel');
+														?>
+													</div>
+													<div class="attr-col-lg-6">
+														<?php
+														mf_dummy_simple_input('API:', 'Insert Dropbox API key', 'Create Dropbox APP Secrate from Dropbox developers panel');
+														?>
+													</div>
+												</div>
+												<ol class="xs_social_ol">
+													<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Dropbox developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://wpmet.com/doc/dropbox-file-upload/" target="_blank">Documentation</a></li>
+													<li><span class="pointer">2</span><?php echo esc_html__('Must add the following URL to the "Valid OAuth redirect URIs" field:', 'metform') ?> <strong style="font-weight:500;"><?php echo esc_url(admin_url('admin.php?page=metform-menu-settings')) ?></strong></li>
+													<li><span class="pointer">3</span><?php echo esc_html__('After getting the App ID & App Secret, put those information', 'metform') ?></li>
+													<li><span class="pointer">4</span><?php echo esc_html__('Click on "Save Changes"', 'metform') ?></li>
+													<li><span class="pointer">5</span><?php echo esc_html__('Click on "Connect your dropbox account"', 'metform') ?></li>
+												</ol>
+												<a class="mf-setting-btn-link achor-style round-btn disabled" href="#"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" fill="none">
+														<path d="M1 4.85V2.4A1.4 1.4 0 0 1 2.4 1h11.2c.773 0 1.4.628 1.4 1.401V10.8a1.4 1.4 0 0 1-1.4 1.401H2.4A1.4 1.4 0 0 1 1 10.8V8.35a1.75 1.75 0 0 0 0-3.5zM10.1 6.6h2.1M7.3 9.4h4.9" stroke="#0D1427" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+													</svg> <?php esc_attr_e('Connect your dropbox account', 'metform'); ?></a>
+											</div>
+										</div>
+									</div>
+									<?php endif;?>
+
+									<?php if (class_exists(Package::class) && (Util::is_old_pro_user() || Util::is_mid_tier() || Util::is_top_tier() || Util::is_using_settings_option('mf_google_map_api_key'))) : ?>
 										<div class="map-tab list-item">
 											<div class="tab-header">
 												<h4 class="list-item-header"><?php esc_html_e('Map', 'metform') ?></h4>
@@ -535,11 +662,20 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 												</label>
 												<input type="text" name="mf_google_map_api_key" value="<?php echo esc_attr((isset($settings['mf_google_map_api_key'])) ? $settings['mf_google_map_api_key'] : ''); ?>" class="mf-setting-input attr-form-control mf-google-map-api-key" placeholder="<?php esc_html_e('Insert map API key', 'metform'); ?>">
 												<p class="description">
-													<?php esc_html_e('Create google map API key from google developer console. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://console.cloud.google.com/google/maps-apis/'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
+													<?php esc_html_e('Create Google map API key from Google developer console. ', 'metform'); ?><a target="__blank" class="mf-setting-btn-link" href="<?php echo esc_url('https://console.cloud.google.com/google/maps-apis/'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
 												</p>
 											</div>
 										</div>
-									<?php else : ?>
+									<?php else :
+
+										$map_alert_heading = esc_html__('Map is a premium feature—Get MetForm Pro to use it!', 'metform');
+										$map_alert_description = esc_html__('Get full access to premium features by upgrading today.', 'metform');
+
+										if (class_exists(Package::class) && (!Util::is_old_pro_user() && !Util::is_mid_tier() && !Util::is_top_tier())){
+											$map_alert_heading = esc_html__('Maps Are Exclusive To Higher Tiers!', 'metform');
+											$map_alert_description = esc_html__('Get access by upgrading to MetForm Professional Plan.', 'metform');
+										}
+									?>
 										<div class="mf-pro-missing-wrapper" id="mf-map-tab">
 											<div class="mf-pro-missing">
 												<div class="map-tab list-item">
@@ -548,20 +684,20 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 													</div>
 													<div class="mf-pro-alert">
 														<div class="pro-content">
-															<h5 class="alert-heading"><?php esc_html_e('Map is a premium feature—get Pro to use it!', 'metform') ?></h5>
-															<p class="alert-description"><?php esc_html_e('Get full access to premium features by upgrading today.', 'metform') ?></p>
+															<h5 class="alert-heading"><?php echo esc_html($map_alert_heading); ?></h5>
+															<p class="alert-description"><?php echo esc_html($map_alert_description); ?></p>
 														</div>
 														<div class="pro-btn">
 															<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																	<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																	<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																</svg> Upgrade to Pro </a>
+																</svg> Upgrade </a>
 														</div>
 													</div>
 													<div class="attr-row">
 														<div class="attr-col-lg-12">
 															<?php
-															mf_dummy_simple_input('API:', 'Insert map API key', 'Create google map API key from google developer console');
+															mf_dummy_simple_input('API:', 'Insert map API key', 'Create Google map API key from google developer console');
 															?>
 														</div>
 													</div>
@@ -569,7 +705,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 											</div>
 										</div>
 									<?php endif; ?>
-									<?php if (class_exists('\MetForm_Pro\Base\Package')) : ?>
+									<?php if (class_exists(Package::class)) : ?>
 										<div class="other-tab list-item">
 											<div class="tab-header">
 												<h4 class="list-item-header"><?php esc_html_e('Smart Form Settings', 'metform') ?></h4>
@@ -619,14 +755,14 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 
 													<div class="mf-pro-alert">
 														<div class="pro-content">
-															<h5 class="alert-heading"><?php esc_html_e('Smart Form is a premium feature—get Pro to use it!', 'metform') ?></h5>
+															<h5 class="alert-heading"><?php esc_html_e('Smart Form is a premium feature — Get MetForm Pro to use it!', 'metform') ?></h5>
 															<p class="alert-description"><?php esc_html_e('Get full access to premium features by upgrading today.', 'metform') ?></p>
 														</div>
 														<div class="pro-btn">
 															<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																	<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																	<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																</svg> Upgrade to Pro</a>
+																</svg> Upgrade</a>
 														</div>
 													</div>
 
@@ -687,7 +823,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 
 										<div class="attr-form-group-wrap">
 											<div class="attr-tab-content" id="nav-tabContent">
-												<?php if (class_exists('\MetForm_Pro\Core\Integrations\Payment\Paypal')) : ?>
+												<?php if (class_exists(Paypal::class) && (Util::is_old_pro_user() || Util::is_mid_tier() || Util::is_top_tier()) || Util::is_using_settings_option('mf_paypal_email')) : ?>
 													<div class="attr-tab-pane attr-fade attr-active attr-in" id="mf-paypal-tab" role="tabpanel" aria-labelledby="mf-paypal-tab-label">
 														<div class="attr-row" style="margin: 0 -10px;">
 															<div class="attr-col-lg-12">
@@ -718,19 +854,29 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 															</div>
 														</div>
 													</div>
-												<?php else : ?>
+												<?php else :
+
+													if (class_exists(Package::class) && (!Util::is_mid_tier() && !Util::is_top_tier())) {
+														$map_alert_heading = esc_html__('PayPal Payment is Exclusive To Higher Tiers!', 'metform');
+														$map_alert_description = esc_html__('Get access by upgrading to MetForm Professional Plan.', 'metform');
+													}
+													else {
+														$map_alert_heading = esc_html__('You are currently using MetForm free version.', 'metform');
+														$map_alert_description = esc_html__('Get premium access to use PayPal payment in forms.', 'metform');
+													}
+												?>
 													<div class="mf-pro-missing-wrapper attr-tab-pane attr-fade attr-active attr-in" id="mf-paypal-tab" role="tabpanel" aria-labelledby="mf-paypal-tab-label">
 														<div class="mf-pro-missing">
 															<div class="mf-pro-alert">
 																<div class="pro-content">
-																	<h5 class="alert-heading">You are currently using MetForm free version.</h5>
-																	<p class="alert-description">Get full access to premium features by upgrading today.</p>
+																	<h5 class="alert-heading"><?php echo esc_html($map_alert_heading); ?></h5>
+																	<p class="alert-description"><?php echo esc_html($map_alert_description); ?></p>
 																</div>
 																<div class="pro-btn">
 																	<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																			<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																			<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																		</svg> Upgrade to Pro</a>
+																		</svg> Upgrade</a>
 																</div>
 															</div>
 															<div class="attr-row" style="margin: 0 -10px;">
@@ -746,7 +892,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 													</div>
 												<?php endif; ?>
 
-												<?php if (class_exists('\MetForm_Pro\Core\Integrations\Payment\Stripe')) : ?>
+												<?php if (class_exists(Stripe::class) && (Util::is_old_pro_user() || Util::is_mid_tier() || Util::is_top_tier() || Util::is_using_settings_option('mf_stripe_live_publishiable_key') || Util::is_using_settings_option('mf_stripe_test_secret_key') || Util::is_using_feature('mf_stripe'))) : ?>
 													<div class="attr-tab-pane attr-fade" id="attr-stripe-tab" role="tabpanel" aria-labelledby="mf-stripe-tab-label">
 														<div class="attr-row" style="margin: 0 -10px;">
 															<div class="attr-col-lg-12">
@@ -804,18 +950,28 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 															</div>
 														</div>
 													</div>
-												<?php else : ?>
+												<?php else :
+													
+													if (class_exists(Package::class) && (!Util::is_mid_tier() && !Util::is_top_tier() && !Util::is_using_settings_option('mf_stripe_live_publishiable_key') && !Util::is_using_settings_option('mf_stripe_test_secret_key') && !Util::is_using_feature('mf_stripe'))) {
+														$map_alert_heading = esc_html__('Stripe Payment is Exclusive To Higher Tiers!', 'metform');
+														$map_alert_description = esc_html__('Get access by upgrading to MetForm Professional Plan.', 'metform');
+													}
+													else {
+														$map_alert_heading = esc_html__('You are currently using MetForm free version.', 'metform');
+														$map_alert_description = esc_html__('Get premium access to use Stripe payment in forms.', 'metform');
+													}
+												?>
 													<div class="mf-pro-missing-wrapper attr-tab-pane attr-fade" id="attr-stripe-tab" role="tabpanel" aria-labelledby="mf-stripe-tab-label">
 														<div class="mf-pro-alert">
 															<div class="pro-content">
-																<h5 class="alert-heading">You are currently using MetForm free version.</h5>
-																<p class="alert-description">Get full access to premium features by upgrading today.</p>
+																<h5 class="alert-heading"><?php echo esc_html($map_alert_heading); ?></h5>
+																<p class="alert-description"><?php echo esc_html($map_alert_description); ?></p>
 															</div>
 															<div class="pro-btn">
 																<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																		<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																		<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																	</svg> Upgrade to Pro</a>
+																	</svg> Upgrade </a>
 															</div>
 														</div>
 														<div class="mf-pro-missing">
@@ -823,7 +979,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 																<div class="attr-col-lg-12">
 																	<?php
 																	mf_dummy_simple_input('Image url:', 'Stripe image url', 'Enter here your stripe image url. This image will show on stripe payment pop up modal.');
-																	mf_dummy_simple_input('LIve publishable key:', 'Stripe test publishable key', 'Enter here your publishable key.');
+																	mf_dummy_simple_input('Live publishable key:', 'Stripe test publishable key', 'Enter here your publishable key.');
 																	mf_dummy_simple_input('Live secret key:', 'Stripe live secret key', 'Enter here your stripe live secret key.');
 																	mf_dummy_checkbox_input('Enable sandbox mode:', 'Enable this for testing your payment system.');
 																	mf_dummy_simple_input('Test publishable key:', 'Stripe test publishable key', 'Enter here your test publishable key.');
@@ -846,17 +1002,27 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 										<div class="attr-row" style="margin: 0 -10px;">
 											<div class="attr-col-lg-12">
 												<?php
-												if (!class_exists('\MetForm_Pro\Base\Package')) { ?>
+												if (!class_exists(Package::class) || (!Util::is_old_pro_user() && !Util::is_mid_tier() && !Util::is_top_tier() && !Util::is_using_settings_option('mf_stripe_live_publishiable_key') && !Util::is_using_settings_option('mf_stripe_test_secret_key') && !Util::is_using_settings_option('mf_paypal_email') && !Util::is_using_feature('mf_paypal') && !Util::is_using_feature('mf_stripe'))) { 
+													
+													if (class_exists(Package::class) && (!Util::is_old_pro_user() && !Util::is_mid_tier() && !Util::is_top_tier() && !Util::is_using_settings_option('mf_stripe_live_publishiable_key') && !Util::is_using_settings_option('mf_stripe_test_secret_key') && !Util::is_using_settings_option('mf_paypal_email') && !Util::is_using_feature('mf_paypal') && !Util::is_using_feature('mf_stripe'))) {
+														$map_alert_heading = esc_html__('Redirect Page is Exclusive To Higher Tiers!', 'metform');
+														$map_alert_description = esc_html__('Get access by upgrading to MetForm Professional Plan.', 'metform');
+													}
+													else {
+														$map_alert_heading = esc_html__('Redirect Page is a premium feature—get Pro to use it!', 'metform');
+														$map_alert_description = esc_html__('Get full access to premium features by upgrading today.', 'metform');
+													}
+												?>
 													<div class="mf-pro-alert">
 														<div class="pro-content">
-															<h5 class="alert-heading">Redirect Page is a premium feature—get Pro to use it!</h5>
-															<p class="alert-description">Get full access to premium features by upgrading today.</p>
+															<h5 class="alert-heading"><?php echo esc_html($map_alert_heading); ?></h5>
+															<p class="alert-description"><?php echo esc_html($map_alert_description); ?></p>
 														</div>
 														<div class="pro-btn">
 															<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																	<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																	<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																</svg> Upgrade to Pro</a>
+																</svg> Upgrade </a>
 														</div>
 													</div>
 												<?php
@@ -864,7 +1030,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 											</div>
 											<div class="attr-col-lg-6">
 												<!-- Thank you page section -->
-												<?php if (class_exists('\MetForm_Pro\Base\Package')) : ?>
+												<?php if (class_exists(Package::class) && (Util::is_old_pro_user() || Util::is_mid_tier() || Util::is_top_tier() || Util::is_using_settings_option('mf_stripe_live_publishiable_key') || Util::is_using_settings_option('mf_stripe_test_secret_key') || Util::is_using_settings_option('mf_paypal_email') || Util::is_using_feature('mf_paypal') || Util::is_using_feature('mf_stripe'))) : ?>
 													<div class="attr-tab-pane" id="mf-thankyou-tab">
 														<div class="mf-setting-input-group">
 															<h3 class="mf-setting-input-heading"><?php esc_html_e('Select Thank You Page :', 'metform'); ?></h3>
@@ -907,7 +1073,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 											</div>
 											<div class="attr-col-lg-6">
 												<!-- Cancel page section -->
-												<?php if (class_exists('\MetForm_Pro\Base\Package')) : ?>
+												<?php if (class_exists(Package::class) && (Util::is_old_pro_user() || Util::is_mid_tier() || Util::is_top_tier() || Util::is_using_settings_option('mf_stripe_live_publishiable_key') || Util::is_using_settings_option('mf_stripe_test_secret_key') || Util::is_using_settings_option('mf_paypal_email') || Util::is_using_feature('mf_paypal') || Util::is_using_feature('mf_stripe'))) : ?>
 													<div class="attr-tab-pane" id="mf-cancel-tab">
 														<div class="mf-setting-input-group">
 															<h3 class="mf-setting-input-heading"><?php esc_html_e('Select Cancel Page :', 'metform'); ?></h3>
@@ -970,7 +1136,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 						<div class="mf-settings-section" id="mf-newsletter_integration">
 							<div class="mf-settings-single-section">
 								<div class="list-item">
-									<?php if (class_exists('\MetForm\Core\Integrations\Mail_Chimp')) : ?>
+									<?php if (class_exists(Mail_Chimp::class)) : ?>
 										<div class="tab-header">
 											<h4 class="list-item-header"><?php esc_html_e('Newsletter Integration', 'metform') ?></h4>
 										</div>
@@ -983,16 +1149,16 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 							</div>
 						</div>
 						<!-- ./End Mail Integration Tab -->
-						<!-- google sheet Integration Tab -->
+						<!-- google Integration Tab -->
 						<form action="" method="post" class="mf-settings-form-common mf-google-sheet-tab-form" id="mf-google-sheet-form">
 							<div class="mf-settings-section" id="mf-google_sheet_integration">
 								<div class="mf-settings-single-section list-item">
 									<div class="tab-header">
-										<h4 class="list-item-header"><?php esc_html_e('Google Sheet Integration', 'metform'); ?></h4>
+										<h4 class="list-item-header"><?php esc_html_e('Google Sheets & Drive Integration', 'metform'); ?></h4>
 									</div>
 									<div class="attr-form-group-dt">
 										<div class="attr-tab-content" id="nav-tabContent">
-											<?php if (class_exists('\MetForm_Pro\Core\Integrations\Google_Sheet\WF_Google_Sheet')) : ?>
+											<?php if (class_exists(WF_Google_Sheet::class)) : ?>
 												<div class="attr-tab-pane attr-active attr-in" id="mf-google-sheet-tab" role="tabpanel" aria-labelledby="nav-home-tab">
 													<div class="attr-row">
 
@@ -1015,9 +1181,9 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 															</div>
 														</div>
 													</div>
-													<?php $google = new \MetForm_Pro\Core\Integrations\Google_Sheet\Google_Access_Token; ?>
+													<?php $google = new Google_Access_Token; ?>
 													<ol class="xs_social_ol">
-														<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Google developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://help.wpmet.com/docs/google-sheet-integration" target="_blank">Documentation</a></li>
+														<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Google developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://wpmet.com/doc/google-integrations/" target="_blank">Documentation</a></li>
 														<li><span class="pointer">2</span><?php echo esc_html__('Must add the following URL to the "Valid OAuth redirect URIs" field:', 'metform') ?> <strong style="font-weight:500;"><?php echo esc_url(admin_url('admin.php?page=metform-menu-settings')) ?></strong></li>
 														<li><span class="pointer">3</span><?php echo esc_html__('After getting the App ID & App Secret, put those information', 'metform') ?></li>
 														<li><span class="pointer">4</span><?php echo esc_html__('Click on "Save Changes"', 'metform') ?></li>
@@ -1035,14 +1201,14 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 													<div class="mf-pro-missing">
 														<div class="mf-pro-alert">
 															<div class="pro-content">
-																<h5 class="alert-heading"><?php esc_html_e('Google Sheet Integration is a premium feature—get Pro to use it!', 'metform') ?></h5>
-																<p class="alert-description"><?php esc_html_e('Get full access to premium features by upgrading today.', 'metform') ?></p>
+																<h5 class="alert-heading"><?php esc_html_e('Upgrade to sync forms with Google Sheets & Drive!', 'metform') ?></h5>
+																<p class="alert-description"><?php esc_html_e('Get access to premium features by upgrading today.', 'metform') ?></p>
 															</div>
 															<div class="pro-btn">
 																<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																		<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																		<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																	</svg> Upgrade to Pro</a>
+																	</svg> Upgrade </a>
 															</div>
 														</div>
 														<div class="attr-row">

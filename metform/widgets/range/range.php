@@ -151,6 +151,56 @@ Class MetForm_Input_Range extends Widget_Base{
 			]
 		);
 
+		$this->add_control(
+			'mf_input_enable_range_suffix',
+			[
+				'label' => __( 'Enable Suffix', 'metform' ),
+				'type' => Controls_Manager::SWITCHER,
+				'true' => __( 'Yes', 'metform' ),
+				'false' => __( 'No', 'metform' ),
+				'return_value' => 'yes',
+				'default' => 'no',
+				'frontend_available' => true,
+			]
+		);
+		$this->add_control(
+			'mf_input_range_suffix_text',
+			[
+				'label' => esc_html__( 'Suffix Text', 'metform' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => '',
+				'condition' => [
+					'mf_input_enable_range_suffix' => 'yes'
+				],
+				'frontend_available' => true,
+			]
+		);
+
+		$this->add_control(
+			'mf_input_enable_range_prefix',
+			[
+				'label' => __( 'Enable Prefix', 'metform' ),
+				'type' => Controls_Manager::SWITCHER,
+				'true' => __( 'Yes', 'metform' ),
+				'false' => __( 'No', 'metform' ),
+				'return_value' => 'yes',
+				'default' => 'no',
+				'frontend_available' => true,
+			]
+		);
+
+		$this->add_control(
+			'mf_input_range_prefix_text',
+			[
+				'label' => esc_html__( 'Prefix Text', 'metform' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => '',
+				'condition' => [
+					'mf_input_enable_range_prefix' => 'yes'
+				],
+				'frontend_available' => true,
+			]
+		);
 
 		$this->input_get_params_controls();
 
@@ -354,6 +404,13 @@ Class MetForm_Input_Range extends Widget_Base{
 			[
 				'label' => esc_html__( 'Width', 'metform' ),
 				'type' => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 300,
+						'step' => 1,
+					]
+				],
 				'default' => [
                     'unit' => 'px',
                     'size' => 36	,
@@ -509,13 +566,16 @@ Class MetForm_Input_Range extends Widget_Base{
 					value=${
 						parent.state.formData['<?php echo esc_attr($mf_input_name); ?>'] ? {min: parent.state.formData['<?php echo esc_attr($mf_input_name); ?>']['0'], max: parent.state.formData['<?php echo esc_attr($mf_input_name); ?>']['1']} : {min: 
 						<?php if(esc_attr($default_value)) { ?>
-							<?php echo esc_attr($multipile_value[1] ? ($mf_input_min_length_range <= $multipile_value[0] ? $multipile_value[0] : $mf_input_min_length_range) : $multipile_value[0]) ?>
+							<?php echo esc_attr(isset($multipile_value[1]) ? ($mf_input_min_length_range <= $multipile_value[0] ? $multipile_value[0] : $mf_input_min_length_range) : $multipile_value[0]) ?>
 							<?php } else { echo esc_attr(($mf_input_min_length_range != '') ? $mf_input_min_length_range : 0); } ?>, max: 
 								<?php if(esc_attr($default_value)) { ?>
-							<?php echo esc_attr($multipile_value[1] ? ($mf_input_max_length_range <= $multipile_value[1] ? $mf_input_max_length_range : $multipile_value[1]) : 100) ?>
+							<?php echo esc_attr(isset($multipile_value[1]) ? ($mf_input_max_length_range <= $multipile_value[1] ? $mf_input_max_length_range : $multipile_value[1]) : 100) ?>
 						<?php } else { echo esc_attr(($mf_input_max_length_range != '') ? $mf_input_max_length_range : 100); } ?>
 						}
 					}
+					<?php if( (isset($mf_input_enable_range_prefix) && $mf_input_enable_range_prefix === 'yes') || (isset($mf_input_enable_range_suffix) && $mf_input_enable_range_suffix === 'yes') ): ?>
+                    formatLabel=${ val => `<?php echo isset($mf_input_enable_range_prefix) && $mf_input_enable_range_prefix === 'yes' ? esc_js($mf_input_range_prefix_text) . ' ' : ''; ?>${val}<?php echo isset($mf_input_enable_range_suffix) && $mf_input_enable_range_suffix === 'yes' ? ' ' . esc_js($mf_input_range_suffix_text) : ''; ?>`}
+                    <?php endif; ?>
 					ref=${input => {
 						register({ name: "<?php echo esc_attr($mf_input_name); ?>" }, parent.activateValidation(<?php echo json_encode($configData); ?>));
 
@@ -544,6 +604,9 @@ Class MetForm_Input_Range extends Widget_Base{
 								isNaN(Number(parent.state.formData['<?php echo esc_attr($mf_input_name); ?>'])) ? <?php echo esc_attr($mf_input_min_length_range); ?> : (Number(parent.state.formData['<?php echo esc_attr($mf_input_name); ?>']) == 0 ? 0 : Number(parent.state.formData['<?php echo esc_attr($mf_input_name); ?>']))
 							<?php }
 						?>}
+						<?php if( (isset($mf_input_enable_range_prefix) && $mf_input_enable_range_prefix === 'yes') || (isset($mf_input_enable_range_suffix) && $mf_input_enable_range_suffix === 'yes') ): ?>
+                        formatLabel=${ val => `<?php echo isset($mf_input_enable_range_prefix) && $mf_input_enable_range_prefix === 'yes' ? esc_js($mf_input_range_prefix_text) . ' ' : ''; ?>${val}<?php echo isset($mf_input_enable_range_suffix) && $mf_input_enable_range_suffix === 'yes' ? ' ' . esc_js($mf_input_range_suffix_text) : ''; ?>`}
+                        <?php endif; ?>
 						ref=${ input => {
 							register({ name: "<?php echo esc_attr($mf_input_name); ?>" }, parent.activateValidation(<?php echo json_encode($configData); ?>));
 							if ( parent.getValue("<?php echo esc_attr($mf_input_name); ?>") === '' && <?php echo !empty($default_value) ? 'true' : 'false'; ?> ) {

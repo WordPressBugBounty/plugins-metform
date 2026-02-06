@@ -22,11 +22,15 @@ final class Plugin {
        add_action( 'init', array ($this, 'metform_permalink_setup'));
        add_action("metform/pro_awareness/before_grid_contents", ['\MetForm\Utils\Util', 'banner_consent']);
        add_action( 'wp_ajax_metform_admin_action', ['\MetForm\Utils\Util', 'metform_admin_action'] );
+       add_action( 'admin_head', array( $this, 'hide_other_plugin_notices' ), 1 );
+
+       /** Adds a global CSS class to the body tag in the editor.**/
+       add_filter('admin_body_class', fn($classes) => $classes . ' metform-admin' );
     }
 
     public function version()
     {
-        return '4.0.6';
+        return '4.1.2';
     }
 
     public function package_type()
@@ -457,7 +461,7 @@ final class Plugin {
     {
         wp_enqueue_style('metform-ui', $this->public_url() . 'assets/css/metform-ui.css', false, $this->version());
         wp_enqueue_style('metform-icon', $this->public_url() . 'assets/mf-icon/mf-icon.css', false, $this->version());
-        wp_enqueue_style('metform-admin-style', $this->public_url() . 'assets/css/admin-style.css', false, null);
+        wp_enqueue_style('metform-admin-style', $this->public_url() . 'assets/css/admin-style.css', false, $this->version());
 
         wp_enqueue_script('metform-ui', $this->public_url() . 'assets/js/ui.min.js', [], $this->version(), true);
         wp_enqueue_script('metform-admin-script', $this->public_url() . 'assets/js/admin-script.js', [], null, true);
@@ -506,7 +510,7 @@ final class Plugin {
         if (in_array($screen->id, ['edit-metform-form', 'metform_page_mt-form-settings', 'metform-entry', 'metform_page_metform-menu-settings'])) {
             wp_enqueue_style('metform-admin-fonts', $this->public_url() . 'assets/admin-fonts.css', false, $this->version());
             wp_enqueue_style('metform-ui', $this->public_url() . 'assets/css/metform-ui.css', false, $this->version());
-            wp_enqueue_style('metform-admin-style', $this->public_url() . 'assets/css/admin-style.css', false, null);
+            wp_enqueue_style('metform-admin-style', $this->public_url() . 'assets/css/admin-style.css', false, $this->version());
 
             wp_enqueue_script('metform-ui', $this->public_url() . 'assets/js/ui.min.js', [], $this->version(), true);
             wp_enqueue_script('metform-admin-script', $this->public_url() . 'assets/js/admin-script.js', [], null, true);
@@ -644,6 +648,64 @@ final class Plugin {
     public function metform_permalink_setup(){
        
         Utils\Util::permalink_setup();
+    }
+
+    /**
+     * Hide other plugins/themes admin notices on MetForm pages
+     * Only show MetForm's own notices
+     */
+    public function hide_other_plugin_notices() {
+        $screen = get_current_screen();
+        
+        if (!$screen) {
+            return;
+        }
+        
+        // Check if current page is a MetForm page by screen ID
+        $is_metform_page = (strpos($screen->id, 'metform') !== false);
+        
+        // Also check for post_type parameter
+        if (!$is_metform_page && isset($_GET['post_type'])) {
+            $post_type = sanitize_text_field($_GET['post_type']);
+            $is_metform_page = (strpos($post_type, 'metform') !== false);
+        }
+        
+        // Check if current page is a MetForm page
+        if ($is_metform_page) {
+            global $wp_filter;
+            
+            // Store MetForm notices before removing all
+            $metform_notices = [];
+            
+            if (isset($wp_filter['admin_notices'])) {
+                foreach ($wp_filter['admin_notices']->callbacks as $priority => $callbacks) {
+                    foreach ($callbacks as $key => $callback) {
+                        // Keep only MetForm and Oxaim (MetForm's namespace) notices
+                        if (is_array($callback['function'])) {
+                            $class = is_object($callback['function'][0]) ? get_class($callback['function'][0]) : $callback['function'][0];
+                            if (strpos($class, 'MetForm') !== false || strpos($class, 'Oxaim') !== false) {
+                                $metform_notices[$priority][$key] = $callback;
+                            }
+                        } elseif (is_string($callback['function']) && (strpos($callback['function'], 'metform') !== false || strpos($callback['function'], 'oxaim') !== false)) {
+                            $metform_notices[$priority][$key] = $callback;
+                        }
+                    }
+                }
+            }
+            
+            // Remove all admin notices
+            remove_all_actions('admin_notices');
+            remove_all_actions('all_admin_notices');
+            
+            // Re-add only MetForm notices
+            if (!empty($metform_notices)) {
+                foreach ($metform_notices as $priority => $callbacks) {
+                    foreach ($callbacks as $callback) {
+                        add_action('admin_notices', $callback['function'], $priority, $callback['accepted_args']);
+                    }
+                }
+            }
+        }
     }
 
 

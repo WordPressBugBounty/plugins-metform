@@ -57,9 +57,19 @@ Class Hooks{
         $mf_ex_nonce = wp_create_nonce('wp_rest');
         $url = $rest_url."metform/v1/entries/export/".$post_id;
         $export_url = \MetForm\Utils\Util::add_param_url($url, "_wpnonce", $mf_ex_nonce);
-        
-        echo "<a data-metform-form-id=".esc_attr($post_id)." class='attr-btn attr-btn-primary mf-entry-filter' href=".esc_url($current_url).">".esc_html($count)."</a>";
-        echo "<a class='attr-btn attr-btn-info mf-entry-export-csv' href=".esc_url($export_url).">".esc_html__('Export CSV', 'metform')."</a>";
+
+        ?> 
+        <a data-metform-form-id="<?php echo esc_attr($post_id); ?>" class='<?php echo class_exists('\MetForm_Pro\Plugin') || $this->is_old_user() ? esc_attr("") : esc_attr("mf-entry-count-btn"); ?>  attr-btn attr-btn-primary mf-entry-filter' href="<?php echo esc_url($current_url); ?>"><?php echo esc_html($count); ?></a>
+        <?php if(class_exists('\MetForm_Pro\Plugin') || $this->is_old_user()) : ?>
+          <a class='attr-btn attr-btn-primary mf-entry-export-csv' href="<?php echo esc_url($export_url); ?>"><?php echo esc_html__('Export CSV', 'metform'); ?></a>
+        <?php else : ?>
+          <div class="mf-pro-badge-wrapper mf-entry-pro mf-svg-container mf-tooltip-wrapper" data-tooltip="<?php echo esc_attr__('Upgrade for premium access.', 'metform'); ?>">
+              <div class="mf-svg-inner mf-export-pdf-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none"><path d="M10.225 6.025h-8.4a1.2 1.2 0 0 0-1.2 1.2v4.2a1.2 1.2 0 0 0 1.2 1.2h8.4a1.2 1.2 0 0 0 1.2-1.2v-4.2a1.2 1.2 0 0 0-1.2-1.2m-7.2 0v-2.4a3 3 0 1 1 6 0v2.4" stroke="#2271B1" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <div class="mf-svg-text"><?php echo esc_html__('Export CSV', 'metform'); ?></div>
+              </div>
+          </div>
+        <?php endif;
         break;
       case 'views_conversion':
         $views = \MetForm\Core\Forms\Action::instance()->get_count_views($post_id);
@@ -79,4 +89,18 @@ Class Hooks{
     }
   }
   
+  /**
+   * Check if the user is old user
+   */
+  public function is_old_user(){
+
+    $install_date = get_option('metform_install_date', false);
+
+    //if install date before 23 november 2025 then it is old user
+    if($install_date && strtotime($install_date) < strtotime('2025-11-23')){
+      return true;
+    }
+
+    return false;
+  }
 }

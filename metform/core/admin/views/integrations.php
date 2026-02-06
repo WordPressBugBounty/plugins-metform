@@ -6,6 +6,23 @@ include __DIR__ . "/icons.php";
 
 $pro_exists = class_exists('\MetForm_Pro\Base\Package');
 
+// Helper function to check if an integration is already in use
+$is_integration_in_use = function($integration_key) {
+	$integration_keys = array(
+		'mailchimp' => 'mf_mailchimp_api_key',
+		'aweber' => 'met_form_aweber_mail_access_token_key',
+		'activecampaign' => 'mf_active_campaign_api_key',
+		'getresponse' => 'mf_get_response_api_key',
+		'convertkit' => 'mf_ckit_api_key',
+	);
+	
+	if (isset($integration_keys[$integration_key])) {
+		return \MetForm\Utils\Util::is_using_settings_option($integration_keys[$integration_key]);
+	}
+	
+	return false;
+};
+
 $aweber_btn_text = $code ? 'Re Connect Aweber' : 'Connect Aweber';
 $aweber_connect_url = "https://api.wpmet.com/public/aweber-auth/auth.php?redirect_url=". get_admin_url() . "admin.php?page=metform-menu-settings&state=" . wp_create_nonce() . "&section_id=mf-newsletter_integration";
 
@@ -16,7 +33,7 @@ $news_letter_integrations = array(
 		'doc_url' => 'https://wpmet.com/doc/integration/',
 		'icon' => $icons['mailchimp'],
 		'button_text' => 'Save',
-		'status' => 'free',
+		'status' => 'pro',
 		'form_fields' => array(
 			array(
 				'name' => 'mf_mailchimp_api_key',
@@ -105,7 +122,7 @@ $news_letter_integrations = array(
 
 ?>
 
-<?php $news_letter_integration_function = function ($settings) use ($news_letter_integrations, $pro_exists) {
+<?php $news_letter_integration_function = function ($settings) use ($news_letter_integrations, $pro_exists, $is_integration_in_use) {
 
 	foreach ($news_letter_integrations as $integration_key => $integration) : ?>
 		<div class="mf-dashboard__settings-api">
@@ -115,7 +132,11 @@ $news_letter_integrations = array(
 						<span>
 							<?php \MetForm\Utils\Util::metform_content_renderer($integration['icon']); ?>
 						</span>
-						<div class="mf-dashboard__settings-api__header-action-button <?php echo esc_attr( (! $pro_exists && $integration['status'] == 'pro' ) ? 'disable' : '' ); ?>">
+						<div class="mf-dashboard__settings-api__header-action-button <?php 
+							$is_old_pro_user = $pro_exists && \MetForm\Utils\Util::is_old_pro_user();
+							$should_disable = !$is_old_pro_user && ((! $pro_exists && $integration['status'] == 'pro' && !($integration_key == 'mailchimp' && $is_integration_in_use($integration_key))) || ($integration_key == 'activecampaign'  && !\MetForm\Utils\Util::is_top_tier() && !($pro_exists && $is_integration_in_use($integration_key))) || (($integration_key == 'aweber' || $integration_key == 'getresponse' || $integration_key == 'convertkit') && (!\MetForm\Utils\Util::is_top_tier() && !\MetForm\Utils\Util::is_mid_tier()) && !($pro_exists && $is_integration_in_use($integration_key))));
+							echo esc_attr( $should_disable ? 'disable' : '' ); 
+						?>">
 							<button class="manage-btn mf-modal-<?php echo esc_attr($integration_key); ?>-integration">
 								<span> <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
 										<path d="M7.63674 8.90702C8.68995 8.90702 9.54374 8.05323 9.54374 7.00002C9.54374 5.94681 8.68995 5.09302 7.63674 5.09302C6.58353 5.09302 5.72974 5.94681 5.72974 7.00002C5.72974 8.05323 6.58353 8.90702 7.63674 8.90702Z" stroke="#181A26" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -126,16 +147,6 @@ $news_letter_integrations = array(
 					</div>
 					<div class="mf-dashboard__settings-api__header-wrap">
 						<h2 class="integration-label"><?php echo esc_html($integration['label']); ?></h2>
-						<?php if ($integration['status'] == 'pro') : ?>
-							<div class="badge pro">
-								<svg xmlns="http://www.w3.org/2000/svg" width="32" height="16" viewBox="0 0 32 16" fill="none">
-									<path d="M0 4C0 1.79086 1.79086 0 4 0H28C30.2091 0 32 1.79086 32 4V12C32 14.2091 30.2091 16 28 16H4C1.79086 16 0 14.2091 0 12V4Z" fill="#F8174B"></path>
-									<path fill-rule="evenodd" clip-rule="evenodd" d="M23.3841 12C22.8845 12 22.407 11.9265 21.9516 11.7796C21.4961 11.6327 21.0957 11.4013 20.7505 11.0854C20.4052 10.7695 20.1334 10.3618 19.935 9.86226C19.7367 9.35537 19.6375 8.75298 19.6375 8.0551V7.83471C19.6375 7.15886 19.7367 6.57851 19.935 6.09366C20.1334 5.60882 20.4052 5.21212 20.7505 4.90358C21.0957 4.59504 21.4961 4.36731 21.9516 4.22039C22.407 4.07346 22.8845 4 23.3841 4C23.8983 4 24.3795 4.07346 24.8276 4.22039C25.2757 4.36731 25.6724 4.59504 26.0177 4.90358C26.363 5.21212 26.6348 5.60882 26.8331 6.09366C27.0315 6.57851 27.1306 7.15886 27.1306 7.83471V8.0551C27.1306 8.75298 27.0315 9.35537 26.8331 9.86226C26.6348 10.3618 26.363 10.7695 26.0177 11.0854C25.6724 11.4013 25.2757 11.6327 24.8276 11.7796C24.3795 11.9265 23.8983 12 23.3841 12ZM23.3731 10.3471C23.6742 10.3471 23.9534 10.281 24.2105 10.1488C24.4676 10.0092 24.6733 9.77778 24.8276 9.45455C24.9892 9.12397 25.07 8.65748 25.07 8.0551V7.83471C25.07 7.26171 24.9892 6.81726 24.8276 6.50138C24.6733 6.18549 24.4676 5.96511 24.2105 5.84022C23.9534 5.71534 23.6742 5.65289 23.3731 5.65289C23.0866 5.65289 22.8147 5.71534 22.5576 5.84022C22.3005 5.96511 22.0911 6.18549 21.9295 6.50138C21.7679 6.81726 21.6871 7.26171 21.6871 7.83471V8.0551C21.6871 8.65748 21.7679 9.12397 21.9295 9.45455C22.0911 9.77778 22.3005 10.0092 22.5576 10.1488C22.8147 10.281 23.0866 10.3471 23.3731 10.3471Z" fill="white"></path>
-									<path fill-rule="evenodd" clip-rule="evenodd" d="M12.2512 11.8568V4.14326H15.6121C16.2585 4.14326 16.7948 4.24978 17.2209 4.46282C17.6543 4.67586 17.9812 4.97338 18.2016 5.35538C18.422 5.73738 18.5322 6.19284 18.5322 6.72177C18.5322 7.27273 18.4 7.74656 18.1355 8.14326C17.8784 8.5326 17.489 8.81911 16.9675 9.00276L18.7526 11.8568H16.5487L15.0501 9.21213H14.2347V11.8568H12.2512ZM14.2347 7.66943H15.1713C15.7002 7.66943 16.0602 7.59229 16.2512 7.43802C16.4495 7.27641 16.5487 7.03765 16.5487 6.72177C16.5487 6.40588 16.4495 6.1708 16.2512 6.01653C16.0602 5.85492 15.7002 5.77411 15.1713 5.77411H14.2347V7.66943Z" fill="white"></path>
-									<path fill-rule="evenodd" clip-rule="evenodd" d="M4.86914 4.14326V11.8568H6.85261V9.41047H8.00964C8.72956 9.41047 9.32093 9.30763 9.78374 9.10193C10.2466 8.88889 10.5881 8.58403 10.8085 8.18733C11.0363 7.79064 11.1501 7.32048 11.1501 6.77687C11.1501 6.2259 11.0363 5.75574 10.8085 5.3664C10.5881 4.9697 10.2466 4.66851 9.78374 4.46282C9.32093 4.24978 8.72956 4.14326 8.00964 4.14326H4.86914ZM7.78925 7.77962H6.85261V5.77411H7.78925C8.29614 5.77411 8.65243 5.85859 8.85812 6.02755C9.06381 6.19652 9.16666 6.44629 9.16666 6.77687C9.16666 7.10744 9.06381 7.35721 8.85812 7.52618C8.65243 7.69514 8.29614 7.77962 7.78925 7.77962Z" fill="white"></path>
-								</svg>
-							</div>
-						<?php endif; ?>
 					</div>
 				</div>
 				<p class="mf-dashboard__settings-api__header-description"><?php echo esc_html($integration['description']); ?></p>
@@ -143,14 +154,29 @@ $news_letter_integrations = array(
 			<div class="mf-dashboard__settings-api__footer">
 				<div class="mf-dashboard__settings-api__footer-switch">
 					<?php
-					if ( ! $pro_exists && $integration['status'] == 'pro' ) { ?>
-						<a class="mf-dashboard__settings-api__footer-pro-btn" href="https://wpmet.com/plugin/metform/pricing/" target="_blank" rel="noopener noreferrer">
-							<svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
-								<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="#3970FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-								<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="#3970FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-							</svg>
-							Upgrade to Pro
-						</a>
+					$is_old_pro_user = $pro_exists && \MetForm\Utils\Util::is_old_pro_user();
+					$should_show_upgrade = !$is_old_pro_user && (( !$pro_exists && $integration['status'] == 'pro' && !($integration_key == 'mailchimp' && $is_integration_in_use($integration_key))) || ($integration_key == 'activecampaign'  && !\MetForm\Utils\Util::is_top_tier() && !($pro_exists && $is_integration_in_use($integration_key))) || (($integration_key == 'aweber' || $integration_key == 'getresponse' || $integration_key == 'convertkit') && (!\MetForm\Utils\Util::is_top_tier() && !\MetForm\Utils\Util::is_mid_tier()) && !($pro_exists && $is_integration_in_use($integration_key))));
+					
+					if ( $should_show_upgrade ) {
+						 
+							$tooltip_text = 'Upgrade for premium access.';
+
+							if($pro_exists){
+								if( !\MetForm\Utils\Util::is_top_tier() && $integration_key == 'activecampaign'){
+									$tooltip_text = 'Get access by upgrading to MetForm Agency plan.';
+								}
+
+								if( !\MetForm\Utils\Util::is_top_tier() && !\MetForm\Utils\Util::is_mid_tier() && ($integration_key == 'aweber' || $integration_key == 'getresponse' || $integration_key == 'convertkit')){
+									$tooltip_text = 'Get access by upgrading to MetForm Professional plan.';
+								}
+							}
+						 ?>
+						<div class="mf-entry-pro mf-svg-container mf-pro-badge-wrapper mf-tooltip-wrapper" data-tooltip="<?php echo esc_attr($tooltip_text); ?>">
+							<div class="mf-svg-inner mf-upgrade-btn">
+								<svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none"><path d="M10.225 6.025h-8.4a1.2 1.2 0 0 0-1.2 1.2v4.2a1.2 1.2 0 0 0 1.2 1.2h8.4a1.2 1.2 0 0 0 1.2-1.2v-4.2a1.2 1.2 0 0 0-1.2-1.2m-7.2 0v-2.4a3 3 0 1 1 6 0v2.4" stroke="#E81454" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
+								<div style="font-size: 14px;" class="mf-svg-text"><?php echo esc_html__('Upgrade', 'metform'); ?></div>
+							</div>
+                    	</div>
 					<?php
 					} else { ?>
 						<a class="mf-dashboard__settings-api__footer-pro-btn" href="<?php echo esc_url($integration['doc_url']); ?>" target="_blank" rel="noopener noreferrer">

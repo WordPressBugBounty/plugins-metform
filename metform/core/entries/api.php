@@ -198,7 +198,45 @@ class Api extends \MetForm\Base\Api
         $response = $google->get_sheets_details_from_spreadsheet($sheetID);
         return $response ;
     }
-		
+	public function get_dropbox_folder_list()
+    {
+        if(!current_user_can('manage_options')) {
+			return;
+		}
 
+        if (!class_exists('\MetForm_Pro\Core\Integrations\Dropbox\MF_Dropbox')) {
+
+            return 'Pro needed';
+        }
+
+        $dropbox = new \MetForm_Pro\Core\Integrations\Dropbox\MF_Dropbox;
+        $response = $dropbox->get_all_dropbox_folders();
+        return $response;
+    }
+    
+    public function get_google_drive_folder_list()
+    {
+        $nonce = $this->request->get_header('X-WP-Nonce');
+
+        if(!current_user_can('manage_options')) { 
+            return;
+        } 
+
+        if(!wp_verify_nonce($nonce, 'wp_rest')) {
+            return [
+				'status'    => 'fail',
+				'message'   => [  __( 'Nonce mismatch.', 'metform' ) ],
+			];
+        }
+        
+        if (!class_exists('\MetForm_Pro\Core\Integrations\Google_Drive\MF_Google_Drive')) {                       
+            return 'Pro needed';
+        }
+        $google      = new \MetForm_Pro\Core\Integrations\Google_Drive\MF_Google_Drive;
+        $response = $google->get_all_google_drive_folders();  
+        
+              
+        return json_encode(['folders' => $response]);
+    }
 
 }

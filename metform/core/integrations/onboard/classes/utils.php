@@ -24,6 +24,9 @@ class Utils{
 
     public function save_option($key, $value = ''){
         $data_all = get_option(self::$key);
+        if (!is_array($data_all)) {
+            $data_all = [];
+        }
         $data_all[$key] = $value;
         update_option(self::$key, $data_all);
     }
@@ -33,8 +36,14 @@ class Utils{
         return (isset($data_all[$key]) && $data_all[$key] != '') ? $data_all[$key] : $default;
     }
 
-    public function save_settings($new_data = ''){
+    public function save_settings($new_data = []){
         $data_old = $this->get_option('settings', []);
+        if (!is_array($data_old)) {
+            $data_old = [];
+        }
+        if (!is_array($new_data)) {
+            $new_data = [];
+        }
         $data = array_merge($data_old, $new_data);
         $this->save_option('settings', $data);
     }

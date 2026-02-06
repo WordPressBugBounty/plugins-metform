@@ -211,7 +211,10 @@ class File_Data_Validation
             ],
             '.stp'  => [
                 'mime' => 'text/plain; charset=us-ascii'
-            ]
+            ],
+            '.webp'  => [
+                'mime' => 'image/webp'
+            ],
         ];
         return $mimes;
     }

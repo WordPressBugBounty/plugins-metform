@@ -91,27 +91,13 @@ class Integration
 				<div class="mf-pro-alert">
 					<div class="pro-content">
 						<h5 class="alert-heading">You are currently using MetForm free version.</h5>
-						<p class="alert-description">Get full access to premium features by upgrading today.</p>
+						<p class="alert-description">Get premium access to integrate Zoho with your forms.</p>
 					</div>
 					<div class="pro-btn">
 						<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 								<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 								<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-							</svg> Upgrade to Pro</a>
-					</div>
-				</div>
-				<div class="attr-row">
-					<div class="mf-setting-input-group">
-						<p class="description">
-							<a href="#" class="button-primary mf-setting-btn btn-tst"> 
-								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-									<path d="M7.08663 6.21467L7.21077 6.09053C8.39799 4.90326 10.3229 4.90326 11.5101 6.09053C12.6974 7.27775 12.6974 9.20267 11.5101 10.3899L9.79041 12.1096C8.60319 13.2969 6.67827 13.2969 5.49102 12.1096C4.30378 10.9224 4.30378 8.99747 5.49102 7.81025L5.76963 7.53167" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-									<path d="M11.8312 6.46841L12.1097 6.18983C13.297 5.00257 13.297 3.07768 12.1097 1.89043C10.9225 0.70319 8.99759 0.70319 7.81037 1.89043L6.09065 3.61019C4.90338 4.79743 4.90338 6.72233 6.09065 7.90955C7.27787 9.09683 9.20279 9.09683 10.39 7.90955L10.5141 7.78541" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-									<path d="M1.00049 4.60008L2.80049 5.20008M1.60049 7.90008L2.80049 7.00008M2.50049 2.20007L3.40049 3.40007" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-								</svg>  
-								<?php esc_html_e('Connect Zoho ', 'metform'); ?> 
-							</a>
-						</p>
+							</svg> Upgrade </a>
 					</div>
 				</div>
 			</div>
@@ -139,7 +125,7 @@ class Integration
 						<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 								<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 								<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-							</svg> Upgrade to Pro</a>
+							</svg> Upgrade </a>
 					</div>
 				</div>
 				<div class="attr-row">
