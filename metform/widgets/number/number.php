@@ -54,6 +54,34 @@ Class MetForm_Input_Number extends Widget_Base{
 
         $this->end_controls_section();
 
+		$this->start_injection( [ 'of' => 'mf_input_placeholder' ] );
+
+		$this->add_control(
+			'mf_input_default_value_status',
+			[
+				'label' => esc_html__( 'Set Default Value', 'metform' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Yes', 'metform' ),
+				'label_off' => esc_html__( 'No', 'metform' ),
+				'return_value' => 'yes',
+				'default' => '',
+			]
+		);
+
+		$this->add_control(
+			'mf_input_default_value',
+			[
+				'label' => esc_html__( 'Default Value', 'metform' ),
+				'type' => Controls_Manager::NUMBER,
+				'title' => esc_html__( 'Enter default value', 'metform' ),
+				'condition' => [
+					'mf_input_default_value_status' => 'yes',
+				],
+			]
+		);
+
+		$this->end_injection();
+
         $this->start_controls_section(
 			'settings_section',
 			[
@@ -144,6 +172,7 @@ Class MetForm_Input_Number extends Widget_Base{
     protected function render(){
         $settings = $this->get_settings_for_display();
 		extract($settings);
+		$has_default_number = isset($mf_input_default_value_status) && 'yes' === $mf_input_default_value_status && isset($mf_input_default_value) && $mf_input_default_value !== '';
 
 		$render_on_editor = false;
 		$is_edit_mode = 'metform-form' === get_post_type() && \Elementor\Plugin::$instance->editor->is_edit_mode();
@@ -174,8 +203,14 @@ Class MetForm_Input_Number extends Widget_Base{
 				step="any"
 				class="mf-input <?php echo esc_attr($class); ?>"
 				id="mf-input-mobile-<?php echo esc_attr($this->get_id()); ?>"
+				<?php if ( $has_default_number ): ?>
+				data-mf-default-number-sync="true"
+				<?php endif; ?>
 				name="<?php echo esc_attr($mf_input_name); ?>"
 				placeholder="<?php echo esc_attr(\MetForm\Utils\Util::react_entity_support( esc_html($mf_input_placeholder), $render_on_editor )); ?>"
+				<?php if ( $has_default_number ): ?>
+				defaultValue="<?php echo esc_attr($mf_input_default_value); ?>"
+				<?php endif; ?>
 				<?php if ( !$is_edit_mode ): ?>
 					onInput=${parent.handleChange}
 					aria-invalid=${validation.errors['<?php echo esc_attr($mf_input_name); ?>'] ? 'true' : 'false'}

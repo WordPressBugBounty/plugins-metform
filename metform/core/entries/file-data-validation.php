@@ -224,7 +224,12 @@ class File_Data_Validation
             '.igs'  => [
                 'mime' => 'text/plain'
             ],
-          
+            '.heic'  => [
+                'mime' => 'image/heic'
+            ],
+            '.heif'  => [
+                'mime' => 'image/heif'
+            ]
         ];
         return $mimes;
     }

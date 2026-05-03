@@ -4,7 +4,7 @@ Contributors: Roxnor, Ataurr, aion11
 Tags: form builder, Elementor form, contact form builder, Multi step form, custom form
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 4.1.3
+Stable tag: 4.1.4
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -251,6 +251,15 @@ If you like using the MetForm form builder, then consider checking out our other
 **Check out** [Tutorials, Tips & Tricks](https://wpmet.com/blog)! 👌
 
 == Changelog ==
+Version: 4.1.4 // 2026-05-03
+Added: Default number control for Number widget.
+Added: Support for .heic file types in the File Upload widget.
+Improved: Form picker modal for MetForm main widget.
+Fixed: Compatibility issue with Astra-portfolio plugin.
+Fixed: Load text-domain warning issue.
+Fixed: Simple-repeater widget issue where empty values were showing in entries.
+Fixed: Conditional logic issue where hidden referenced fields caused incorrect condition results. 
+
 Version: 4.1.3 // 2026-03-03
 Added: Option to delete associated files when deleting form entries.
 Added: Newsletter Signup Form is now available in the Free version.
@@ -375,7 +384,7 @@ Fixed: .stl file type uploading not working.
 Fixed: Calculation widget is not working if toggle select widget has same value.
 Fixed: Translation issue.
 
-[View changelog for all versions.](https://wpmet.com/plugin/metform/changelog/)
+[View changelog for all versions.](https://wpmet.com/plugin/metform/roadmaps#changelog)
 
 
 

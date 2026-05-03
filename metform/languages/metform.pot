@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: MetForm 4.1.3\n"
+"Project-Id-Version: MetForm 4.1.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/metform\n"
-"POT-Creation-Date: 2026-03-03 10:34:57+00:00\n"
+"POT-Creation-Date: 2026-05-03 11:19:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,19 +21,19 @@ msgstr ""
 msgid "128"
 msgstr ""
 
-#: base/shortcode.php:98
+#: base/shortcode.php:99
 msgid " Thank you for your payment."
 msgstr ""
 
-#: base/shortcode.php:98
+#: base/shortcode.php:99
 msgid " Your transcation ID : "
 msgstr ""
 
-#: base/shortcode.php:100
+#: base/shortcode.php:101
 msgid "Thank you . Your payment status : "
 msgstr ""
 
-#: base/shortcode.php:134 base/shortcode.php:138
+#: base/shortcode.php:135 base/shortcode.php:139
 msgid "No entry found."
 msgstr ""
 
@@ -102,15 +102,15 @@ msgstr ""
 msgid "Save & close"
 msgstr ""
 
-#: controls/form-picker-utils.php:33
+#: controls/form-picker-utils.php:36
 msgid "Edit Form Content"
 msgstr ""
 
-#: controls/form-picker-utils.php:33
+#: controls/form-picker-utils.php:36
 msgid "Edit"
 msgstr ""
 
-#: controls/form-picker-utils.php:40
+#: controls/form-picker-utils.php:43
 msgid "No content is added yet."
 msgstr ""
 
@@ -121,7 +121,7 @@ msgstr ""
 #: widgets/listing-fname/listing-fname.php:60
 #: widgets/listing-lname/listing-lname.php:60
 #: widgets/listing-optin/listing-optin.php:86
-#: widgets/multi-select/multi-select.php:150 widgets/number/number.php:60
+#: widgets/multi-select/multi-select.php:150 widgets/number/number.php:88
 #: widgets/password/password.php:60 widgets/radio/radio.php:196
 #: widgets/range/range.php:60 widgets/rating/rating.php:60
 #: widgets/select/select.php:213 widgets/switch/switch.php:78
@@ -961,7 +961,7 @@ msgstr ""
 msgid "Admin mail not found to send email."
 msgstr ""
 
-#: core/entries/action.php:1220
+#: core/entries/action.php:1222
 msgid "There was an error uploading your file."
 msgstr ""
 
@@ -1108,15 +1108,15 @@ msgstr ""
 msgid "%1$s only allow %2$s file types."
 msgstr ""
 
-#: core/entries/form-data.php:274 core/entries/form-data.php:515
+#: core/entries/form-data.php:268 core/entries/form-data.php:503
 msgid "Number:"
 msgstr ""
 
-#: core/entries/form-data.php:278 core/entries/form-data.php:519
+#: core/entries/form-data.php:272 core/entries/form-data.php:507
 msgid "Type:"
 msgstr ""
 
-#: core/entries/form-data.php:535 core/entries/meta-data.php:283
+#: core/entries/form-data.php:523 core/entries/meta-data.php:283
 msgid "Download"
 msgstr ""
 
@@ -1145,10 +1145,10 @@ msgstr ""
 #: widgets/date/date.php:251 widgets/date/date.php:412
 #: widgets/date/date.php:424 widgets/email/email.php:68
 #: widgets/email/email.php:96 widgets/multi-select/multi-select.php:108
-#: widgets/radio/radio.php:154 widgets/range/range.php:111
-#: widgets/range/range.php:159 widgets/range/range.php:184
-#: widgets/select/select.php:109 widgets/switch/switch.php:60
-#: widgets/time/time.php:85
+#: widgets/number/number.php:64 widgets/radio/radio.php:154
+#: widgets/range/range.php:111 widgets/range/range.php:159
+#: widgets/range/range.php:184 widgets/select/select.php:109
+#: widgets/switch/switch.php:60 widgets/time/time.php:85
 msgid "Yes"
 msgstr ""
 
@@ -1161,10 +1161,10 @@ msgstr ""
 #: widgets/date/date.php:252 widgets/date/date.php:413
 #: widgets/date/date.php:425 widgets/email/email.php:69
 #: widgets/email/email.php:97 widgets/multi-select/multi-select.php:109
-#: widgets/radio/radio.php:155 widgets/range/range.php:112
-#: widgets/range/range.php:160 widgets/range/range.php:185
-#: widgets/select/select.php:110 widgets/switch/switch.php:69
-#: widgets/time/time.php:86
+#: widgets/number/number.php:65 widgets/radio/radio.php:155
+#: widgets/range/range.php:112 widgets/range/range.php:160
+#: widgets/range/range.php:185 widgets/select/select.php:110
+#: widgets/switch/switch.php:69 widgets/time/time.php:86
 msgid "No"
 msgstr ""
 
@@ -1280,7 +1280,7 @@ msgstr ""
 msgid "Thank you! Form submitted successfully."
 msgstr ""
 
-#: core/forms/cpt.php:531 core/forms/cpt.php:532 widgets/form.php:55
+#: core/forms/cpt.php:531 core/forms/cpt.php:532 widgets/form.php:56
 msgid "Form"
 msgstr ""
 
@@ -2467,7 +2467,7 @@ msgstr ""
 msgid "Drag-and-drop email builder for WooCommerce & WordPress."
 msgstr ""
 
-#: core/integrations/onboard/views/onboard-steps/step-03.php:110
+#: core/integrations/onboard/views/onboard-steps/step-03.php:110 plugin.php:379
 msgid "Design popups that convert, right in your WordPress dashboard."
 msgstr ""
 
@@ -2746,8 +2746,8 @@ msgstr ""
 #: core/integrations/onboard/views/settings-sections/usersettings.php:304
 #: traits/common-controls.php:355 traits/common-controls.php:547
 #: traits/common-controls.php:903 traits/common-controls.php:944
-#: widgets/email/email.php:179 widgets/file-upload/file-upload.php:343
-#: widgets/file-upload/file-upload.php:374
+#: widgets/email/email.php:179 widgets/file-upload/file-upload.php:344
+#: widgets/file-upload/file-upload.php:375
 #: widgets/gdpr-consent/gdpr-consent.php:189 widgets/select/select.php:422
 #: widgets/select/select.php:456 widgets/select/select.php:490
 #: widgets/simple-captcha/simple-captcha.php:171
@@ -2849,153 +2849,177 @@ msgstr ""
 msgid "Your data inserted on slack."
 msgstr ""
 
-#: plugin.php:257
+#: plugin.php:305
 msgid "ElementsKit"
 msgstr ""
 
-#: plugin.php:260
+#: plugin.php:308
 msgid ""
 "All-in-one Elementor addon trusted by 1 Million+ users, makes your website "
 "builder process easier with ultimate freedom."
 msgstr ""
 
-#: plugin.php:264
+#: plugin.php:312
 msgid "GetGenie"
 msgstr ""
 
-#: plugin.php:267
+#: plugin.php:315
 msgid ""
 "Your personal AI assistant for content and SEO. Write content that ranks on "
 "Google with NLP keywords and SERP analysis data."
 msgstr ""
 
-#: plugin.php:271
+#: plugin.php:319
 msgid "GutenKit"
 msgstr ""
 
-#: plugin.php:274
+#: plugin.php:322
 msgid ""
 "Gutenberg blocks, patterns, and templates that extend the page-building "
 "experience using the WordPress block editor."
 msgstr ""
 
-#: plugin.php:278
+#: plugin.php:326
 msgid "ShopEngine"
 msgstr ""
 
-#: plugin.php:281
+#: plugin.php:329
 msgid ""
 "Complete WooCommerce solution for Elementor to fully customize any pages "
 "including cart, checkout, shop page, and so on.\n"
 "                "
 msgstr ""
 
-#: plugin.php:286
+#: plugin.php:334
 msgid "EmailKit"
 msgstr ""
 
-#: plugin.php:289
+#: plugin.php:337
 msgid ""
 "Advanced email customizer for WooCommerce and WordPress. Build, customize, "
 "and send emails from WordPress to boost your sales!"
 msgstr ""
 
-#: plugin.php:293
+#: plugin.php:341
 msgid "Wp Social"
 msgstr ""
 
-#: plugin.php:296
+#: plugin.php:344
 msgid ""
 "Add social share, login, and engagement counter — unified solution for all "
 "social media with tons of different styles for your website."
 msgstr ""
 
-#: plugin.php:300
+#: plugin.php:348
 msgid "WP Ultimate Review"
 msgstr ""
 
-#: plugin.php:303
+#: plugin.php:351
 msgid ""
 "Collect and showcase reviews on your website to build brand credibility and "
 "social proof with the easiest solution."
 msgstr ""
 
-#: plugin.php:307
+#: plugin.php:355
 msgid "FundEngine"
 msgstr ""
 
-#: plugin.php:310
+#: plugin.php:358
 msgid ""
 "Create fundraising, crowdfunding, and donation websites with PayPal and "
 "Stripe payment gateway integration."
 msgstr ""
 
-#: plugin.php:314
+#: plugin.php:362
 msgid "Blocks for ShopEngine"
 msgstr ""
 
-#: plugin.php:317
+#: plugin.php:365
 msgid ""
 "All in one WooCommerce solution for Gutenberg! Build your WooCommerce pages "
 "in a block editor with full customization."
 msgstr ""
 
-#: plugin.php:321
+#: plugin.php:369
 msgid "Genie Image"
 msgstr ""
 
-#: plugin.php:324
+#: plugin.php:372
 msgid ""
 "AI-powered text-to-image generator for WordPress with OpenAI’s DALL-E 2 "
 "technology to generate high-quality images in one click."
 msgstr ""
 
-#: plugin.php:409
+#: plugin.php:376
+msgid "PopupKit"
+msgstr ""
+
+#: plugin.php:383
+msgid "TableKit"
+msgstr ""
+
+#: plugin.php:386
+msgid ""
+"Fully Customizable. Multi-Media Integration. Synch Any Data Files. All "
+"Within Block Editor."
+msgstr ""
+
+#: plugin.php:390
+msgid "Met Starter Templates"
+msgstr ""
+
+#: plugin.php:393
+msgid ""
+"Select template, customize and get your website live with Met StarterKit "
+"templates. It all happens in less than 30 seconds!"
+msgstr ""
+
+#: plugin.php:429
 msgid "Minimum length should be "
 msgstr ""
 
-#: plugin.php:410
+#: plugin.php:430
 msgid " character long."
 msgstr ""
 
-#: plugin.php:411
+#: plugin.php:431
 msgid "Maximum length should be "
 msgstr ""
 
-#: plugin.php:412
+#: plugin.php:432
 msgid "Maximum number should be "
 msgstr ""
 
-#: plugin.php:413
+#: plugin.php:433
 msgid "Minimum number should be "
 msgstr ""
 
-#: plugin.php:597
+#: plugin.php:618
 msgid "Activate Elementor"
 msgstr ""
 
-#: plugin.php:604
+#: plugin.php:625
 msgid "Install Elementor"
 msgstr ""
 
-#: plugin.php:608 plugin.php:625
+#: plugin.php:629 plugin.php:646
 #. translators: MetForm plugin version requirement. %s is the required
 #. Elementor version.
 msgid "MetForm requires Elementor version %1$s+, which is currently NOT RUNNING."
 msgstr ""
 
-#: plugin.php:620
+#: plugin.php:641
 msgid "Update Elementor"
 msgstr ""
 
 #: traits/button-controls.php:19 traits/quiz-control.php:31
 #: traits/quiz-control.php:52 widgets/checkbox/checkbox.php:221
 #: widgets/checkbox/checkbox.php:231 widgets/date/date.php:445
-#: widgets/email/email.php:118 widgets/file-upload/file-upload.php:230
+#: widgets/email/email.php:118 widgets/file-upload/file-upload.php:231
 #: widgets/listing-fname/listing-fname.php:80
 #: widgets/listing-lname/listing-lname.php:80
 #: widgets/multi-select/multi-select.php:178
-#: widgets/multi-select/multi-select.php:186 widgets/number/number.php:78
+#: widgets/multi-select/multi-select.php:186 widgets/number/number.php:106
 #: widgets/password/password.php:78 widgets/radio/radio.php:226
 #: widgets/radio/radio.php:236 widgets/range/range.php:216
 #: widgets/rating/rating.php:100 widgets/recaptcha/recaptcha.php:75
@@ -3022,7 +3046,7 @@ msgstr ""
 msgid "Center"
 msgstr ""
 
-#: traits/button-controls.php:53 widgets/file-upload/file-upload.php:323
+#: traits/button-controls.php:53 widgets/file-upload/file-upload.php:324
 #: widgets/simple-message/simple-message.php:90
 msgid "Right"
 msgstr ""
@@ -3087,7 +3111,7 @@ msgstr ""
 #: traits/common-controls.php:386 traits/common-controls.php:578
 #: traits/common-controls.php:609 traits/common-controls.php:959
 #: widgets/checkbox/checkbox.php:267 widgets/email/email.php:204
-#: widgets/file-upload/file-upload.php:410
+#: widgets/file-upload/file-upload.php:411
 #: widgets/gdpr-consent/gdpr-consent.php:220
 #: widgets/gdpr-consent/gdpr-consent.php:312
 #: widgets/listing-optin/listing-optin.php:152 widgets/radio/radio.php:289
@@ -3113,7 +3137,7 @@ msgstr ""
 
 #: traits/button-controls.php:195 traits/button-controls.php:323
 #: traits/button-controls.php:404 traits/common-controls.php:643
-#: widgets/checkbox/checkbox.php:308 widgets/file-upload/file-upload.php:336
+#: widgets/checkbox/checkbox.php:308 widgets/file-upload/file-upload.php:337
 #: widgets/gdpr-consent/gdpr-consent.php:353
 #: widgets/listing-optin/listing-optin.php:193 widgets/radio/radio.php:329
 #: widgets/rating/rating.php:168 widgets/select/select.php:415
@@ -3130,7 +3154,7 @@ msgstr ""
 
 #: traits/button-controls.php:224 traits/button-controls.php:347
 #: traits/button-controls.php:429 traits/common-controls.php:706
-#: widgets/file-upload/file-upload.php:367 widgets/select/select.php:449
+#: widgets/file-upload/file-upload.php:368 widgets/select/select.php:449
 msgid "Hover"
 msgstr ""
 
@@ -3146,7 +3170,7 @@ msgid "None"
 msgstr ""
 
 #: traits/button-controls.php:372 traits/common-controls.php:291
-#: traits/common-controls.php:847 widgets/file-upload/file-upload.php:443
+#: traits/common-controls.php:847 widgets/file-upload/file-upload.php:444
 #: widgets/range/range.php:374 widgets/range/range.php:460
 #: widgets/rating/rating.php:237 widgets/select/select.php:298
 #: widgets/select/select.php:377
@@ -3183,7 +3207,7 @@ msgstr ""
 msgid "for adding label on input turn it on. Don't want to use label? turn it off."
 msgstr ""
 
-#: traits/common-controls.php:37 widgets/file-upload/file-upload.php:319
+#: traits/common-controls.php:37 widgets/file-upload/file-upload.php:320
 msgid "Position"
 msgstr ""
 
@@ -3303,12 +3327,12 @@ msgstr ""
 
 #: traits/common-controls.php:250 widgets/checkbox/checkbox.php:449
 #: widgets/date/date.php:720 widgets/email/email.php:256
-#: widgets/file-upload/file-upload.php:503
+#: widgets/file-upload/file-upload.php:504
 #: widgets/gdpr-consent/gdpr-consent.php:493
 #: widgets/listing-fname/listing-fname.php:171
 #: widgets/listing-lname/listing-lname.php:171
 #: widgets/listing-optin/listing-optin.php:333
-#: widgets/multi-select/multi-select.php:272 widgets/number/number.php:154
+#: widgets/multi-select/multi-select.php:272 widgets/number/number.php:183
 #: widgets/password/password.php:170 widgets/radio/radio.php:471
 #: widgets/range/range.php:508 widgets/rating/rating.php:323
 #: widgets/select/select.php:583 widgets/switch/switch.php:590
@@ -3326,7 +3350,7 @@ msgstr ""
 
 #: traits/common-controls.php:284 traits/common-controls.php:694
 #: traits/common-controls.php:752 traits/common-controls.php:812
-#: widgets/button/button.php:92 widgets/file-upload/file-upload.php:435
+#: widgets/button/button.php:92 widgets/file-upload/file-upload.php:436
 #: widgets/rating/rating.php:191 widgets/rating/rating.php:224
 #: widgets/select/select.php:326 widgets/select/select.php:405
 msgid "Border"
@@ -3341,7 +3365,7 @@ msgstr ""
 
 #: traits/common-controls.php:400 traits/common-controls.php:592
 #: traits/common-controls.php:625 widgets/checkbox/checkbox.php:278
-#: widgets/email/email.php:215 widgets/file-upload/file-upload.php:422
+#: widgets/email/email.php:215 widgets/file-upload/file-upload.php:423
 #: widgets/gdpr-consent/gdpr-consent.php:234
 #: widgets/gdpr-consent/gdpr-consent.php:323
 #: widgets/listing-optin/listing-optin.php:163 widgets/radio/radio.php:300
@@ -3377,8 +3401,8 @@ msgid "Input Color"
 msgstr ""
 
 #: traits/common-controls.php:681 traits/common-controls.php:740
-#: traits/common-controls.php:798 widgets/file-upload/file-upload.php:356
-#: widgets/file-upload/file-upload.php:387 widgets/select/select.php:438
+#: traits/common-controls.php:798 widgets/file-upload/file-upload.php:357
+#: widgets/file-upload/file-upload.php:388 widgets/select/select.php:438
 #: widgets/select/select.php:472 widgets/select/select.php:506
 msgid "Background"
 msgstr ""
@@ -3888,12 +3912,12 @@ msgid "Typography for text"
 msgstr ""
 
 #: widgets/checkbox/checkbox.php:424 widgets/date/date.php:658
-#: widgets/email/email.php:229 widgets/file-upload/file-upload.php:458
+#: widgets/email/email.php:229 widgets/file-upload/file-upload.php:459
 #: widgets/gdpr-consent/gdpr-consent.php:468
 #: widgets/listing-fname/listing-fname.php:131
 #: widgets/listing-lname/listing-lname.php:131
 #: widgets/listing-optin/listing-optin.php:308
-#: widgets/multi-select/multi-select.php:238 widgets/number/number.php:129
+#: widgets/multi-select/multi-select.php:238 widgets/number/number.php:157
 #: widgets/password/password.php:129 widgets/radio/radio.php:446
 #: widgets/range/range.php:484 widgets/rating/rating.php:298
 #: widgets/select/select.php:533 widgets/simple-captcha/simple-captcha.php:358
@@ -4274,10 +4298,10 @@ msgid "Enable time 24hr?"
 msgstr ""
 
 #: widgets/date/date.php:472 widgets/email/email.php:147
-#: widgets/file-upload/file-upload.php:257
+#: widgets/file-upload/file-upload.php:258
 #: widgets/listing-fname/listing-fname.php:107
 #: widgets/listing-lname/listing-lname.php:107
-#: widgets/multi-select/multi-select.php:214 widgets/number/number.php:105
+#: widgets/multi-select/multi-select.php:214 widgets/number/number.php:133
 #: widgets/password/password.php:105 widgets/rating/rating.php:127
 #: widgets/simple-captcha/simple-captcha.php:325 widgets/switch/switch.php:136
 #: widgets/telephone/telephone.php:106 widgets/text/text.php:124
@@ -4333,7 +4357,7 @@ msgstr ""
 #: widgets/date/date.php:646 widgets/email/email.php:159
 #: widgets/listing-fname/listing-fname.php:119
 #: widgets/listing-lname/listing-lname.php:119
-#: widgets/multi-select/multi-select.php:226 widgets/number/number.php:117
+#: widgets/multi-select/multi-select.php:226 widgets/number/number.php:145
 #: widgets/password/password.php:117 widgets/select/select.php:521
 #: widgets/simple-captcha/simple-captcha.php:373
 #: widgets/telephone/telephone.php:118 widgets/text/text.php:136
@@ -4558,27 +4582,31 @@ msgstr ""
 msgid ".igs"
 msgstr ""
 
-#: widgets/file-upload/file-upload.php:267
+#: widgets/file-upload/file-upload.php:216
+msgid ".heic"
+msgstr ""
+
+#: widgets/file-upload/file-upload.php:268
 msgid "Icon Size"
 msgstr ""
 
-#: widgets/file-upload/file-upload.php:295
+#: widgets/file-upload/file-upload.php:296
 msgid "Icon Spacing"
 msgstr ""
 
-#: widgets/file-upload/file-upload.php:310
+#: widgets/file-upload/file-upload.php:311
 msgid "File Name:"
 msgstr ""
 
-#: widgets/file-upload/file-upload.php:324
+#: widgets/file-upload/file-upload.php:325
 msgid "Bottom"
 msgstr ""
 
-#: widgets/file-upload/file-upload.php:506
+#: widgets/file-upload/file-upload.php:507
 msgid "Invalid file extension"
 msgstr ""
 
-#: widgets/file-upload/file-upload.php:510
+#: widgets/file-upload/file-upload.php:511
 #. translators: File size limit in kilobytes for the MetForm plugin. %s is the
 #. dynamic file size limit.
 msgid "File size cannot exceed %s kb"
@@ -4592,7 +4620,7 @@ msgstr ""
 msgid "Select Form : "
 msgstr ""
 
-#: widgets/form.php:71
+#: widgets/form.php:76
 msgid "Select Form: "
 msgstr ""
 
@@ -4706,6 +4734,19 @@ msgstr ""
 msgid "Number"
 msgstr ""
 
+#: widgets/number/number.php:62
+msgid "Set Default Value"
+msgstr ""
+
+#: widgets/number/number.php:74 widgets/range/range.php:133
+#: widgets/range/range.php:145
+msgid "Default Value"
+msgstr ""
+
+#: widgets/number/number.php:76
+msgid "Enter default value"
+msgstr ""
+
 #: widgets/password/password.php:16
 msgid "Password"
 msgstr ""
@@ -4759,10 +4800,6 @@ msgid ""
 "<strong>Important Note : </strong> For taking dual range input, You have to "
 "enter dual default value in the field Value (Exactly bottom of this notice "
 "field. ). Example: 10, 20"
-msgstr ""
-
-#: widgets/range/range.php:133 widgets/range/range.php:145
-msgid "Default Value"
 msgstr ""
 
 #: widgets/range/range.php:157

@@ -213,6 +213,7 @@ Class MetForm_Input_File_Upload extends Widget_base{
 					'.webp'  => esc_html__( '.webp', 'metform' ),
 					'.iges'  => esc_html__( '.iges', 'metform' ),
 					'.igs'  => esc_html__( '.igs', 'metform' ),
+					'.heic'  => esc_html__( '.heic', 'metform' ),
 				],
                 'default' => [ '.jpg', '.jpeg', '.gif', '.png' ],
 			]

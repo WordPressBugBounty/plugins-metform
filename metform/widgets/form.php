@@ -16,6 +16,7 @@ class Widget_Met_Form extends Widget_Base {
 		$this->add_style_depends('metform-style');
 		$this->add_script_depends('htm');
 		$this->add_script_depends('metform-app');
+		$this->add_script_depends('mf-widget-frontend');
 	}
 
 	public function get_name() {
@@ -61,7 +62,11 @@ class Widget_Met_Form extends Widget_Base {
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
-                'raw' => 'See this video tutorial how to use metform. <a href="https://youtu.be/8R4-Q14cu-w" target="_blank">Click here</a> <button class="mf-edit-form">Edit Form</button>',
+                'raw' => '<div class="mf-important-note">See this video tutorial how to use metform. <a href="https://youtu.be/8R4-Q14cu-w" target="_blank"><u>Click here</u></a></div> <button class="mf-edit-form">
+					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.95 3.07006L11.61 2.41007C12.1568 1.86331 13.0432 1.86331 13.59 2.41007C14.1367 2.95683 14.1367 3.84329 13.59 4.39005L12.93 5.05004M10.95 3.07006L6.51043 7.5096C6.17209 7.848 5.93207 8.27187 5.81602 8.73607L5.33337 10.6667L7.26397 10.184C7.72817 10.068 8.15204 9.82793 8.49044 9.4896L12.93 5.05004M10.95 3.07006L12.93 5.05004" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M12.6666 9.00016C12.6666 11.1918 12.6666 12.2876 12.0613 13.0252C11.9505 13.1602 11.8267 13.284 11.6917 13.3948C10.9541 14.0002 9.85827 14.0002 7.6666 14.0002H7.33333C4.81917 14.0002 3.56211 14.0002 2.78106 13.2191C2.00002 12.4381 2 11.181 2 8.66683V8.3335C2 6.14184 2 5.04602 2.60529 4.30846C2.71611 4.17343 2.83993 4.04961 2.97496 3.93879C3.71253 3.3335 4.80835 3.3335 7 3.3335" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg> Edit Form </button>',
             ]
 		);
 		

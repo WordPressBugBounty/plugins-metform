@@ -30,7 +30,7 @@ final class Plugin {
 
     public function version()
     {
-        return '4.1.3';
+        return '4.1.4';
     }
 
     public function package_type()
@@ -102,10 +102,6 @@ final class Plugin {
 		return 'https://account.wpmet.com';
 	}
 
-    public function i18n()
-    {
-        load_plugin_textdomain('metform', false, dirname(plugin_basename(__FILE__)) . '/languages/');
-    }
 
     public function init()
     {
@@ -133,12 +129,6 @@ final class Plugin {
         }
 
         //  Load Text Domain Just In Time error Notice issue fix
-        add_filter('doing_it_wrong_trigger_error', function($doing_it_wrong, $function_name) {
-            if ('_load_textdomain_just_in_time' === $function_name) {
-                return false;
-            }
-            return $doing_it_wrong;
-        }, 10, 2);
 
         $filter_string = ''; // elementskit,metform-pro
         $filter_string .= ((!in_array('elementskit/elementskit.php', apply_filters('active_plugins', get_option('active_plugins')))) ? '' : ',elementskit');
@@ -240,7 +230,65 @@ final class Plugin {
 			    ->call();
 		}
 
-        $apps_img_path = $this->public_url() . 'assets/img/apps-page/';
+    
+        if( class_exists('WooCommerce') && !class_exists('EmailKit') && !did_action('edit_with_emailkit_loaded') && class_exists('\Wpmet\Libs\Emailkit') && \MetForm\Utils\Util::get_settings( 'metform_user_consent_for_banner', 'yes' ) == 'yes') {
+            new \Wpmet\Libs\Emailkit();        
+        }
+
+        // Check if Elementor installed and activated.
+        if (!did_action('elementor/loaded')) {
+            $this->missing_elementor();
+            return;
+        }
+        // Check for required Elementor version.
+        if (!version_compare(ELEMENTOR_VERSION, '3.0.1', '>=')) {
+            $this->failed_elementor_version();
+            // add_action('admin_notices', array($this, 'failed_elementor_version'));
+            return;
+        }
+
+        if (current_user_can('manage_options')) {
+            add_action('admin_menu', [$this, 'admin_menu']);
+        }
+
+        add_action('elementor/editor/before_enqueue_scripts', [$this, 'edit_view_scripts']);
+	    add_action( 'elementor/editor/after_enqueue_scripts', [$this, 'metform_editor_script'] );
+
+        add_action('init', [$this, 'metform_load_textdomain_on_init'], 9);
+
+        add_action('admin_enqueue_scripts', [$this, 'js_css_admin']);
+        add_action('wp_enqueue_scripts', [$this, 'js_css_public']);
+
+        $my_theme = wp_get_theme();
+        if(current_user_can('manage_options') && $my_theme->get('Name') == 'Cleano'){
+            add_action( 'admin_enqueue_scripts', [$this, 'cleanoThemeConflict'], 100 );
+        }
+        
+        add_action('elementor/frontend/before_enqueue_scripts', [$this, 'elementor_js']);
+
+        add_action('elementor/editor/before_enqueue_styles', [$this, 'elementor_css']);
+
+        add_action('admin_footer', [$this, 'footer_data']);
+
+       
+        Controls\Base::instance()->init();
+
+        Widgets\Manifest::instance()->init();
+
+        // settings page
+        Core\Admin\Base::instance()->init();
+
+        Core\Forms\Auto_Increment_Entry::instance();
+
+        if( class_exists( 'EmailKit' ) ){
+            //metform confirmation to user email template edit with emailkit
+            Emailkit_Builder::instance()->init();
+        }
+    }
+
+    function metform_load_textdomain_on_init(){
+
+         $apps_img_path = $this->public_url() . 'assets/img/apps-page/';
 
         /**
          * Show apps menu for others wpmet plugins
@@ -324,65 +372,36 @@ final class Plugin {
                 'desc' => esc_html__('AI-powered text-to-image generator for WordPress with OpenAI’s DALL-E 2 technology to generate high-quality images in one click.', 'metform'),
                 'docs' => 'https://getgenie.ai/docs/',
             ],
+            'popup-builder-block/popup-builder-block.php' => [
+                'name' => esc_html__('PopupKit', 'metform'),
+                'url'  => 'https://wordpress.org/plugins/popup-builder-block/',
+                'icon' => 'https://ps.w.org/popup-builder-block/assets/icon-256x256.png?rev=3316844',
+                'desc' => esc_html__('Design popups that convert, right in your WordPress dashboard.', 'metform'),
+                'docs' => 'https://wpmet.com/docs/gutenkit/',
+            ],
+            'table-builder-block/table-builder-block.php' => [
+                'name' => esc_html__('TableKit', 'metform'),
+                'url'  => 'https://wordpress.org/plugins/table-builder-block/',
+                'icon' => 'https://ps.w.org/table-builder-block/assets/icon-256x256.jpg?rev=3168211',
+                'desc' => esc_html__('Fully Customizable. Multi-Media Integration. Synch Any Data Files. All Within Block Editor.', 'metform'),
+                'docs' => 'https://wpmet.com/docs/gutenkit/',
+            ],
+            'met-starter-templates/met-starter-templates.php' => [
+                'name' => esc_html__('Met Starter Templates', 'metform'),
+                'url'  => 'https://wordpress.org/plugins/met-starter-templates/',
+                'icon' => 'https://ps.w.org/met-starter-templates/assets/icon-256x256.png?rev=3316844',
+                'desc' => esc_html__('Select template, customize and get your website live with Met StarterKit templates. It all happens in less than 30 seconds!', 'metform'),
+                'docs' => 'https://wpmet.com/docs/met-starter-templates/',
+            ],
         ]
         )
         ->call();
-    
-        if( class_exists('WooCommerce') && !class_exists('EmailKit') && !did_action('edit_with_emailkit_loaded') && class_exists('\Wpmet\Libs\Emailkit') && \MetForm\Utils\Util::get_settings( 'metform_user_consent_for_banner', 'yes' ) == 'yes') {
-            new \Wpmet\Libs\Emailkit();        
-        }
-
-        // Check if Elementor installed and activated.
-        if (!did_action('elementor/loaded')) {
-            $this->missing_elementor();
-            return;
-        }
-        // Check for required Elementor version.
-        if (!version_compare(ELEMENTOR_VERSION, '3.0.1', '>=')) {
-            $this->failed_elementor_version();
-            // add_action('admin_notices', array($this, 'failed_elementor_version'));
-            return;
-        }
-
-        if (current_user_can('manage_options')) {
-            add_action('admin_menu', [$this, 'admin_menu']);
-        }
-
-        add_action('elementor/editor/before_enqueue_scripts', [$this, 'edit_view_scripts']);
-	    add_action( 'elementor/editor/after_enqueue_scripts', [$this, 'metform_editor_script'] );
-
-        add_action('init', [$this, 'i18n']);
-
-        add_action('admin_enqueue_scripts', [$this, 'js_css_admin']);
-        add_action('wp_enqueue_scripts', [$this, 'js_css_public']);
-
-        $my_theme = wp_get_theme();
-        if(current_user_can('manage_options') && $my_theme->get('Name') == 'Cleano'){
-            add_action( 'admin_enqueue_scripts', [$this, 'cleanoThemeConflict'], 100 );
-        }
-        
-        add_action('elementor/frontend/before_enqueue_scripts', [$this, 'elementor_js']);
-
-        add_action('elementor/editor/before_enqueue_styles', [$this, 'elementor_css']);
-
-        add_action('admin_footer', [$this, 'footer_data']);
 
         Core\Forms\Base::instance()->init();
-        Controls\Base::instance()->init();
+
         $this->entries = Core\Entries\Base::instance();
-
-        Widgets\Manifest::instance()->init();
-
-        // settings page
-        Core\Admin\Base::instance()->init();
-
-        Core\Forms\Auto_Increment_Entry::instance();
-
-        if( class_exists( 'EmailKit' ) ){
-            //metform confirmation to user email template edit with emailkit
-            Emailkit_Builder::instance()->init();
-        }
-    }
+        
+     }
 
     function metform_editor_script(){
 	    	wp_enqueue_script('metform-editor-panel-script', $this->public_url() . '/assets/js/editor-panel.js', ['jquery'], $this->version(), true);
@@ -402,6 +421,7 @@ final class Plugin {
         wp_register_script('htm', $this->public_url() . 'assets/js/htm.js', null, $this->version(), true);
 
         wp_register_script('metform-app', $this->public_url() . 'assets/js/app.js', ['htm', 'jquery', 'wp-element'], $this->version(), true);
+        wp_register_script('mf-widget-frontend', $this->public_url() . 'assets/js/widget-forntend.js', ['metform-app'], $this->version(), true);
 
         wp_localize_script('metform-app', 'mf', [
             'postType' => get_post_type(),
@@ -450,6 +470,7 @@ final class Plugin {
             wp_enqueue_style('metform-style');
             wp_enqueue_script('htm');
             wp_enqueue_script('metform-app');
+            wp_enqueue_script('mf-widget-frontend');
         } 
 
         do_action('metform/onload/enqueue_scripts');

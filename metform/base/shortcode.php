@@ -28,6 +28,7 @@ class Shortcode
 		wp_enqueue_style('metform-style');
 		wp_enqueue_script('htm');
 		wp_enqueue_script('metform-app');
+		wp_enqueue_script('mf-widget-frontend');
 	}
 
 

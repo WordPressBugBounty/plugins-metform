@@ -1159,6 +1159,8 @@ class Action
         $mimes['igs']  = 'text/plain';
         $mimes['stp']  = 'text/plain';
         $mimes['step'] = 'text/plain';
+        $mimes['heic']  = 'image/heic';
+	    $mimes['heif']  = 'image/heif';
         return $mimes;
     }
 

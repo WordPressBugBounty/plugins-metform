@@ -71,6 +71,7 @@ Class Base extends \MetForm\Base\Common{
                     'hasPro' => class_exists('\MetForm_Pro\Base\Package'),
                     'hasQuiz' => class_exists('\MetForm_Pro\Core\Features\Quiz\Integration'),
                     'templates' => $this->get_templates_for_js(),
+                    'wpVersion' => get_bloginfo('version'),
                 ]);
             }
         }
