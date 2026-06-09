@@ -70,7 +70,6 @@ trait Conditional_Controls{
 				'options' => [
 					'show' => 'Show this field',
 					'hide' => 'Hide this field',
-					
 				],
 				'default' => 'show',
 				'condition' => [
@@ -121,6 +120,7 @@ trait Conditional_Controls{
 				'condition' => [
 					'mf_conditional_logic_form_comparison_operators' => ['==','!=','>','>=','<','<=','contains'],
 				],
+				'description' => esc_html__( 'Dynamic match values eg. [mf-field-name]', 'metform' ),
 			]
 		);
 

@@ -560,6 +560,23 @@ class Form_Data
 
                 $conditional_field_value = !empty($condition["mf_conditional_logic_form_value"]) ? $condition["mf_conditional_logic_form_value"] : '';
 
+                // Resolve dynamic reference in conditional field value if it matches [field-name] pattern
+                if (is_string($conditional_field_value) && preg_match('/^\[([^\]]+)\]$/', $conditional_field_value, $matches)) {
+                    $ref_key = $matches[1];
+                    if (array_key_exists($ref_key, $form_data)) {
+                        $ref_val = $form_data[$ref_key];
+                        if (is_array($ref_val)) {
+                            $conditional_field_value = implode(',', array_map('strval', $ref_val));
+                        } elseif (is_scalar($ref_val) || is_null($ref_val)) {
+                            $conditional_field_value = (string) $ref_val;
+                        } else {
+                            $conditional_field_value = '';
+                        }
+                    } else {
+                        $conditional_field_value = '';
+                    }
+                }
+
                 $conditional_value_data = !empty($form_data[$conditional_field_name]) ? $form_data[$conditional_field_name] : '';
                 $condition_value_array = explode(",",$conditional_value_data);
 

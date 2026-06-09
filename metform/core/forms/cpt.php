@@ -238,6 +238,9 @@ class Cpt extends \MetForm\Base\Cpt
             'mf_stripe_test_secret_key' => [
                 'name' => 'mf_stripe_test_secret_key',
             ],
+            'mf_payment_submit_before_payment' => [
+                'name' => 'mf_payment_submit_before_payment',
+            ],
             'mf_google_map_api_key' => [
                 'name' => 'mf_google_map_api_key',
             ],

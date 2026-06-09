@@ -25,12 +25,10 @@ class Api extends \MetForm\Base\Api
         $id = $this->request['id'];
 
         $form_data = $this->request->get_params();
-
         $file_data = $this->request->get_file_params();
 
         return Action::instance()->submit($id, $form_data, $file_data,$post_id);
     }
-
     public function get_export()
     {
         if(!current_user_can('manage_options')) {

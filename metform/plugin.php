@@ -30,7 +30,7 @@ final class Plugin {
 
     public function version()
     {
-        return '4.1.4';
+        return '4.1.5';
     }
 
     public function package_type()
@@ -170,65 +170,6 @@ final class Plugin {
 
         }
 
-        /**
-         * Pro awareness feature;
-         */
-
-        $is_pro_active = '';
-
-        if (!in_array('metform-pro/metform-pro.php', apply_filters('active_plugins', get_option('active_plugins')))) {
-            $is_pro_active = 'Go Premium';
-        }
-
-		$pro_awareness = \Wpmet\Libs\Pro_Awareness::instance('metform');
-		if(version_compare($pro_awareness->get_version(), '1.2.0', '>=')) {
-			$pro_awareness
-			    ->set_parent_menu_slug('metform-menu')
-			    ->set_pro_link(
-			        (in_array('metform-pro/metform-pro.php', apply_filters('active_plugins', get_option('active_plugins')))) ? '' :
-			            'https://wpmet.com/metform-pricing'
-			    )
-			    ->set_plugin_file('metform/metform.php')
-			    ->set_default_grid_thumbnail($this->utils_url() . '/pro-awareness/assets/images/support.png')
-			    ->set_page_grid([
-			        'url' => 'https://wpmet.com/fb-group',
-			        'title' => 'Join the Community',
-			        'thumbnail' => $this->utils_url() . '/pro-awareness/assets/images/community.png',
-					'description' => 'Join our Facebook group to get 20% discount coupon on premium products. Follow us to get more exciting offers.'
-
-			    ])
-			    ->set_page_grid([
-			        'url' => 'https://www.youtube.com/playlist?list=PL3t2OjZ6gY8NoB_48DwWKUDRtBEuBOxSc',
-			        'title' => 'Video Tutorials',
-			        'thumbnail' => $this->utils_url() . '/pro-awareness/assets/images/videos.png',
-					'description' => 'Learn the step by step process for developing your site easily from video tutorials.'
-			    ])
-			    ->set_page_grid([
-			        'url' => 'https://wpmet.com/plugin/metform/roadmaps#ideas',
-			        'title' => 'Request a feature',
-			        'thumbnail' => $this->utils_url() . '/pro-awareness/assets/images/request.png',
-					'description' => 'Have any special feature in mind? Let us know through the feature request.'
-			    ])
-			    ->set_page_grid([
-						'url'       => 'https://wpmet.com/doc/metform/',
-						'title'     => 'Documentation',
-						'thumbnail' => $this->utils_url() . 'pro-awareness/assets/images/documentation.png',
-						'description' => 'Detailed documentation to help you understand the functionality of each feature.'
-				])
-				->set_page_grid([
-						'url'       => 'https://wpmet.com/plugin/metform/roadmaps/',
-						'title'     => 'Public Roadmap',
-						'thumbnail' => $this->utils_url() . 'pro-awareness/assets/images/roadmaps.png',
-						'description' => 'Check our upcoming new features, detailed development stories and tasks'
-				])
-
-			    ->set_plugin_row_meta('Documentation', 'https://help.wpmet.com/docs-cat/metform/', ['target' => '_blank'])
-			    ->set_plugin_row_meta('Facebook Community', 'https://wpmet.com/fb-group', ['target' => '_blank'])
-			    ->set_plugin_row_meta('Rate the plugin ★★★★★', 'https://wordpress.org/support/plugin/metform/reviews/#new-post', ['target' => '_blank'])
-			    ->set_plugin_action_link('Settings', admin_url() . 'admin.php?page=metform-menu-settings')
-			    ->set_plugin_action_link($is_pro_active, 'https://wpmet.com/plugin/metform/pricing/', ['target' => '_blank', 'style' => 'color: #FCB214; font-weight: bold;'])
-			    ->call();
-		}
 
     
         if( class_exists('WooCommerce') && !class_exists('EmailKit') && !did_action('edit_with_emailkit_loaded') && class_exists('\Wpmet\Libs\Emailkit') && \MetForm\Utils\Util::get_settings( 'metform_user_consent_for_banner', 'yes' ) == 'yes') {
@@ -250,6 +191,9 @@ final class Plugin {
         if (current_user_can('manage_options')) {
             add_action('admin_menu', [$this, 'admin_menu']);
         }
+
+        // Initialize deactivation feedback modal
+        new Utils\Feedback\Plugin_Unsubscribe();
 
         add_action('elementor/editor/before_enqueue_scripts', [$this, 'edit_view_scripts']);
 	    add_action( 'elementor/editor/after_enqueue_scripts', [$this, 'metform_editor_script'] );
@@ -288,7 +232,7 @@ final class Plugin {
 
     function metform_load_textdomain_on_init(){
 
-         $apps_img_path = $this->public_url() . 'assets/img/apps-page/';
+        $apps_img_path = $this->public_url() . 'assets/img/apps-page/';
 
         /**
          * Show apps menu for others wpmet plugins
@@ -396,6 +340,67 @@ final class Plugin {
         ]
         )
         ->call();
+        
+
+         /**
+         * Pro awareness feature;
+         */
+
+        $is_pro_active = '';
+
+        if (!in_array('metform-pro/metform-pro.php', apply_filters('active_plugins', get_option('active_plugins')))) {
+            $is_pro_active = 'Go Premium';
+        }
+
+		$pro_awareness = \Wpmet\Libs\Pro_Awareness::instance('metform');
+		if(version_compare($pro_awareness->get_version(), '1.2.0', '>=')) {
+			$pro_awareness
+			    ->set_parent_menu_slug('metform-menu')
+			    ->set_pro_link(
+			        (in_array('metform-pro/metform-pro.php', apply_filters('active_plugins', get_option('active_plugins')))) ? '' :
+			            'https://wpmet.com/metform-pricing'
+			    )
+			    ->set_plugin_file('metform/metform.php')
+			    ->set_default_grid_thumbnail($this->utils_url() . '/pro-awareness/assets/images/support.png')
+			    ->set_page_grid([
+			        'url' => 'https://wpmet.com/fb-group',
+			        'title' => esc_html__( 'Join the Community', 'metform' ),
+			        'thumbnail' => $this->utils_url() . '/pro-awareness/assets/images/community.png',
+					'description' => esc_html__( 'Join our Facebook group to get 20% discount coupon on premium products. Follow us to get more exciting offers.', 'metform' )
+
+			    ])
+			    ->set_page_grid([
+			        'url' => 'https://www.youtube.com/playlist?list=PL3t2OjZ6gY8NoB_48DwWKUDRtBEuBOxSc',
+			        'title' => esc_html__( 'Video Tutorials', 'metform' ),
+			        'thumbnail' => $this->utils_url() . '/pro-awareness/assets/images/videos.png',
+					'description' => esc_html__( 'Learn the step by step process for developing your site easily from video tutorials.', 'metform' )
+			    ])
+			    ->set_page_grid([
+			        'url' => 'https://wpmet.com/plugin/metform/roadmaps#ideas',
+			        'title' => esc_html__( 'Request a feature', 'metform' ),
+			        'thumbnail' => $this->utils_url() . '/pro-awareness/assets/images/request.png',
+					'description' => esc_html__( 'Have any special feature in mind? Let us know through the feature request.', 'metform' )
+			    ])
+			    ->set_page_grid([
+					'url'       => 'https://wpmet.com/doc/metform/',
+					'title'     => esc_html__( 'Documentation', 'metform' ),
+					'thumbnail' => $this->utils_url() . 'pro-awareness/assets/images/documentation.png',
+					'description' => esc_html__( 'Detailed documentation to help you understand the functionality of each feature.', 'metform' )
+				])
+				->set_page_grid([
+					'url'       => 'https://wpmet.com/plugin/metform/roadmaps/',
+					'title'     => esc_html__( 'Public Roadmap', 'metform' ),
+					'thumbnail' => $this->utils_url() . 'pro-awareness/assets/images/roadmaps.png',
+					'description' => esc_html__( 'Check our upcoming new features, detailed development stories and tasks', 'metform' )
+				])
+
+			    ->set_plugin_row_meta('Documentation', 'https://help.wpmet.com/docs-cat/metform/', ['target' => '_blank'])
+			    ->set_plugin_row_meta('Facebook Community', 'https://wpmet.com/fb-group', ['target' => '_blank'])
+			    ->set_plugin_row_meta('Rate the plugin ★★★★★', 'https://wordpress.org/support/plugin/metform/reviews/#new-post', ['target' => '_blank'])
+			    ->set_plugin_action_link('Settings', admin_url() . 'admin.php?page=metform-menu-settings')
+			    ->set_plugin_action_link($is_pro_active, 'https://wpmet.com/plugin/metform/pricing/', ['target' => '_blank', 'style' => 'color: #FCB214; font-weight: bold;'])
+			    ->call();
+		}
 
         Core\Forms\Base::instance()->init();
 

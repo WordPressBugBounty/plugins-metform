@@ -1054,7 +1054,16 @@
 
                             $stripe_available = (class_exists('\MetForm_Pro\Core\Integrations\Payment\Stripe') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier() || \MetForm\Utils\Util::is_using_settings_option('mf_stripe_live_publishiable_key') || \MetForm\Utils\Util::is_using_settings_option('mf_stripe_test_secret_key') || \MetForm\Utils\Util::is_using_feature('mf_stripe')));
                             $show_currency = $paypal_available || $stripe_available;
+
+                            if (!function_exists('is_plugin_active')) {
+                                require_once ABSPATH . 'wp-admin/includes/plugin.php';
+                            }
+
+                            $payment_hold_addon_active = function_exists('is_plugin_active')
+                                ? is_plugin_active('metform-payment-assistant/metform-payment-assistant.php')
+                                : false;
                             ?>
+
 
                             <?php if ($show_currency) : ?>
                                 <div class="mf-input-group mf-form-bottom-spacing">
@@ -1090,6 +1099,19 @@
                                     <span class='mf-input-help'><?php esc_html_e('Integrate stripe payment with this form. ', 'metform'); ?><a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-payment_options'; ?>"><?php esc_html_e('Configure stripe payment.', 'metform'); ?></a></span>
                                 </div>
                             <?php endif ?>
+
+                            <?php if ($payment_hold_addon_active && ($paypal_available || $stripe_available)) : ?>
+                                <div class="mf-input-group mf-box-style mf-payment-submit-before-payment-option" style="display: none;">
+                                    <label class="attr-input-label">
+                                        <input type="hidden" name="mf_payment_submit_before_payment" value="0">
+                                        <input type="checkbox" value="1" name="mf_payment_submit_before_payment" class="mf-admin-control-input mf-form-modalinput-payment_submit_before_payment">
+                                        <span><?php esc_html_e('Require Payment For Submission?', 'metform'); ?></span>
+                                    </label>
+                                    <span class='mf-input-help'>
+                                        <?php esc_html_e('Hold form submission before proceeding to payment.', 'metform'); ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
 
                             <?php if (!$show_currency) :
                                 mf_dummy_simple_input(

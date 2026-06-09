@@ -58,6 +58,8 @@ Class Base extends \MetForm\Base\Common{
                     true
                 );
 
+                wp_set_script_translations('metform-add-new-form-modal', 'metform');
+
                 wp_enqueue_style(
                     'metform-add-new-form-modal',
                     $plugin->plugin_url() . 'build/style-add-new-form-modal.css',

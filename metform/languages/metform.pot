@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: MetForm 4.1.4\n"
+"Project-Id-Version: MetForm 4.1.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/metform\n"
-"POT-Creation-Date: 2026-05-03 11:19:16+00:00\n"
+"POT-Creation-Date: 2026-06-09 07:15:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: grunt-wp-i18n 1.0.4\n"
 
-#: traits/conditional-controls.php:120
+#: traits/conditional-controls.php:119
 msgid "50"
 msgstr ""
 
@@ -50,7 +50,7 @@ msgid "Update & Close"
 msgstr ""
 
 #: controls/form-editor-modal.php:20 controls/form-editor-modal.php:21
-#: controls/form-picker-modal.php:95
+#: controls/form-picker-modal.php:95 utils/feedback/plugin-unsubscribe.php:240
 msgid "Close"
 msgstr ""
 
@@ -131,7 +131,8 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: core/admin/views/integrations.php:190 core/entries/hooks.php:92
+#: core/admin/views/integrations.php:190 core/admin/views/settings.php:647
+#: core/admin/views/settings.php:1049 core/entries/hooks.php:92
 #: core/forms/views/modal-editor.php:43
 msgid "Upgrade"
 msgstr ""
@@ -322,12 +323,57 @@ msgstr ""
 msgid "Documentation Thumb"
 msgstr ""
 
+#: core/admin/views/settings.php:371
+#: core/integrations/onboard/views/settings-sections/dashboard.php:12
+msgid "Easy Documentation"
+msgstr ""
+
+#: core/admin/views/settings.php:372
+#: core/integrations/onboard/views/settings-sections/dashboard.php:13
+msgid "Docs"
+msgstr ""
+
+#: core/admin/views/settings.php:374
+msgid "Check out the docs and start building awesome forms with MetForm!"
+msgstr ""
+
+#: core/admin/views/settings.php:381
+#: core/integrations/onboard/views/settings-sections/dashboard.php:17
+msgid "Get started"
+msgstr ""
+
+#: core/admin/views/settings.php:389
+msgid "Top-notch &amp; Friendly Support"
+msgstr ""
+
+#: core/admin/views/settings.php:390
+#: core/integrations/onboard/views/settings-sections/dashboard.php:119
+msgid "Support"
+msgstr ""
+
+#: core/admin/views/settings.php:392
+msgid "Stuck somewhere? Feel free to open a ticket for getting Pro support."
+msgstr ""
+
+#: core/admin/views/settings.php:394
+#: core/integrations/onboard/views/settings-sections/dashboard.php:123
+msgid "Join support forum"
+msgstr ""
+
 #: core/admin/views/settings.php:399
 msgid "Support Thumb"
 msgstr ""
 
 #: core/admin/views/settings.php:407
 msgid "Feature Request Thumb"
+msgstr ""
+
+#: core/admin/views/settings.php:411
+msgid "Maybe we're missing something you can't live without."
+msgstr ""
+
+#: core/admin/views/settings.php:418
+msgid "Request a Feature"
 msgstr ""
 
 #: core/admin/views/settings.php:430
@@ -516,6 +562,28 @@ msgstr ""
 msgid "Dropbox"
 msgstr ""
 
+#: core/admin/views/settings.php:653 core/admin/views/settings.php:658
+#: core/admin/views/settings.php:685
+msgid "API:"
+msgstr ""
+
+#: core/admin/views/settings.php:653 core/admin/views/settings.php:658
+msgid "Insert Dropbox API key"
+msgstr ""
+
+#: core/admin/views/settings.php:653
+msgid "Create Dropbox APP ID from Dropbox developers panel"
+msgstr ""
+
+#: core/admin/views/settings.php:658
+msgid "Create Dropbox APP Secrate from Dropbox developers panel"
+msgstr ""
+
+#: core/admin/views/settings.php:663 core/admin/views/settings.php:1220
+#: plugin.php:386
+msgid "Documentation"
+msgstr ""
+
 #: core/admin/views/settings.php:667
 msgid "Click on \"Connect your dropbox account\""
 msgstr ""
@@ -526,10 +594,6 @@ msgstr ""
 
 #: core/admin/views/settings.php:682 core/admin/views/settings.php:707
 msgid "Map"
-msgstr ""
-
-#: core/admin/views/settings.php:685
-msgid "API:"
 msgstr ""
 
 #: core/admin/views/settings.php:687
@@ -631,6 +695,7 @@ msgid "Enter here your paypal token. This is optional. "
 msgstr ""
 
 #: core/admin/views/settings.php:871 core/admin/views/settings.php:949
+#: core/admin/views/settings.php:1008
 msgid "Enable sandbox mode:"
 msgstr ""
 
@@ -650,11 +715,11 @@ msgstr ""
 msgid "Get premium access to use PayPal payment in forms."
 msgstr ""
 
-#: core/admin/views/settings.php:924
+#: core/admin/views/settings.php:924 core/admin/views/settings.php:1005
 msgid "Image url:"
 msgstr ""
 
-#: core/admin/views/settings.php:925
+#: core/admin/views/settings.php:925 core/admin/views/settings.php:1005
 msgid "Stripe image url"
 msgstr ""
 
@@ -676,11 +741,11 @@ msgstr ""
 msgid "Enter here your stripe live publishiable key. "
 msgstr ""
 
-#: core/admin/views/settings.php:940
+#: core/admin/views/settings.php:940 core/admin/views/settings.php:1007
 msgid "Live secret key:"
 msgstr ""
 
-#: core/admin/views/settings.php:941
+#: core/admin/views/settings.php:941 core/admin/views/settings.php:1007
 msgid "Stripe live secret key"
 msgstr ""
 
@@ -704,11 +769,11 @@ msgstr ""
 msgid "Enter here your test publishiable key. "
 msgstr ""
 
-#: core/admin/views/settings.php:966
+#: core/admin/views/settings.php:966 core/admin/views/settings.php:1010
 msgid "Test secret key:"
 msgstr ""
 
-#: core/admin/views/settings.php:967
+#: core/admin/views/settings.php:967 core/admin/views/settings.php:1010
 msgid "Stripe test secret key"
 msgstr ""
 
@@ -722,6 +787,44 @@ msgstr ""
 
 #: core/admin/views/settings.php:985
 msgid "Get premium access to use Stripe payment in forms."
+msgstr ""
+
+#: core/admin/views/settings.php:1005
+msgid ""
+"Enter here your stripe image url. This image will show on stripe payment "
+"pop up modal."
+msgstr ""
+
+#: core/admin/views/settings.php:1006
+msgid "Live publishable key:"
+msgstr ""
+
+#: core/admin/views/settings.php:1006 core/admin/views/settings.php:1009
+msgid "Stripe test publishable key"
+msgstr ""
+
+#: core/admin/views/settings.php:1006
+msgid "Enter here your publishable key."
+msgstr ""
+
+#: core/admin/views/settings.php:1007
+msgid "Enter here your stripe live secret key."
+msgstr ""
+
+#: core/admin/views/settings.php:1008
+msgid "Enable this for testing your payment system."
+msgstr ""
+
+#: core/admin/views/settings.php:1009
+msgid "Test publishable key:"
+msgstr ""
+
+#: core/admin/views/settings.php:1009
+msgid "Enter here your test publishable key."
+msgstr ""
+
+#: core/admin/views/settings.php:1010
+msgid "Enter here your test secret key."
 msgstr ""
 
 #: core/admin/views/settings.php:1023
@@ -929,62 +1032,70 @@ msgstr ""
 msgid "Problem with your MailerLite integration."
 msgstr ""
 
-#: core/entries/action.php:579
+#: core/entries/action.php:522
+msgid "Form settings not found. Please check form configuration."
+msgstr ""
+
+#: core/entries/action.php:589
+msgid " Please wait... Redirecting to PayPal."
+msgstr ""
+
+#: core/entries/action.php:721
 msgid "Problem with your RestApi integration."
 msgstr ""
 
-#: core/entries/action.php:603
+#: core/entries/action.php:745
 msgid " Please wait... Redirecting to paypal."
 msgstr ""
 
-#: core/entries/action.php:646
+#: core/entries/action.php:788
 msgid " Please wait... Open a Stripe Popup Box."
 msgstr ""
 
-#: core/entries/action.php:788
+#: core/entries/action.php:930
 msgid "ssl certificate or google oauth credentials problem"
 msgstr ""
 
-#: core/entries/action.php:818
+#: core/entries/action.php:960
 msgid "Google Drive upload failed: SSL certificate or OAuth credentials problem"
 msgstr ""
 
-#: core/entries/action.php:985
+#: core/entries/action.php:1127
 msgid "Mail not found."
 msgstr ""
 
-#: core/entries/action.php:991 core/entries/action.php:1044
+#: core/entries/action.php:1133 core/entries/action.php:1186
 msgid "Please setup your SMTP mail server."
 msgstr ""
 
-#: core/entries/action.php:1034
+#: core/entries/action.php:1176
 msgid "Admin mail not found to send email."
 msgstr ""
 
-#: core/entries/action.php:1222
+#: core/entries/action.php:1364
 msgid "There was an error uploading your file."
 msgstr ""
 
-#: core/entries/api.php:143 core/entries/api.php:180 core/entries/api.php:240
-#: core/entries/api.php:371 core/integrations/emailkit-builder.php:30
+#: core/entries/api.php:141 core/entries/api.php:178 core/entries/api.php:238
+#: core/entries/api.php:369 core/integrations/emailkit-builder.php:30
 msgid "Nonce mismatch."
 msgstr ""
 
-#: core/entries/api.php:154
+#: core/entries/api.php:152
 msgid "Invalid_api_key."
 msgstr ""
 
-#: core/entries/api.php:187 core/entries/api.php:247
+#: core/entries/api.php:185 core/entries/api.php:245
 msgid "MailerLite integration is not available."
 msgstr ""
 
-#: core/entries/api.php:198
+#: core/entries/api.php:196
 msgid ""
 "MailerLite API key is not configured. Please configure it in MetForm "
 "Settings."
 msgstr ""
 
-#: core/entries/api.php:258
+#: core/entries/api.php:256
 msgid "MailerLite API key is not configured."
 msgstr ""
 
@@ -1000,7 +1111,7 @@ msgstr ""
 msgid "Entry Attributes"
 msgstr ""
 
-#: core/entries/cpt.php:20 core/forms/cpt.php:535
+#: core/entries/cpt.php:20 core/forms/cpt.php:538
 msgid "Parent Item:"
 msgstr ""
 
@@ -1012,7 +1123,7 @@ msgstr ""
 msgid "Add New Item"
 msgstr ""
 
-#: core/entries/cpt.php:23 core/forms/cpt.php:538
+#: core/entries/cpt.php:23 core/forms/cpt.php:541
 msgid "Add New"
 msgstr ""
 
@@ -1040,27 +1151,27 @@ msgstr ""
 msgid "Search Item"
 msgstr ""
 
-#: core/entries/cpt.php:30 core/forms/cpt.php:545
+#: core/entries/cpt.php:30 core/forms/cpt.php:548
 msgid "Not found"
 msgstr ""
 
-#: core/entries/cpt.php:31 core/forms/cpt.php:546
+#: core/entries/cpt.php:31 core/forms/cpt.php:549
 msgid "Not found in Trash"
 msgstr ""
 
-#: core/entries/cpt.php:32 core/forms/cpt.php:547
+#: core/entries/cpt.php:32 core/forms/cpt.php:550
 msgid "Featured Image"
 msgstr ""
 
-#: core/entries/cpt.php:33 core/forms/cpt.php:548
+#: core/entries/cpt.php:33 core/forms/cpt.php:551
 msgid "Set featured image"
 msgstr ""
 
-#: core/entries/cpt.php:34 core/forms/cpt.php:549
+#: core/entries/cpt.php:34 core/forms/cpt.php:552
 msgid "Remove featured image"
 msgstr ""
 
-#: core/entries/cpt.php:35 core/forms/cpt.php:550
+#: core/entries/cpt.php:35 core/forms/cpt.php:553
 msgid "Use as featured image"
 msgstr ""
 
@@ -1280,71 +1391,71 @@ msgstr ""
 msgid "Thank you! Form submitted successfully."
 msgstr ""
 
-#: core/forms/cpt.php:531 core/forms/cpt.php:532 widgets/form.php:56
+#: core/forms/cpt.php:534 core/forms/cpt.php:535 widgets/form.php:56
 msgid "Form"
 msgstr ""
 
-#: core/forms/cpt.php:533
+#: core/forms/cpt.php:536
 msgid "Form Archives"
 msgstr ""
 
-#: core/forms/cpt.php:534
+#: core/forms/cpt.php:537
 msgid "Form Attributes"
 msgstr ""
 
-#: core/forms/cpt.php:536 core/forms/cpt.php:564
+#: core/forms/cpt.php:539 core/forms/cpt.php:567
 msgid "Forms"
 msgstr ""
 
-#: core/forms/cpt.php:537
+#: core/forms/cpt.php:540
 msgid "Add New Form"
 msgstr ""
 
-#: core/forms/cpt.php:539
+#: core/forms/cpt.php:542
 msgid "New Form"
 msgstr ""
 
-#: core/forms/cpt.php:540
+#: core/forms/cpt.php:543 widgets/form.php:74
 msgid "Edit Form"
 msgstr ""
 
-#: core/forms/cpt.php:541
+#: core/forms/cpt.php:544
 msgid "Update Form"
 msgstr ""
 
-#: core/forms/cpt.php:542
+#: core/forms/cpt.php:545
 msgid "View Form"
 msgstr ""
 
-#: core/forms/cpt.php:543
+#: core/forms/cpt.php:546
 msgid "View Forms"
 msgstr ""
 
-#: core/forms/cpt.php:544
+#: core/forms/cpt.php:547
 msgid "Search Forms"
 msgstr ""
 
-#: core/forms/cpt.php:551
+#: core/forms/cpt.php:554
 msgid "Insert into form"
 msgstr ""
 
-#: core/forms/cpt.php:552
+#: core/forms/cpt.php:555
 msgid "Uploaded to this form"
 msgstr ""
 
-#: core/forms/cpt.php:553
+#: core/forms/cpt.php:556
 msgid "Forms list"
 msgstr ""
 
-#: core/forms/cpt.php:554
+#: core/forms/cpt.php:557
 msgid "Forms list navigation"
 msgstr ""
 
-#: core/forms/cpt.php:555
+#: core/forms/cpt.php:558
 msgid "Filter froms list"
 msgstr ""
 
-#: core/forms/cpt.php:565
+#: core/forms/cpt.php:568
 msgid "metform form"
 msgstr ""
 
@@ -2075,97 +2186,105 @@ msgstr ""
 msgid "Enter here zapier web hook."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1076
-#: core/forms/views/modal-editor.php:1107
+#: core/forms/views/modal-editor.php:1085
+#: core/forms/views/modal-editor.php:1129
 msgid "Paypal:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1078
+#: core/forms/views/modal-editor.php:1087
 msgid "Integrate paypal payment with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1079
+#: core/forms/views/modal-editor.php:1088
 msgid "Configure paypal payment."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1088
-#: core/forms/views/modal-editor.php:1115
+#: core/forms/views/modal-editor.php:1097
+#: core/forms/views/modal-editor.php:1137
 msgid "Stripe:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1090
+#: core/forms/views/modal-editor.php:1099
 msgid "Integrate stripe payment with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1090
+#: core/forms/views/modal-editor.php:1099
 msgid "Configure stripe payment."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1097
+#: core/forms/views/modal-editor.php:1108
+msgid "Require Payment For Submission?"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1111
+msgid "Hold form submission before proceeding to payment."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1119
 msgid "Default Currency"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1098
+#: core/forms/views/modal-editor.php:1120
 msgid "Select default currency"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1108
+#: core/forms/views/modal-editor.php:1130
 msgid "Integrate paypal payment with this form."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1116
+#: core/forms/views/modal-editor.php:1138
 msgid "Integrate stripe payment with this form."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1130
+#: core/forms/views/modal-editor.php:1152
 msgid "Zoho Contact:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1132
+#: core/forms/views/modal-editor.php:1154
 msgid "Integrate Zoho contacts with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1133
+#: core/forms/views/modal-editor.php:1155
 msgid "Configure Zoho."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1138
+#: core/forms/views/modal-editor.php:1160
 msgid "Form Fields"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1147
+#: core/forms/views/modal-editor.php:1169
 msgid "Select Metform Field"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1153
+#: core/forms/views/modal-editor.php:1175
 msgid "Select Zoho Form Field"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1158
+#: core/forms/views/modal-editor.php:1180
 msgid "Delete"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1187
+#: core/forms/views/modal-editor.php:1209
 msgid "Helpscout"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1189
+#: core/forms/views/modal-editor.php:1211
 msgid "Integrate Helpscout with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1189
+#: core/forms/views/modal-editor.php:1211
 msgid "Configure Helpscout."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1194
+#: core/forms/views/modal-editor.php:1216
 msgid "Available Mailboxes"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1269
+#: core/forms/views/modal-editor.php:1291
 msgid "Edit content"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1271
+#: core/forms/views/modal-editor.php:1293
 msgid "Save changes"
 msgstr ""
 
@@ -2435,6 +2554,10 @@ msgid ""
 "thought leaders in WordPress!"
 msgstr ""
 
+#: core/integrations/onboard/views/onboard-steps/step-02.php:9
+msgid "Enter your email address"
+msgstr ""
+
 #: core/integrations/onboard/views/onboard-steps/step-02.php:11
 msgid "Submit Your Best Email."
 msgstr ""
@@ -2467,7 +2590,7 @@ msgstr ""
 msgid "Drag-and-drop email builder for WooCommerce & WordPress."
 msgstr ""
 
-#: core/integrations/onboard/views/onboard-steps/step-03.php:110 plugin.php:379
+#: core/integrations/onboard/views/onboard-steps/step-03.php:110 plugin.php:323
 msgid "Design popups that convert, right in your WordPress dashboard."
 msgstr ""
 
@@ -2572,14 +2695,6 @@ msgstr ""
 msgid "Go to WP Dashboard"
 msgstr ""
 
-#: core/integrations/onboard/views/settings-sections/dashboard.php:12
-msgid "Easy Documentation"
-msgstr ""
-
-#: core/integrations/onboard/views/settings-sections/dashboard.php:13
-msgid "Docs"
-msgstr ""
-
 #: core/integrations/onboard/views/settings-sections/dashboard.php:15
 #: core/integrations/onboard/views/settings-sections/dashboard.php:121
 msgid ""
@@ -2588,11 +2703,8 @@ msgid ""
 "ease."
 msgstr ""
 
-#: core/integrations/onboard/views/settings-sections/dashboard.php:17
-msgid "Get started"
-msgstr ""
-
 #: core/integrations/onboard/views/settings-sections/dashboard.php:26
+#: plugin.php:374
 msgid "Video Tutorials"
 msgstr ""
 
@@ -2639,14 +2751,6 @@ msgstr ""
 
 #: core/integrations/onboard/views/settings-sections/dashboard.php:118
 msgid "Top-notch Friendly Support"
-msgstr ""
-
-#: core/integrations/onboard/views/settings-sections/dashboard.php:119
-msgid "Support"
-msgstr ""
-
-#: core/integrations/onboard/views/settings-sections/dashboard.php:123
-msgid "Join support forum"
 msgstr ""
 
 #: core/integrations/onboard/views/settings-sections/dashboard.php:136
@@ -2849,166 +2953,204 @@ msgstr ""
 msgid "Your data inserted on slack."
 msgstr ""
 
-#: plugin.php:305
+#: plugin.php:249
 msgid "ElementsKit"
 msgstr ""
 
-#: plugin.php:308
+#: plugin.php:252
 msgid ""
 "All-in-one Elementor addon trusted by 1 Million+ users, makes your website "
 "builder process easier with ultimate freedom."
 msgstr ""
 
-#: plugin.php:312
+#: plugin.php:256
 msgid "GetGenie"
 msgstr ""
 
-#: plugin.php:315
+#: plugin.php:259
 msgid ""
 "Your personal AI assistant for content and SEO. Write content that ranks on "
 "Google with NLP keywords and SERP analysis data."
 msgstr ""
 
-#: plugin.php:319
+#: plugin.php:263
 msgid "GutenKit"
 msgstr ""
 
-#: plugin.php:322
+#: plugin.php:266
 msgid ""
 "Gutenberg blocks, patterns, and templates that extend the page-building "
 "experience using the WordPress block editor."
 msgstr ""
 
-#: plugin.php:326
+#: plugin.php:270
 msgid "ShopEngine"
 msgstr ""
 
-#: plugin.php:329
+#: plugin.php:273
 msgid ""
 "Complete WooCommerce solution for Elementor to fully customize any pages "
 "including cart, checkout, shop page, and so on.\n"
 "                "
 msgstr ""
 
-#: plugin.php:334
+#: plugin.php:278
 msgid "EmailKit"
 msgstr ""
 
-#: plugin.php:337
+#: plugin.php:281
 msgid ""
 "Advanced email customizer for WooCommerce and WordPress. Build, customize, "
 "and send emails from WordPress to boost your sales!"
 msgstr ""
 
-#: plugin.php:341
+#: plugin.php:285
 msgid "Wp Social"
 msgstr ""
 
-#: plugin.php:344
+#: plugin.php:288
 msgid ""
 "Add social share, login, and engagement counter — unified solution for all "
 "social media with tons of different styles for your website."
 msgstr ""
 
-#: plugin.php:348
+#: plugin.php:292
 msgid "WP Ultimate Review"
 msgstr ""
 
-#: plugin.php:351
+#: plugin.php:295
 msgid ""
 "Collect and showcase reviews on your website to build brand credibility and "
 "social proof with the easiest solution."
 msgstr ""
 
-#: plugin.php:355
+#: plugin.php:299
 msgid "FundEngine"
 msgstr ""
 
-#: plugin.php:358
+#: plugin.php:302
 msgid ""
 "Create fundraising, crowdfunding, and donation websites with PayPal and "
 "Stripe payment gateway integration."
 msgstr ""
 
-#: plugin.php:362
+#: plugin.php:306
 msgid "Blocks for ShopEngine"
 msgstr ""
 
-#: plugin.php:365
+#: plugin.php:309
 msgid ""
 "All in one WooCommerce solution for Gutenberg! Build your WooCommerce pages "
 "in a block editor with full customization."
 msgstr ""
 
-#: plugin.php:369
+#: plugin.php:313
 msgid "Genie Image"
 msgstr ""
 
-#: plugin.php:372
+#: plugin.php:316
 msgid ""
 "AI-powered text-to-image generator for WordPress with OpenAI’s DALL-E 2 "
 "technology to generate high-quality images in one click."
 msgstr ""
 
-#: plugin.php:376
+#: plugin.php:320
 msgid "PopupKit"
 msgstr ""
 
-#: plugin.php:383
+#: plugin.php:327
 msgid "TableKit"
 msgstr ""
 
-#: plugin.php:386
+#: plugin.php:330
 msgid ""
 "Fully Customizable. Multi-Media Integration. Synch Any Data Files. All "
 "Within Block Editor."
 msgstr ""
 
-#: plugin.php:390
+#: plugin.php:334
 msgid "Met Starter Templates"
 msgstr ""
 
-#: plugin.php:393
+#: plugin.php:337
 msgid ""
 "Select template, customize and get your website live with Met StarterKit "
 "templates. It all happens in less than 30 seconds!"
 msgstr ""
 
-#: plugin.php:429
+#: plugin.php:367
+msgid "Join the Community"
+msgstr ""
+
+#: plugin.php:369
+msgid ""
+"Join our Facebook group to get 20% discount coupon on premium products. "
+"Follow us to get more exciting offers."
+msgstr ""
+
+#: plugin.php:376
+msgid ""
+"Learn the step by step process for developing your site easily from video "
+"tutorials."
+msgstr ""
+
+#: plugin.php:380
+msgid "Request a feature"
+msgstr ""
+
+#: plugin.php:382
+msgid "Have any special feature in mind? Let us know through the feature request."
+msgstr ""
+
+#: plugin.php:388
+msgid ""
+"Detailed documentation to help you understand the functionality of each "
+"feature."
+msgstr ""
+
+#: plugin.php:392
+msgid "Public Roadmap"
+msgstr ""
+
+#: plugin.php:394
+msgid "Check our upcoming new features, detailed development stories and tasks"
+msgstr ""
+
+#: plugin.php:434
 msgid "Minimum length should be "
 msgstr ""
 
-#: plugin.php:430
+#: plugin.php:435
 msgid " character long."
 msgstr ""
 
-#: plugin.php:431
+#: plugin.php:436
 msgid "Maximum length should be "
 msgstr ""
 
-#: plugin.php:432
+#: plugin.php:437
 msgid "Maximum number should be "
 msgstr ""
 
-#: plugin.php:433
+#: plugin.php:438
 msgid "Minimum number should be "
 msgstr ""
 
-#: plugin.php:618
+#: plugin.php:623
 msgid "Activate Elementor"
 msgstr ""
 
-#: plugin.php:625
+#: plugin.php:630
 msgid "Install Elementor"
 msgstr ""
 
-#: plugin.php:629 plugin.php:646
+#: plugin.php:634 plugin.php:651
 #. translators: MetForm plugin version requirement. %s is the required
 #. Elementor version.
 msgid "MetForm requires Elementor version %1$s+, which is currently NOT RUNNING."
 msgstr ""
 
-#: plugin.php:641
+#: plugin.php:646
 msgid "Update Elementor"
 msgstr ""
 
@@ -3056,7 +3198,7 @@ msgid "Justified"
 msgstr ""
 
 #: traits/button-controls.php:72 traits/quiz-control.php:499
-#: widgets/button/button.php:116
+#: widgets/button/button.php:114
 msgid "Icon"
 msgstr ""
 
@@ -3099,15 +3241,19 @@ msgstr ""
 msgid "Input Value"
 msgstr ""
 
-#: traits/button-controls.php:136
+#: traits/button-controls.php:130
+msgid "Use [field-name] to copy another form field value at submit time."
+msgstr ""
+
+#: traits/button-controls.php:137
 msgid "Input Class"
 msgstr ""
 
-#: traits/button-controls.php:145
+#: traits/button-controls.php:146
 msgid "Input List"
 msgstr ""
 
-#: traits/button-controls.php:157 traits/button-controls.php:480
+#: traits/button-controls.php:158 traits/button-controls.php:481
 #: traits/common-controls.php:386 traits/common-controls.php:578
 #: traits/common-controls.php:609 traits/common-controls.php:959
 #: widgets/checkbox/checkbox.php:267 widgets/email/email.php:204
@@ -3124,7 +3270,7 @@ msgstr ""
 msgid "Padding"
 msgstr ""
 
-#: traits/button-controls.php:177 traits/common-controls.php:373
+#: traits/button-controls.php:178 traits/common-controls.php:373
 #: traits/common-controls.php:565 traits/common-controls.php:834
 #: traits/common-controls.php:890 traits/common-controls.php:933
 #: widgets/email/email.php:194 widgets/gdpr-consent/gdpr-consent.php:207
@@ -3135,8 +3281,8 @@ msgstr ""
 msgid "Typography"
 msgstr ""
 
-#: traits/button-controls.php:195 traits/button-controls.php:323
-#: traits/button-controls.php:404 traits/common-controls.php:643
+#: traits/button-controls.php:196 traits/button-controls.php:324
+#: traits/button-controls.php:405 traits/common-controls.php:643
 #: widgets/checkbox/checkbox.php:308 widgets/file-upload/file-upload.php:337
 #: widgets/gdpr-consent/gdpr-consent.php:353
 #: widgets/listing-optin/listing-optin.php:193 widgets/radio/radio.php:329
@@ -3144,32 +3290,32 @@ msgstr ""
 msgid "Normal"
 msgstr ""
 
-#: traits/button-controls.php:202 traits/button-controls.php:231
-#: traits/button-controls.php:261 widgets/checkbox/checkbox.php:290
+#: traits/button-controls.php:203 traits/button-controls.php:232
+#: traits/button-controls.php:262 widgets/checkbox/checkbox.php:290
 #: widgets/gdpr-consent/gdpr-consent.php:335
 #: widgets/listing-optin/listing-optin.php:175 widgets/radio/radio.php:312
 #: widgets/switch/switch.php:229 widgets/switch/switch.php:410
 msgid "Text Color"
 msgstr ""
 
-#: traits/button-controls.php:224 traits/button-controls.php:347
-#: traits/button-controls.php:429 traits/common-controls.php:706
+#: traits/button-controls.php:225 traits/button-controls.php:348
+#: traits/button-controls.php:430 traits/common-controls.php:706
 #: widgets/file-upload/file-upload.php:368 widgets/select/select.php:449
 msgid "Hover"
 msgstr ""
 
-#: traits/button-controls.php:254 traits/common-controls.php:765
+#: traits/button-controls.php:255 traits/common-controls.php:765
 msgid "Focus"
 msgstr ""
 
-#: traits/button-controls.php:290 traits/common-controls.php:146
+#: traits/button-controls.php:291 traits/common-controls.php:146
 #: traits/common-controls.php:177 widgets/switch/switch.php:244
 #: widgets/switch/switch.php:328 widgets/switch/switch.php:425
 #: widgets/switch/switch.php:509
 msgid "None"
 msgstr ""
 
-#: traits/button-controls.php:372 traits/common-controls.php:291
+#: traits/button-controls.php:373 traits/common-controls.php:291
 #: traits/common-controls.php:847 widgets/file-upload/file-upload.php:444
 #: widgets/range/range.php:374 widgets/range/range.php:460
 #: widgets/rating/rating.php:237 widgets/select/select.php:298
@@ -3177,15 +3323,15 @@ msgstr ""
 msgid "Border Radius"
 msgstr ""
 
-#: traits/button-controls.php:411 traits/button-controls.php:436
+#: traits/button-controls.php:412 traits/button-controls.php:437
 msgid "Icon Color"
 msgstr ""
 
-#: traits/button-controls.php:454
+#: traits/button-controls.php:455
 msgid "Font Size"
 msgstr ""
 
-#: traits/button-controls.php:497
+#: traits/button-controls.php:498
 msgid "Vertical Align"
 msgstr ""
 
@@ -3350,7 +3496,7 @@ msgstr ""
 
 #: traits/common-controls.php:284 traits/common-controls.php:694
 #: traits/common-controls.php:752 traits/common-controls.php:812
-#: widgets/button/button.php:92 widgets/file-upload/file-upload.php:436
+#: widgets/button/button.php:90 widgets/file-upload/file-upload.php:436
 #: widgets/rating/rating.php:191 widgets/rating/rating.php:224
 #: widgets/select/select.php:326 widgets/select/select.php:405
 msgid "Border"
@@ -3440,52 +3586,56 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: traits/conditional-controls.php:87
+#: traits/conditional-controls.php:86
 msgid "If"
 msgstr ""
 
-#: traits/conditional-controls.php:90
+#: traits/conditional-controls.php:89
 msgid "Input field name"
 msgstr ""
 
-#: traits/conditional-controls.php:97
+#: traits/conditional-controls.php:96
 msgid "Match ( comparison )"
 msgstr ""
 
-#: traits/conditional-controls.php:101
+#: traits/conditional-controls.php:100
 msgid "not empty"
 msgstr ""
 
-#: traits/conditional-controls.php:102
+#: traits/conditional-controls.php:101
 msgid "empty"
 msgstr ""
 
-#: traits/conditional-controls.php:103
+#: traits/conditional-controls.php:102
 msgid "equals"
 msgstr ""
 
-#: traits/conditional-controls.php:104
+#: traits/conditional-controls.php:103
 msgid "not equals"
 msgstr ""
 
-#: traits/conditional-controls.php:105
+#: traits/conditional-controls.php:104
 msgid "greater than"
 msgstr ""
 
-#: traits/conditional-controls.php:106
+#: traits/conditional-controls.php:105
 msgid "greater than equal"
 msgstr ""
 
-#: traits/conditional-controls.php:107
+#: traits/conditional-controls.php:106
 msgid "smaller than"
 msgstr ""
 
-#: traits/conditional-controls.php:108
+#: traits/conditional-controls.php:107
 msgid "smaller than equal"
 msgstr ""
 
-#: traits/conditional-controls.php:117
+#: traits/conditional-controls.php:116
 msgid "Match value"
+msgstr ""
+
+#: traits/conditional-controls.php:123
+msgid "Dynamic match values eg. [mf-field-name]"
 msgstr ""
 
 #: traits/conditional-controls.php:132
@@ -3709,7 +3859,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: traits/quiz-control.php:573
+#: traits/quiz-control.php:573 utils/pro-awareness/pro-awareness.php:236
 msgid "Thumbnail"
 msgstr ""
 
@@ -3729,9 +3879,117 @@ msgstr ""
 msgid "Read Docs"
 msgstr ""
 
-#: utils/pro-awareness/pro-awareness.php:159
-#: utils/pro-awareness/pro-awareness.php:174
+#: utils/feedback/plugin-unsubscribe.php:110
+msgid "Before you go, what made you deactivate MetForm?"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:188
+msgid "Failed to submit feedback."
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:195
+msgid "Thank you for your feedback!"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:237
+msgid "Quick Feedback"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:301
+msgid "Skip & Deactivate"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:304
+msgid "Submit & Deactivate"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:327
+msgid "Security check failed"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:333
+msgid "Insufficient permissions"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:442
+msgid "I no longer need the plugin"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:445
+msgid "Tell us more..."
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:448
+msgid "I found a better plugin"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:451
+msgid "Which plugin are you using instead?"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:454
+msgid "I couldn't get the plugin to work"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:457
+msgid "What specific issue did you face?"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:460
+msgid "It's missing a specific feature"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:463
+msgid "What feature do you need?"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:466
+msgid "The plugin affects site performance"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:469
+msgid "Please share details about the performance issues you experienced..."
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:472
+msgid "It's a temporary deactivation"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:475
+msgid "When will you reactivate it?"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:478
+msgid "Other"
+msgstr ""
+
+#: utils/feedback/plugin-unsubscribe.php:481
+msgid "Please tell us why..."
+msgstr ""
+
+#: utils/pro-awareness/pro-awareness.php:63
+msgid "Support Center"
+msgstr ""
+
+#: utils/pro-awareness/pro-awareness.php:66
+msgid "Our experienced support team is ready to resolve your issues any time."
+msgstr ""
+
+#: utils/pro-awareness/pro-awareness.php:69
+msgid "Get Help"
+msgstr ""
+
+#: utils/pro-awareness/pro-awareness.php:150
+msgid "Upgrade To Premium"
+msgstr ""
+
+#: utils/pro-awareness/pro-awareness.php:171
+#: utils/pro-awareness/pro-awareness.php:186
 msgid "Default Title"
+msgstr ""
+
+#: utils/pro-awareness/pro-awareness.php:254
+msgid "MetForm Overview ⤵️"
 msgstr ""
 
 #: utils/stories/stories.php:255
@@ -3756,17 +4014,17 @@ msgid ""
 "promotional images on WP Dashboard"
 msgstr ""
 
-#: utils/util.php:665
+#: utils/util.php:666
 msgid ""
 "Plain permalink is not supported with MetForm. We recommend to use post "
 "name as your permalink settings."
 msgstr ""
 
-#: utils/util.php:671
+#: utils/util.php:672
 msgid "Change Permalink"
 msgstr ""
 
-#: utils/util.php:697
+#: utils/util.php:698
 msgid "Permalink Structure Updated!"
 msgstr ""
 
@@ -3799,11 +4057,11 @@ msgstr ""
 msgid "Hidden"
 msgstr ""
 
-#: widgets/button/button.php:77
+#: widgets/button/button.php:75
 msgid "Button"
 msgstr ""
 
-#: widgets/button/button.php:104
+#: widgets/button/button.php:102
 msgid "Shadow"
 msgstr ""
 
@@ -4620,7 +4878,15 @@ msgstr ""
 msgid "Select Form : "
 msgstr ""
 
-#: widgets/form.php:76
+#: widgets/form.php:71
+msgid "See this video tutorial how to use metform."
+msgstr ""
+
+#: widgets/form.php:73
+msgid "Click here"
+msgstr ""
+
+#: widgets/form.php:82
 msgid "Select Form: "
 msgstr ""
 
@@ -5076,7 +5342,7 @@ msgctxt "Post Type General Name"
 msgid "Entries"
 msgstr ""
 
-#: core/forms/cpt.php:529
+#: core/forms/cpt.php:532
 msgctxt "Post Type General Name"
 msgid "Forms"
 msgstr ""
@@ -5086,57 +5352,57 @@ msgctxt "Post Type Singular Name"
 msgid "Entry"
 msgstr ""
 
-#: core/forms/cpt.php:530
+#: core/forms/cpt.php:533
 msgctxt "Post Type Singular Name"
 msgid "Form"
 msgstr ""
 
-#: traits/button-controls.php:287
+#: traits/button-controls.php:288
 msgctxt "Border Control"
 msgid "Border Type"
 msgstr ""
 
-#: traits/button-controls.php:291 widgets/switch/switch.php:245
+#: traits/button-controls.php:292 widgets/switch/switch.php:245
 #: widgets/switch/switch.php:329 widgets/switch/switch.php:426
 #: widgets/switch/switch.php:510
 msgctxt "Border Control"
 msgid "Solid"
 msgstr ""
 
-#: traits/button-controls.php:292 widgets/switch/switch.php:246
+#: traits/button-controls.php:293 widgets/switch/switch.php:246
 #: widgets/switch/switch.php:330 widgets/switch/switch.php:427
 #: widgets/switch/switch.php:511
 msgctxt "Border Control"
 msgid "Double"
 msgstr ""
 
-#: traits/button-controls.php:293 widgets/switch/switch.php:247
+#: traits/button-controls.php:294 widgets/switch/switch.php:247
 #: widgets/switch/switch.php:331 widgets/switch/switch.php:428
 #: widgets/switch/switch.php:512
 msgctxt "Border Control"
 msgid "Dotted"
 msgstr ""
 
-#: traits/button-controls.php:294 widgets/switch/switch.php:248
+#: traits/button-controls.php:295 widgets/switch/switch.php:248
 #: widgets/switch/switch.php:332 widgets/switch/switch.php:429
 #: widgets/switch/switch.php:513
 msgctxt "Border Control"
 msgid "Dashed"
 msgstr ""
 
-#: traits/button-controls.php:295 widgets/switch/switch.php:249
+#: traits/button-controls.php:296 widgets/switch/switch.php:249
 #: widgets/switch/switch.php:333 widgets/switch/switch.php:430
 #: widgets/switch/switch.php:514
 msgctxt "Border Control"
 msgid "Groove"
 msgstr ""
 
-#: traits/button-controls.php:307
+#: traits/button-controls.php:308
 msgctxt "Border Control"
 msgid "Width"
 msgstr ""
 
-#: traits/button-controls.php:333 traits/button-controls.php:356
+#: traits/button-controls.php:334 traits/button-controls.php:357
 msgctxt "Border Control"
 msgid "Color"
 msgstr ""

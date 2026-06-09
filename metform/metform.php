@@ -3,7 +3,7 @@
  * Plugin Name: MetForm
  * Plugin URI: http://wpmet.com/plugin/metform/
  * Description: Most flexible and design friendly form builder for Elementor
- * Version: 4.1.4
+ * Version: 4.1.5
  * Author: Wpmet
  * Author URI:  https://wpmet.com
  * Text Domain: metform
@@ -21,6 +21,7 @@ require_once plugin_dir_path( __FILE__ ) . 'utils/emailkit/emailkit.php';
 require_once plugin_dir_path( __FILE__ ) . 'utils/stories/stories.php';
 require_once plugin_dir_path( __FILE__ ) . 'utils/pro-awareness/pro-awareness.php';
 require_once plugin_dir_path( __FILE__ ) . 'utils/rating/rating.php';
+require_once plugin_dir_path( __FILE__ ) . 'utils/feedback/plugin-unsubscribe.php';
 
 require plugin_dir_path( __FILE__ ) .'autoloader.php';
 require plugin_dir_path( __FILE__ ) .'plugin.php';

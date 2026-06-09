@@ -2,8 +2,6 @@
 
 namespace Wpmet\Libs;
 
-use MetForm\Plugin as Plugin;
-
 defined('ABSPATH') || exit;
 
 if(!class_exists('\Wpmet\Libs\Pro_Awareness')) :
@@ -18,15 +16,15 @@ if(!class_exists('\Wpmet\Libs\Pro_Awareness')) :
 		private $parent_menu_slug;
 		private $menu_slug = '_get_help';
 		private $default_grid_link  = 'https://wpmet.com/support-ticket';
-		private $default_grid_title = 'Support Center';
+		private $default_grid_title = '';
 		private $default_grid_thumbnail = '';
-		private $default_grid_desc  = 'Our experienced support team is ready to resolve your issues any time.';
+		private $default_grid_desc  = '';
 		private $pro_link_conf      = [];
 
 		private $grids = [];
 		private $action_links = [];
 		private $row_meta_links = [];
-		private $parent_menu_text = 'Get Help';
+		private $parent_menu_text = '';
 		private $products = [];
 
 
@@ -61,6 +59,15 @@ if(!class_exists('\Wpmet\Libs\Pro_Awareness')) :
 		protected function set_text_domain($val) {
 
 			$this->text_domain = $val;
+			if ($this->default_grid_title === '') {
+				$this->default_grid_title = esc_html__( 'Support Center', 'metform' );
+			}
+			if ($this->default_grid_desc === '') {
+				$this->default_grid_desc = esc_html__( 'Our experienced support team is ready to resolve your issues any time.', 'metform' );
+			}
+			if ($this->parent_menu_text === '') {
+				$this->parent_menu_text = esc_html__( 'Get Help', 'metform' );
+			}
 
 			return $this;
 		}
@@ -138,9 +145,14 @@ if(!class_exists('\Wpmet\Libs\Pro_Awareness')) :
 				return $this;
 			}
 
+			$default_anchor = sprintf(
+				'<span style="color: #FCB214;" class="pro_aware pro">%s</span>',
+				esc_html__( 'Upgrade To Premium', 'metform' )
+			);
+
 			$this->pro_link_conf[] = [
 				'url'        => $url,
-				'anchor'     => empty($conf['anchor']) ? '<span style="color: #FCB214;" class="pro_aware pro">Upgrade To Premium</span>' : $conf['anchor'],
+				'anchor'     => empty($conf['anchor']) ? $default_anchor : $conf['anchor'],
 				'permission' => empty($conf['permission']) ? 'manage_options' : $conf['permission'],
 			];
 
@@ -221,7 +233,7 @@ if(!class_exists('\Wpmet\Libs\Pro_Awareness')) :
                                    class="wpmet_pro_a_wrapper" title="<?php echo esc_attr($grid['title']); ?>"
                                    title="<?php echo esc_attr($grid['title']); ?>">
                                     <div class="wpmet_pro_a_thumb">
-                                        <img src="<?php echo esc_attr($grid['thumbnail']); ?>" alt="Thumbnail">
+												<img src="<?php echo esc_attr( $grid['thumbnail'] ); ?>" alt="<?php echo esc_attr__( 'Thumbnail', 'metform' ); ?>">
                                     </div>
                                     <!-- // thumbnail -->
 
@@ -239,7 +251,7 @@ if(!class_exists('\Wpmet\Libs\Pro_Awareness')) :
                 </div>
 				<div class="metform-video-section">
 					<div class="metform-video-separator"></div>
-						<h2 class="metform-video-title">MetForm Overview ⤵️</h2>
+						<h2 class="metform-video-title"><?php echo esc_html__( 'MetForm Overview ⤵️', 'metform' ); ?></h2>
 						<div class="metform-video-embed-container">
 							<iframe
 								width="560"

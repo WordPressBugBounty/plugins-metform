@@ -67,9 +67,7 @@ Class MetForm_Input_Button extends Widget_Base{
         );
 
         $this->hidden_input_content_control();
-
 		$this->end_controls_section();
-
 
         $this->start_controls_section(
 			'mf_btn_section_style',

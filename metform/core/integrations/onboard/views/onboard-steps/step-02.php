@@ -6,7 +6,7 @@
         </div>
         <div class="mf-onboard-signup">
             <label for="signup"><i class="icon xs-onboard-mail"></i></label>
-            <input name="settings[newsletter_email]" id="signup" type="email" placeholder="Enter your email address">
+            <input name="settings[newsletter_email]" id="signup" type="email" placeholder="<?php echo esc_attr__( 'Enter your email address', 'metform' ); ?>">
         </div>
         <p class="mf-onboard-signup--helptext"><?php echo esc_html__('Submit Your Best Email.', 'metform'); ?> <span><?php echo esc_html__('(We Never Spam)', 'metform'); ?></span></p>
     </div>

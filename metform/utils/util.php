@@ -519,6 +519,7 @@ class Util{
 			data-save-progress = "<?php echo (isset($form_settings['mf_save_progress']) && $form_settings['mf_save_progress'] && class_exists('\MetForm_Pro\Base\Package')) ? "true" : "false"; ?>"
 			data-form-type="<?php echo esc_attr($form_type); ?>"
 			data-stop-vertical-effect="<?php echo esc_attr(isset($form_settings['mf_stop_vertical_scrolling']) ? $form_settings['mf_stop_vertical_scrolling'] : '') ?>"
+			data-payment-submit-before="<?php echo esc_attr(isset($form_settings['mf_payment_submit_before_payment']) ? $form_settings['mf_payment_submit_before_payment'] : '0') ?>"
 			></div>
 
 
@@ -1243,5 +1244,14 @@ class Util{
 			default:
 				return 'Upgrade for premium access.';
 		}
+	}
+
+
+	public static function is_plugin_active( $plugin_file ) {
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		return function_exists( 'is_plugin_active' ) ? is_plugin_active( $plugin_file ) : false;
 	}
 }

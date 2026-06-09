@@ -368,17 +368,17 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 										</div>
 										<div class="ekit-admin-right-content">
 											<div class="ekit-admin-right-content--heading">
-												<h2>Easy Documentation</h2>
-												<span class="ekit-admin-right-content--heading__sub-title">Docs</span>
+												<h2><?php esc_html_e('Easy Documentation', 'metform'); ?></h2>
+												<span class="ekit-admin-right-content--heading__sub-title"><?php esc_html_e('Docs', 'metform'); ?></span>
 											</div>
-											<p>Check out the docs and start building awesome forms with MetForm!</p>
+											<p><?php esc_html_e('Check out the docs and start building awesome forms with MetForm!', 'metform'); ?></p>
 											<div class="ekit-admin-right-content--button">
 												<a target="_blank" href="https://wpmet.com/doc/metform/" class="attr-btn attr-btn-primary ekit-admin-right-content--link"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" fill="none">
 														<path d="M3.5 10.125H8.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
 														<path d="M3.5 7.625H6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
 														<path d="M11 12V5.125L6.625 0.75H2.25C1.55964 0.75 1 1.30964 1 2V12C1 12.6904 1.55964 13.25 2.25 13.25H9.75C10.4404 13.25 11 12.6904 11 12Z" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"></path>
 														<path d="M6.625 0.75V3.875C6.625 4.56536 7.18463 5.125 7.875 5.125H11" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"></path>
-													</svg> Get started</a>
+													</svg> <?php esc_html_e('Get started', 'metform'); ?></a>
 											</div>
 										</div>
 									</div>
@@ -386,12 +386,12 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 									<div class="ekit-admin-section ekit-admin-dual-layout ekit-admin-support-section">
 										<div class="ekit-admin-right-content" style="margin-right: 50px;">
 											<div class="ekit-admin-right-content--heading">
-												<h2>Top-notch &amp; Friendly Support</h2>
-												<span class="ekit-admin-right-content--heading__sub-title">Support</span>
+												<h2><?php esc_html_e('Top-notch &amp; Friendly Support', 'metform'); ?></h2>
+												<span class="ekit-admin-right-content--heading__sub-title"><?php esc_html_e('Support', 'metform'); ?></span>
 											</div>
-											<p>Stuck somewhere? Feel free to open a ticket for getting Pro support.</p>
+											<p><?php esc_html_e('Stuck somewhere? Feel free to open a ticket for getting Pro support.', 'metform'); ?></p>
 											<div class="ekit-admin-right-content--button">
-												<a target="_blank" href="https://wpmet.com/support-ticket-form/" class="attr-btn attr-btn-primary ekit-admin-right-content--link"><span class="mf mf-question"></span>Join support forum</a>
+												<a target="_blank" href="https://wpmet.com/support-ticket-form/" class="attr-btn attr-btn-primary ekit-admin-right-content--link"><span class="mf mf-question"></span><?php esc_html_e('Join support forum', 'metform'); ?></a>
 											</div>
 										</div>
 
@@ -408,14 +408,14 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 										</div>
 										<div class="ekit-admin-right-content two">
 
-											<p>Maybe we’re missing something you can’t live without.</p>
+											<p><?php esc_html_e('Maybe we\'re missing something you can\'t live without.', 'metform'); ?></p>
 											<div class="ekit-admin-right-content--button">
 												<a target="_blank" href="https://wpmet.com/plugin/metform/roadmaps/#ideas" class="attr-btn attr-btn-primary ekit-admin-right-content--link"> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" fill="none">
 														<path d="M3.5 10.125H8.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 														<path d="M3.5 7.625H6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 														<path d="M11 12V5.125L6.625 0.75H2.25C1.55964 0.75 1 1.30964 1 2V12C1 12.6904 1.55964 13.25 2.25 13.25H9.75C10.4404 13.25 11 12.6904 11 12Z" stroke="#fff" stroke-width="1.5" stroke-linejoin="round" />
 														<path d="M6.625 0.75V3.875C6.625 4.56536 7.18463 5.125 7.875 5.125H11" stroke="#fff" stroke-width="1.5" stroke-linejoin="round" />
-													</svg></span> Request a Feature</a>
+												</svg></span> <?php esc_html_e('Request a Feature', 'metform'); ?></a>
 											</div>
 										</div>
 									</div>
@@ -644,23 +644,23 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 														<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-															</svg> Upgrade </a>
+															</svg> <?php esc_html_e('Upgrade', 'metform'); ?> </a>
 													</div>
 												</div>
 												<div class="attr-row">
 													<div class="attr-col-lg-6">
 														<?php
-														mf_dummy_simple_input('API:', 'Insert Dropbox API key', 'Create Dropbox APP ID from Dropbox developers panel');
+														mf_dummy_simple_input(esc_html__('API:', 'metform'), esc_html__('Insert Dropbox API key', 'metform'), esc_html__('Create Dropbox APP ID from Dropbox developers panel', 'metform'));
 														?>
 													</div>
 													<div class="attr-col-lg-6">
 														<?php
-														mf_dummy_simple_input('API:', 'Insert Dropbox API key', 'Create Dropbox APP Secrate from Dropbox developers panel');
+														mf_dummy_simple_input(esc_html__('API:', 'metform'), esc_html__('Insert Dropbox API key', 'metform'), esc_html__('Create Dropbox APP Secrate from Dropbox developers panel', 'metform'));
 														?>
 													</div>
 												</div>
 												<ol class="xs_social_ol">
-													<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Dropbox developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://wpmet.com/doc/dropbox-file-upload/" target="_blank">Documentation</a></li>
+													<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Dropbox developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://wpmet.com/doc/dropbox-file-upload/" target="_blank"><?php esc_html_e('Documentation', 'metform'); ?></a></li>
 													<li><span class="pointer">2</span><?php echo esc_html__('Must add the following URL to the "Valid OAuth redirect URIs" field:', 'metform') ?> <strong style="font-weight:500;"><?php echo esc_url(admin_url('admin.php?page=metform-menu-settings')) ?></strong></li>
 													<li><span class="pointer">3</span><?php echo esc_html__('After getting the App ID & App Secret, put those information', 'metform') ?></li>
 													<li><span class="pointer">4</span><?php echo esc_html__('Click on "Save Changes"', 'metform') ?></li>
@@ -1002,12 +1002,12 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 															<div class="attr-row" style="margin: 0 -10px;">
 																<div class="attr-col-lg-12">
 																	<?php
-																	mf_dummy_simple_input('Image url:', 'Stripe image url', 'Enter here your stripe image url. This image will show on stripe payment pop up modal.');
-																	mf_dummy_simple_input('Live publishable key:', 'Stripe test publishable key', 'Enter here your publishable key.');
-																	mf_dummy_simple_input('Live secret key:', 'Stripe live secret key', 'Enter here your stripe live secret key.');
-																	mf_dummy_checkbox_input('Enable sandbox mode:', 'Enable this for testing your payment system.');
-																	mf_dummy_simple_input('Test publishable key:', 'Stripe test publishable key', 'Enter here your test publishable key.');
-																	mf_dummy_simple_input('Test secret key:', 'Stripe test secret key', 'Enter here your test secret key.');
+																	mf_dummy_simple_input(esc_html__('Image url:', 'metform'), esc_html__('Stripe image url', 'metform'), esc_html__('Enter here your stripe image url. This image will show on stripe payment pop up modal.', 'metform'));
+																	mf_dummy_simple_input(esc_html__('Live publishable key:', 'metform'), esc_html__('Stripe test publishable key', 'metform'), esc_html__('Enter here your publishable key.', 'metform'));
+																	mf_dummy_simple_input(esc_html__('Live secret key:', 'metform'), esc_html__('Stripe live secret key', 'metform'), esc_html__('Enter here your stripe live secret key.', 'metform'));
+																	mf_dummy_checkbox_input(esc_html__('Enable sandbox mode:', 'metform'), esc_html__('Enable this for testing your payment system.', 'metform'));
+																	mf_dummy_simple_input(esc_html__('Test publishable key:', 'metform'), esc_html__('Stripe test publishable key', 'metform'), esc_html__('Enter here your test publishable key.', 'metform'));
+																	mf_dummy_simple_input(esc_html__('Test secret key:', 'metform'), esc_html__('Stripe test secret key', 'metform'), esc_html__('Enter here your test secret key.', 'metform'));
 																	?>
 																</div>
 															</div>
@@ -1046,7 +1046,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 															<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																	<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																	<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																</svg> Upgrade </a>
+																</svg> <?php esc_html_e('Upgrade', 'metform'); ?> </a>
 														</div>
 													</div>
 												<?php
@@ -1217,7 +1217,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 														</div>
 													<?php else : ?>
 														<ol class="xs_social_ol">
-															<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Google developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://wpmet.com/doc/google-integrations/" target="_blank">Documentation</a></li>
+															<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Google developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://wpmet.com/doc/google-integrations/" target="_blank"><?php esc_html_e('Documentation', 'metform'); ?></a></li>
 															<li><span class="pointer">2</span><?php echo esc_html__('Must add the following URL to the "Valid OAuth redirect URIs" field:', 'metform') ?> <strong style="font-weight:500;"><?php echo esc_url(admin_url('admin.php?page=metform-menu-settings')) ?></strong></li>
 															<li><span class="pointer">3</span><?php echo esc_html__('After getting the App ID & App Secret, put those information', 'metform') ?></li>
 															<li><span class="pointer">4</span><?php echo esc_html__('Click on "Save Changes"', 'metform') ?></li>

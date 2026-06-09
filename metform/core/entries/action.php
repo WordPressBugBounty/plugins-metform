@@ -495,6 +495,103 @@ class Action
         //set submitted data array and key to a class
         $all_data = !empty($this->form_data) && is_array($this->form_data) ? $this->form_data : [];
 
+        // Get payment method to determine if we need payment-first flow
+        $payment_method_check = $this->get_input_name_by_widget_type('mf-payment-method');
+        $selected_payment_method = null;
+        
+        // Only process payment logic if payment method widget exists
+        if (!empty($payment_method_check)) {
+            // Check if this is a payment-first request (get payment config without storing entries)
+            $is_payment_first = isset($form_data['mf_payment_first']) && $form_data['mf_payment_first'] == '1';
+            $is_payment_completed = isset($form_data['mf_payment_completed']) && $form_data['mf_payment_completed'] == '1';
+            
+            if (isset($payment_method_check[0]) && isset($this->form_data[$payment_method_check[0]])) {
+                $selected_payment_method = $this->form_data[$payment_method_check[0]];
+            }
+        }
+        
+        $is_payment_first = isset($form_data['mf_payment_first']) && $form_data['mf_payment_first'] == '1';
+        $is_payment_completed = isset($form_data['mf_payment_completed']) && $form_data['mf_payment_completed'] == '1';
+        $payment_assistant_active = \Metform\Utils\Util::is_plugin_active('metform-payment-assistant/metform-payment-assistant.php');
+
+        // If payment-first request for Stripe or PayPal and the payment assistant is active
+        if ($payment_assistant_active && $is_payment_first && ($selected_payment_method === 'stripe' || $selected_payment_method === 'paypal')) {
+            // Safety check: Ensure form settings exist
+            if (empty($this->form_settings)) {
+                $this->response->status = 0;
+                $this->response->error[0] = esc_html__('Form settings not found. Please check form configuration.', 'metform');
+                return $this->response;
+            }
+            
+            // Create temporary entry to get entry_id for payment processing
+            // Using 'auto-draft' status so it won't show in entries list at all
+            $defaults = [
+                'post_title' => '',
+                'post_status' => 'auto-draft',
+                'post_content' => '',
+                'post_type' => $this->post_type,
+            ];
+
+            $this->entry_id = wp_insert_post($defaults);
+
+            if (!is_wp_error($this->entry_id) && $this->entry_id) {
+                update_post_meta($this->entry_id, $this->key_payment_status, 'unpaid');
+                update_post_meta($this->entry_id, $this->key_form_id, $this->form_id);
+                update_post_meta($this->entry_id, 'mf_page_id', $page_id);
+                update_post_meta($this->entry_id, 'mf_payment_pending', '1'); // Flag to hide from entries
+                
+                // Store form data temporarily for PayPal
+                update_post_meta($this->entry_id, 'mf_temp_form_data', $this->form_data);
+            }
+
+            $this->response->status = 1;
+            $this->response->store_entries = '0';
+            $this->response->data['entry_id'] = $this->entry_id;
+            $this->response->data['message'] = isset($this->form_settings['success_message']) ? $this->form_settings['success_message'] : '';
+
+            // Return Stripe payment configuration
+            if ($selected_payment_method === 'stripe' && class_exists('\MetForm_Pro\Core\Integrations\Payment\Stripe')) {
+                $payment_widget_name = $this->get_input_name_by_widget_type('mf-payment-method');
+                $widget = is_array($payment_widget_name) ? current($payment_widget_name) : '';
+
+                $amount_filed = isset($this->fields[$widget]->mf_input_payment_field_name) ? $this->fields[$widget]->mf_input_payment_field_name : '';
+                $amount = isset($this->form_data[$amount_filed]) ? $this->form_data[$amount_filed] : 0;
+                $currency = $this->form_settings['mf_payment_currency'] ?? 'USD';
+
+                $icon_url = !empty($this->form_settings['mf_stripe_image_url']) ? $this->form_settings['mf_stripe_image_url'] : 'https://stripe.com/img/documentation/checkout/marketplace.png';
+
+                $livekey = isset($this->form_settings['mf_stripe_live_publishiable_key']) ? $this->form_settings['mf_stripe_live_publishiable_key'] : '';
+                $livekey_test = isset($this->form_settings['mf_stripe_test_publishiable_key']) ? $this->form_settings['mf_stripe_test_publishiable_key'] : '';
+                $sandbox = isset($this->form_settings['mf_stripe_sandbox']) ? true : false;
+
+                $live_keys = ($sandbox) ? $livekey_test : $livekey;
+
+                $payment['name_post'] = $this->form_settings['form_title'];
+                $payment['description'] = $this->form_id;
+                $payment['amount'] = $amount;
+                $payment['currency_code'] = $currency;
+                $payment['keys'] = $live_keys;
+                $payment['image_url'] = $icon_url;
+                $payment['entry_id'] = $this->entry_id;
+                $payment['form_id'] = $this->form_id;
+                $payment['sandbox'] = $sandbox;
+
+                $this->response->data['payment_data'] = (object) $payment;
+                
+                $rest_url = get_rest_url(null, 'metform/v1/entries/');
+                $this->response->data['ajax_stripe'] = $rest_url . "stripe/pay?entry_id=" . $this->entry_id;
+            }
+            
+            // Return PayPal redirect URL
+            if ($selected_payment_method === 'paypal' && class_exists('\MetForm_Pro\Core\Integrations\Payment\Paypal')) {
+                $rest_url = get_rest_url(null, 'metform/v1/entries/');
+                $this->response->data['redirect_to'] = $rest_url . "paypal/pay?entry_id=" . $this->entry_id;
+                $this->response->data['message'] = $this->form_settings['success_message'] . esc_html__(' Please wait... Redirecting to PayPal.', 'metform');
+            }
+
+            return $this->response;
+        }
+
         if (isset($this->form_settings['store_entries']) && $this->form_settings['store_entries'] == 1) {
 
             $defaults = [
@@ -504,13 +601,58 @@ class Action
                 'post_type' => $this->post_type,
             ];
 
-            $this->entry_id = wp_insert_post($defaults);
+            if ($payment_assistant_active) {
+                // Check if entry already exists (from payment-first flow)
+                $existing_entry_id = isset($form_data['mf_entry_id']) ? intval($form_data['mf_entry_id']) : 0;
+                
+                if ($existing_entry_id && get_post($existing_entry_id)) {
+                    // Update existing entry from payment-first flow
+                    $this->entry_id = $existing_entry_id;
+                    
+                    // Change post status from 'auto-draft' to 'draft' to make it visible in entries
+                    wp_update_post([
+                        'ID' => $this->entry_id,
+                        'post_status' => 'draft'
+                    ]);
+                    
+                    // Remove the payment pending flag
+                    delete_post_meta($this->entry_id, 'mf_payment_pending');
+                    
+                    // Get existing serial number
+                    $entry_serial_no = get_post_meta($this->entry_id, 'metform_entries_serial_no', true);
+                    if (!$entry_serial_no) {
+                        $entry_serial_no = (int) get_option('metform_last_entry_serial_no', 0);
+                        $entry_serial_no++;
+                        update_option('metform_last_entry_serial_no', $entry_serial_no);
+                        update_post_meta($this->entry_id, 'metform_entries_serial_no', $entry_serial_no);
+                    }
+                    $all_data = array_merge($all_data, ['mf_id' => $entry_serial_no, 'mf_form_name' => $this->title]);
+                    
+                    // Clean up temporary data
+                    delete_post_meta($this->entry_id, 'mf_temp_form_data');
+                } else {
+                    $this->entry_id = wp_insert_post($defaults);
 
-            update_post_meta($this->entry_id, 'mf_page_id', $page_id);
-            $entry_serial_no = (int) get_option('metform_last_entry_serial_no', 0);
-            $all_data = array_merge($all_data, ['mf_id' => ++$entry_serial_no, 'mf_form_name' => $this->title]);
-            update_option('metform_last_entry_serial_no', $entry_serial_no);
-            update_post_meta($this->entry_id, 'metform_entries_serial_no', $entry_serial_no);
+                    update_post_meta($this->entry_id, 'mf_page_id', $page_id);
+                    $entry_serial_no = (int) get_option('metform_last_entry_serial_no', 0);
+                    $all_data = array_merge($all_data, ['mf_id' => ++$entry_serial_no, 'mf_form_name' => $this->title]);
+                    update_option('metform_last_entry_serial_no', $entry_serial_no);
+                    update_post_meta($this->entry_id, 'metform_entries_serial_no', $entry_serial_no);
+                }
+
+                // If payment was completed via payment-first flow, mark payment status as paid
+                if ($is_payment_completed && in_array($selected_payment_method, ['stripe', 'paypal'], true)) {
+                    update_post_meta($this->entry_id, $this->key_payment_status, 'paid');
+                }
+            } else {
+                $this->entry_id = wp_insert_post($defaults);
+
+                update_post_meta($this->entry_id, 'mf_page_id', $page_id);
+                $entry_serial_no = (int) get_option('metform_last_entry_serial_no', 0);
+                $all_data = array_merge($all_data, ['mf_id' => ++$entry_serial_no, 'mf_form_name' => $this->title]);
+                update_option('metform_last_entry_serial_no', $entry_serial_no);
+                update_post_meta($this->entry_id, 'metform_entries_serial_no', $entry_serial_no);
+            }
         }else{
             $this->response->status = '1';
             $this->response->store_entries = '0';
@@ -595,7 +737,7 @@ class Action
 
         $paymet_method = $this->get_input_name_by_widget_type('mf-payment-method');
 
-        if (class_exists('\MetForm_Pro\Core\Integrations\Payment\Paypal') && isset($this->form_settings['mf_paypal']) && isset($this->form_settings['mf_paypal_email']) && ($this->form_settings['mf_paypal_email'] != '') && isset($paymet_method[0]) && ($paymet_method[0] != null)) {
+        if (!$is_payment_completed && class_exists('\MetForm_Pro\Core\Integrations\Payment\Paypal') && isset($this->form_settings['mf_paypal']) && isset($this->form_settings['mf_paypal_email']) && ($this->form_settings['mf_paypal_email'] != '') && isset($paymet_method[0]) && ($paymet_method[0] != null)) {
             if (isset($this->form_data[$paymet_method[0]]) && $this->form_data[$paymet_method[0]] == 'paypal') {
                 update_post_meta($this->entry_id, $this->key_payment_status, 'unpaid');
                 $rest_url = get_rest_url(null, 'metform/v1/entries/');
@@ -608,7 +750,7 @@ class Action
             $paymet_method[0] = null;
         }
 
-        if (class_exists('\MetForm_Pro\Core\Integrations\Payment\Stripe') && ($paymet_method[0] != null)) {
+        if (!$is_payment_completed && class_exists('\MetForm_Pro\Core\Integrations\Payment\Stripe') && ($paymet_method[0] != null)) {
             if (isset($this->form_data[$paymet_method[0]]) && $this->form_data[$paymet_method[0]] == 'stripe') {
                 update_post_meta($this->entry_id, $this->key_payment_status, 'unpaid');
 
@@ -1366,7 +1508,31 @@ class Action
             $this->form_id = $form_id;
         }
         global $wpdb;
-        $entry_count = $wpdb->get_results($wpdb->prepare(" SELECT COUNT( `post_id` )  as `count`  FROM `" . $wpdb->prefix . "postmeta` WHERE `meta_key` LIKE %s AND `meta_value` = %d ",'metform_entries__form_id',$this->form_id), OBJECT);
+
+        $payment_assistant_active = \MetForm\Utils\Util::is_plugin_active('metform-payment-assistant/metform-payment-assistant.php');
+
+        if ($payment_assistant_active) {
+            // Exclude entries with 'auto-draft' status and entries with payment pending flag.
+            // This ensures only completed entries (including those with completed payments) are counted.
+            $entry_count = $wpdb->get_results($wpdb->prepare(
+                "SELECT COUNT(DISTINCT pm.post_id) as `count` 
+                FROM `" . $wpdb->prefix . "postmeta` pm
+                INNER JOIN `" . $wpdb->prefix . "posts` p ON pm.post_id = p.ID
+                LEFT JOIN `" . $wpdb->prefix . "postmeta` pm_pending ON pm.post_id = pm_pending.post_id AND pm_pending.meta_key = 'mf_payment_pending'
+                WHERE pm.meta_key = %s 
+                AND pm.meta_value = %d
+                AND p.post_status != 'auto-draft'
+                AND pm_pending.meta_value IS NULL",
+                'metform_entries__form_id',
+                $this->form_id
+            ), OBJECT);
+        } else {
+            $entry_count = $wpdb->get_results($wpdb->prepare(
+                " SELECT COUNT( `post_id` ) as `count`  FROM `" . $wpdb->prefix . "postmeta` WHERE `meta_key` LIKE %s AND `meta_value` = %d ",
+                'metform_entries__form_id',
+                $this->form_id
+            ), OBJECT);
+        }
 
         $entry_count = $entry_count[0]->count;
 

@@ -1,10 +1,9 @@
-
 === MetForm - Contact Form, Survey, Quiz, & Custom Form Builder for Elementor ===
 Contributors: Roxnor, Ataurr, aion11
 Tags: form builder, Elementor form, contact form builder, Multi step form, custom form
-Requires at least: 5.0
-Tested up to: 6.9
-Stable tag: 4.1.4
+Requires at least: 6.0
+Tested up to: 7.0
+Stable tag: 4.1.5
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -37,6 +36,11 @@ A standout feature of MetFom is the option to create custom field groups and reu
 
 You’ll also get demos for multi-step, conditional, feedback, event, job application, booking, custom social signup, and product registration forms—making it ideal for beginners.
 
+## Pre-Built Form Templates
+
+MetForm provides [a comprehensive library of pre-built templates designed](https://wpmet.com/plugin/metform/templates/?utm_source=org&utm_medium=readme) to help you deploy functional forms quickly without having to build them entirely from scratch. The collection covers a wide variety of common use cases, ranging from simple contact and newsletter signup layouts to more complex event registrations, job applications, and multi-step booking systems.
+
+
 ## Mobile-friendly and Responsive Form Builder
 
 Metform works with Elementor without any issue and responsiveness can be controlled by the Elementor page builder. With this custom form builder, your smart order form or any online form will look great on all resolutions and devices: mobile, tablet, and desktop.
@@ -50,15 +54,31 @@ You can use Metform anywhere to create an Elementor contact form. Also, you can 
 Your online form submission data can be saved in admin. So, it will send data to the form admin and also send a confirmation email to form users.
 
 ## Build Smart Conditional Form
+
 Conditional Logic is a premium MetForm feature that helps you build smarter, more dynamic forms. It allows you to show or hide specific fields based on what the user selects or inputs. This means certain fields will only appear after the user takes a specific action or chooses a particular option, making your forms cleaner and more personalized.
 
 ## Create Multi-step Form
+
 Divide long and lengthy forms into a step-by-step process to improve the user experience. By dividing the form into smaller, manageable sections, users are less likely to feel intimidated or abandon it midway. With MetForm, you can easily turn any WordPress form into a multi-step form in Elementor.
 
-## File Upload in Contact Form
+## Schedule Forms
 
-Want your users to upload files from your online form? No worries we have a file upload option with our Elementor form builder MetForm. You can upload files from your local storage or share **Dropbox** and **Google Drive** links directly.
+Automate form availability by setting specific start and end dates. This controls exactly when forms are active for time-sensitive events like registrations or surveys without manual publishing.
 
+## Convert Form to Post
+
+Automatically turn user submissions into WordPress posts. Map form fields to post titles, content, and custom post types to let visitors submit articles or reviews directly from the front end.
+
+
+## GDPR Compliant Form-Building
+
+Meet privacy regulations by easily adding mandatory consent checkboxes. This ensures you capture explicit user permission before collecting or storing personal data.
+
+
+## Quiz & Survey Forms Module
+
+Create interactive quizzes and detailed surveys. Assign point values to specific questions, calculate total scores, and display custom results based on user responses.
+ 
 ## Export Contact Form Entries as CSV
 
 Want to Export form entries as CSV? Yes, you can do that too with the Metform Elementor form builder addon.
@@ -206,6 +226,8 @@ https://youtu.be/g9P1pSDr65w?si=-Y_QGq7zwdOmkKxJ
 
 **🔷** [SureTriggers Integration](https://wpmet.com/doc/suretriggers-integration/?utm_source=org&utm_medium=readme): Bring different websites, applications, software, and WordPress plugins under a single platform.
 
+**🔷** [MailerLite Integration](https://wpmet.com/doc/mailerlite-integration/?utm_source=org&utm_medium=readme): Streamline lead collection by syncing form submission data directly into your established MailerLite subscriber groups.
+
 Learn [How to Install and Activate MetForm](https://www.youtube.com/watch?v=Ft1E1_FNtws&list=PL3t2OjZ6gY8NoB_48DwWKUDRtBEuBOxSc&index=13)
 
 ### 😍 BACKED BY A TRUSTED TEAM
@@ -233,13 +255,9 @@ If you like using the MetForm form builder, then consider checking out our other
 
 ⭕ [Wp Social](https://wpmet.com/plugin/wp-social/)  Power your WordPress site by using WP Social. It will assist you in adding a Social Login, Social Counter, and Social Login to your website.
 
-⭕ [Wp FundEngine](https://products.wpmet.com/crowdfunding/)  Now, creating a crowdfunding and donation site with WordPress is easier. WP FundEngine provides you with all the functionalities to ease the processes.
-
 ⭕ [GutenKit](https://wpmet.com/plugin/gutenkit/) It helps to transform Gutenberg block editor into a full-fledged page builder.
 
-⭕ PopupKit - PopupKit is a user-friendly WordPress popup builder with customizable blocks and templates.
-
-⭕ RoxSlider - It is a powerful tool for slider creation. You can design stunning sliders with ease.
+⭕ [PopupKit](https://wpmet.com/plugin/popupkit/) - PopupKit is a user-friendly WordPress popup builder with customizable blocks and templates.
 
 ⭕ [EmailKit](https://wpmet.com/plugin/emailkit/) - To craft stunning and responsive emails for WooCommerce and WordPress, EmailKit is the top email builder.
 
@@ -251,6 +269,14 @@ If you like using the MetForm form builder, then consider checking out our other
 **Check out** [Tutorials, Tips & Tricks](https://wpmet.com/blog)! 👌
 
 == Changelog ==
+Version: 4.1.5 // 2026-06-09
+Added: Dynamic field value support in conditional logic for advanced form validation and field comparison.
+Added: Dynamic values support for hidden fields and submit tracking.
+Improved: Form picker modal UI for metform main widget.
+Improved: Payment submission feature.
+Fixed: Limit entries value saving issue.
+Fixed: Hard-coded untranslatable string issue.
+
 Version: 4.1.4 // 2026-05-03
 Added: Default number control for Number widget.
 Added: Support for .heic file types in the File Upload widget.

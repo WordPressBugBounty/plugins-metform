@@ -127,6 +127,7 @@ trait Button_Controls{
 				'label' => esc_html__( 'Input Value', 'metform' ),
 				'type' => Controls_Manager::TEXT,
 				'default' => 'mf_hidden_input_value',
+				'description' => esc_html__( 'Use [field-name] to copy another form field value at submit time.', 'metform' ),
 			]
 		);
 
