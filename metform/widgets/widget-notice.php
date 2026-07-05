@@ -29,7 +29,12 @@ trait Widget_Notice{
                         ],
                     ],
                     'default' => '1',
-                    'description' => '<span class="mf-widget-pro-feature"> Get the  <a href="https://wpmet.com/plugin/metform/pricing/" target="_blank">Pro version</a> for more awesome elements and powerful modules.</span>',
+                    'description' => '<span class="mf-widget-pro-feature"> ' . sprintf(
+                        /* translators: %1$s: opening anchor tag for the Pro version link, %2$s: closing anchor tag. */
+                        esc_html__('Get the %1$sPro version%2$s for more awesome elements and powerful modules.', 'metform'),
+                        '<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank">',
+                        '</a>'
+                    ) . '</span>',
                 ]
             );
 

@@ -3,7 +3,7 @@ Contributors: Roxnor, Ataurr, aion11
 Tags: form builder, Elementor form, contact form builder, Multi step form, custom form
 Requires at least: 6.0
 Tested up to: 7.0
-Stable tag: 4.1.5
+Stable tag: 4.1.6
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -269,6 +269,16 @@ If you like using the MetForm form builder, then consider checking out our other
 **Check out** [Tutorials, Tips & Tricks](https://wpmet.com/blog)! 👌
 
 == Changelog ==
+Version: 4.1.6 // 2026-07-05
+Added: Form analytics feature to track submissions and monitor form performance with insights.
+Added: Conditional redirect support for form submissions based on rules.
+Improved: Entry list and entry details UI in the admin dashboard.
+Improved: Form list UI in the admin dashboard.
+Fixed: Compatibility issue with The7 theme and CM Tooltip Glossary plugin conflict.
+Fixed: Resolved conditional email field validation and hidden field visibility issues.
+Fixed: Country flag display issue in mobile number fields for multistep forms.
+Fixed: Multilingual issue.
+
 Version: 4.1.5 // 2026-06-09
 Added: Dynamic field value support in conditional logic for advanced form validation and field comparison.
 Added: Dynamic values support for hidden fields and submit tracking.

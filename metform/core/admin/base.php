@@ -45,6 +45,7 @@ class Base {
         }
 
         $request = isset($_POST['form_data']) ? $_POST['form_data'] : [];
+        $fields_in_form = isset($_POST['fields_in_form']) ? $_POST['fields_in_form'] : [];
 
         if (empty($request)) {
             wp_send_json_error('No data provided');
@@ -54,12 +55,19 @@ class Base {
         //get existing settings
         $settings = get_option($this->key_settings_option, []);
 
-        $checkboxes = array('mf_save_progress', 'mf_field_name_show', 'mf_enable_entry_file_delete', 'mf_paypal_sandbox', 'mf_stripe_sandbox');
+        $checkboxes = array('mf_save_progress', 'mf_field_name_show', 'mf_paypal_sandbox', 'mf_enable_entry_file_delete', 'mf_stripe_sandbox', 'mf_enable_form_analytics');
 
-        //if checkbox is not set, unset it from settings that was set previously.
+        //if checkbox is in the submitted form but not set, unset it from settings that was set previously.
         foreach ($checkboxes as $key) {
-            if (!isset($request[$key]) && isset($settings[$key])) {
-                unset($settings[$key]);
+            if (in_array($key, $fields_in_form) && !isset($request[$key])) {
+                if ($key === 'mf_enable_form_analytics') {
+                    $request[$key] = '0';
+                    continue;
+                }
+
+                if (isset($settings[$key])) {
+                    unset($settings[$key]);
+                }
             }
         }
 

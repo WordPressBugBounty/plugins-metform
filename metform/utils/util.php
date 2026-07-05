@@ -851,6 +851,7 @@ class Util{
 			'mf_zoho',
 			'quiz_summery',
 			'mf_redirect_params_status',
+			'mf_conditional_redirect_status',
 			'email_verification_enable',
 			'mf_google_sheet',
 			'mf_mail_poet'

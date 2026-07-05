@@ -683,7 +683,15 @@ class Action
         do_action("metform_after_store_form_data", $form_id, $form_data, $this->form_settings, $attributes);
 
         $this->response->data['redirect_to'] = !empty($this->form_settings['redirect_to']) ? $this->form_settings['redirect_to'] : '';
-        
+
+        // conditional redirect check and action (Pro feature — only runs when Pro is active)
+        if ( class_exists( 'MetForm_Pro\Base\Package' ) ) {
+            $conditional_redirect_url = $this->evaluate_conditional_redirect();
+            if ( $conditional_redirect_url ) {
+                $this->response->data['redirect_to'] = $conditional_redirect_url;
+            }
+        }
+
         $bypass_form_data = json_decode(get_post_meta($form_id, 'mf_redirect_params_status', true));
         
         if($bypass_form_data){
@@ -1089,8 +1097,16 @@ class Action
 
     public function send_user_email($form_data, $file_info)
     {
-
-        $user_mail = (isset($form_data[$this->email_name]) ? $form_data[$this->email_name] : null);
+        
+        // get user mail from form data
+        $user_mail = null;
+        $all_email_names = $this->get_input_name_by_widget_type('mf-email') ?? [];
+        foreach ($all_email_names as $_email_key) {
+            if (!empty($form_data[$_email_key])) {
+                $user_mail = $form_data[$_email_key];
+                break;
+            }
+        }
         $subject = isset($this->form_settings['user_email_subject']) ? $this->form_settings['user_email_subject'] : get_bloginfo('name');
         $from = isset($this->form_settings['user_email_from']) ? $this->form_settings['user_email_from'] : null;
         $reply_to = isset($this->form_settings['user_email_reply_to']) ? $this->form_settings['user_email_reply_to'] : null;
@@ -1462,6 +1478,80 @@ class Action
             }
         }
         return false;
+    }
+
+    /**
+     * Evaluate conditional redirect rules and return the redirect URL if conditions are met.
+     *
+     * @return string|false The redirect URL if conditions are met, or false if not.
+    */
+
+    private function evaluate_conditional_redirect() {
+        $status = get_post_meta( $this->form_id, 'mf_conditional_redirect_status', true );
+
+        if ( $status !== 'true' ) {
+            return false;
+        }
+
+        $rules_json = get_post_meta( $this->form_id, 'mf_conditional_redirect_rules', true );
+
+        if ( empty( $rules_json ) ) {
+            return false;
+        }
+
+        $rules = json_decode( $rules_json, true );
+
+        if ( ! is_array( $rules ) ) {
+            return false;
+        }
+
+        foreach ( $rules as $rule ) {
+            if ( ! is_array( $rule ) ) {
+                continue;
+            }
+
+            $redirect_url = $rule['redirect_url'] ?? '';
+            $conditions   = $rule['conditions']   ?? [];
+
+            if ( empty( $redirect_url ) || ! is_array( $conditions ) || empty( $conditions ) ) {
+                continue;
+            }
+
+            $logic  = $rule['logic'] ?? 'AND';
+            $result = ( $logic === 'OR' ) ? false : true;
+
+            foreach ( $conditions as $condition ) {
+                $field_name  = $condition['field']   ?? '';
+                $compare     = $condition['compare'] ?? '==';
+                $check_value = $condition['value']   ?? '';
+                $form_value  = $this->form_data[ $field_name ] ?? '';
+                $cond_result = $this->mf_compare_values( $form_value, $compare, $check_value );
+
+                if ( $logic === 'OR' ) {
+                    $result = $result || $cond_result;
+                } else {
+                    $result = $result && $cond_result;
+                }
+            }
+
+            if ( $result ) {
+                return esc_url_raw( $redirect_url );
+            }
+        }
+
+        return false;
+    }
+
+    private function mf_compare_values( $actual, $operator, $expected ) {
+        switch ( $operator ) {
+            case '==':  return (string) $actual === (string) $expected;
+            case '!=':  return (string) $actual !== (string) $expected;
+            case '>':   return is_numeric( $actual ) && is_numeric( $expected ) && (float) $actual >  (float) $expected;
+            case '>=':  return is_numeric( $actual ) && is_numeric( $expected ) && (float) $actual >= (float) $expected;
+            case '<':   return is_numeric( $actual ) && is_numeric( $expected ) && (float) $actual <  (float) $expected;
+            case '<=':  return is_numeric( $actual ) && is_numeric( $expected ) && (float) $actual <= (float) $expected;
+            default:    return false;
+        }
     }
 
     /**

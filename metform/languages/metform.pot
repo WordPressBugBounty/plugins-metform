@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: MetForm 4.1.5\n"
+"Project-Id-Version: MetForm 4.1.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/metform\n"
-"POT-Creation-Date: 2026-06-09 07:15:21+00:00\n"
+"POT-Creation-Date: 2026-07-05 09:49:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -106,7 +106,8 @@ msgstr ""
 msgid "Edit Form Content"
 msgstr ""
 
-#: controls/form-picker-utils.php:36
+#: controls/form-picker-utils.php:36 core/entries/meta-data.php:404
+#: core/entries/meta-data.php:420 core/entries/meta-data.php:439
 msgid "Edit"
 msgstr ""
 
@@ -114,9 +115,10 @@ msgstr ""
 msgid "No content is added yet."
 msgstr ""
 
-#: core/admin/base.php:74 traits/button-controls.php:32
-#: widgets/checkbox/checkbox.php:191 widgets/date/date.php:132
-#: widgets/email/email.php:85 widgets/file-upload/file-upload.php:108
+#: core/admin/base.php:82 core/forms/hooks.php:126 plugin.php:427
+#: traits/button-controls.php:32 widgets/checkbox/checkbox.php:191
+#: widgets/date/date.php:132 widgets/email/email.php:85
+#: widgets/file-upload/file-upload.php:108
 #: widgets/gdpr-consent/gdpr-consent.php:105
 #: widgets/listing-fname/listing-fname.php:60
 #: widgets/listing-lname/listing-lname.php:60
@@ -131,170 +133,357 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: core/admin/views/integrations.php:190 core/admin/views/settings.php:647
-#: core/admin/views/settings.php:1049 core/entries/hooks.php:92
+#: core/admin/views/integrations.php:9
+msgid "Re Connect Aweber"
+msgstr ""
+
+#: core/admin/views/integrations.php:9
+msgid "Connect Aweber"
+msgstr ""
+
+#: core/admin/views/integrations.php:29
+msgid "MailChimp"
+msgstr ""
+
+#: core/admin/views/integrations.php:30
+msgid ""
+"Integrate MetForm with Mailchimp to establish seamless email marketing with "
+"automation."
+msgstr ""
+
+#: core/admin/views/integrations.php:33 core/admin/views/integrations.php:64
+#: core/admin/views/integrations.php:90 core/admin/views/integrations.php:107
+#: core/admin/views/integrations.php:134 core/admin/views/integrations.php:237
+msgid "Save"
+msgstr ""
+
+#: core/admin/views/integrations.php:40 core/admin/views/integrations.php:78
+#: core/admin/views/integrations.php:97 core/admin/views/integrations.php:114
+#: core/admin/views/integrations.php:141
+msgid "API Key:"
+msgstr ""
+
+#: core/admin/views/integrations.php:41
+msgid "Mailchimp API key"
+msgstr ""
+
+#: core/admin/views/integrations.php:42 core/admin/views/settings.php:1445
+msgid "Enter here your Mailchimp API key."
+msgstr ""
+
+#: core/admin/views/integrations.php:48
+msgid "Aweber"
+msgstr ""
+
+#: core/admin/views/integrations.php:49
+msgid ""
+"Streamline your customer relationship with automated email marketing by "
+"linking AWeber with MetForm."
+msgstr ""
+
+#: core/admin/views/integrations.php:60
+msgid "ActiveCampaign"
+msgstr ""
+
+#: core/admin/views/integrations.php:61
+msgid ""
+"Connect MetForm with ActiveCampaign for powerful email automation and "
+"incredible customer experiences."
+msgstr ""
+
+#: core/admin/views/integrations.php:71
+msgid "API URL:"
+msgstr ""
+
+#: core/admin/views/integrations.php:72
+msgid "ActiveCampaign API URL"
+msgstr ""
+
+#: core/admin/views/integrations.php:73
+msgid "Enter here your ActiveCampaign API URL."
+msgstr ""
+
+#: core/admin/views/integrations.php:79
+msgid "ActiveCampaign API key"
+msgstr ""
+
+#: core/admin/views/integrations.php:80
+msgid "Enter here your ActiveCampaign API key."
+msgstr ""
+
+#: core/admin/views/integrations.php:86
+msgid "GetResponse"
+msgstr ""
+
+#: core/admin/views/integrations.php:87
+msgid ""
+"Capture leads and launch targeted email campaigns with MetForm and "
+"GetResponse integration."
+msgstr ""
+
+#: core/admin/views/integrations.php:98
+msgid "GetResponse API key"
+msgstr ""
+
+#: core/admin/views/integrations.php:103
+msgid "ConvertKit"
+msgstr ""
+
+#: core/admin/views/integrations.php:104
+msgid ""
+"Reinforce MetForm with ConvertKit to simplify email marketing and boost "
+"audience growth."
+msgstr ""
+
+#: core/admin/views/integrations.php:115
+msgid "ConvertKit API key"
+msgstr ""
+
+#: core/admin/views/integrations.php:116
+msgid "Enter here your ConvertKit API key."
+msgstr ""
+
+#: core/admin/views/integrations.php:122
+msgid "Secret Key:"
+msgstr ""
+
+#: core/admin/views/integrations.php:123
+msgid "ConvertKit API secret"
+msgstr ""
+
+#: core/admin/views/integrations.php:124
+msgid "Enter here your ConvertKit API secret."
+msgstr ""
+
+#: core/admin/views/integrations.php:130
+msgid "MailerLite"
+msgstr ""
+
+#: core/admin/views/integrations.php:131
+msgid ""
+"Connect MetForm with MailerLite to create stunning email campaigns and grow "
+"your subscriber list."
+msgstr ""
+
+#: core/admin/views/integrations.php:142
+msgid "MailerLite API key"
+msgstr ""
+
+#: core/admin/views/integrations.php:143
+msgid "Enter here your MailerLite API key."
+msgstr ""
+
+#: core/admin/views/integrations.php:170
+msgid "Manage"
+msgstr ""
+
+#: core/admin/views/integrations.php:190 core/admin/views/settings.php:673
+#: core/admin/views/settings.php:744 core/admin/views/settings.php:815
+#: core/admin/views/settings.php:929 core/admin/views/settings.php:1024
+#: core/admin/views/settings.php:1075 core/admin/views/settings.php:1276
+#: core/admin/views/settings.php:1367 core/entries/hooks.php:97
 #: core/forms/views/modal-editor.php:43
+#: core/integrations/crm/hubspot/loader.php:102
+#: core/integrations/crm/hubspot/loader.php:130
 msgid "Upgrade"
 msgstr ""
 
-#: core/admin/views/settings.php:99 core/admin/views/settings.php:170
+#: core/admin/views/integrations.php:202 core/admin/views/settings.php:689
+#: core/admin/views/settings.php:1246 core/admin/views/settings.php:1292
+#: plugin.php:413 plugin.php:424
+msgid "Documentation"
+msgstr ""
+
+#: core/admin/views/integrations.php:222
+#. translators: %s: integration name (e.g. MailChimp).
+msgid "Add %s Integrations"
+msgstr ""
+
+#: core/admin/views/integrations.php:233 core/admin/views/settings.php:1445
+msgid "Get API"
+msgstr ""
+
+#: core/admin/views/integrations.php:238 core/admin/views/settings.php:1447
+msgid "Cancel"
+msgstr ""
+
+#: core/admin/views/integrations.php:242
+msgid "Redirect url:"
+msgstr ""
+
+#: core/admin/views/settings.php:109 core/admin/views/settings.php:196
 msgid "Welcome"
 msgstr ""
 
-#: core/admin/views/settings.php:100
+#: core/admin/views/settings.php:110
 msgid "All dashboard info here"
 msgstr ""
 
-#: core/admin/views/settings.php:111 core/forms/views/modal-editor.php:77
+#: core/admin/views/settings.php:121 core/forms/views/modal-editor.php:77
 msgid "General"
 msgstr ""
 
-#: core/admin/views/settings.php:112
+#: core/admin/views/settings.php:122
 msgid "reCAPTCHA, Map, and Smart Form Settings."
 msgstr ""
 
-#: core/admin/views/settings.php:123 core/admin/views/settings.php:834
-#: core/entries/meta-data.php:387 core/forms/views/modal-editor.php:85
+#: core/admin/views/settings.php:133 core/admin/views/settings.php:860
+#: core/entries/meta-data.php:331 core/forms/views/modal-editor.php:85
 msgid "Payment"
 msgstr ""
 
-#: core/admin/views/settings.php:124
+#: core/admin/views/settings.php:134
 msgid "Set up the Payment Gateways"
 msgstr ""
 
-#: core/admin/views/settings.php:134 core/admin/views/settings.php:1165
+#: core/admin/views/settings.php:145 core/admin/views/settings.php:1325
+msgid "Form Analytics"
+msgstr ""
+
+#: core/admin/views/settings.php:149
+msgid "View and analyze form performance"
+msgstr ""
+
+#: core/admin/views/settings.php:160 core/admin/views/settings.php:1191
 msgid "Newsletter Integration"
 msgstr ""
 
-#: core/admin/views/settings.php:135
+#: core/admin/views/settings.php:161
 msgid "Configure all newsletter integration."
 msgstr ""
 
-#: core/admin/views/settings.php:145
+#: core/admin/views/settings.php:171
 msgid "Google Integration"
 msgstr ""
 
-#: core/admin/views/settings.php:146
+#: core/admin/views/settings.php:172
 msgid "Configure Google sheets & drive APIs"
 msgstr ""
 
-#: core/admin/views/settings.php:180
+#: core/admin/views/settings.php:206
 msgid "Top Notch"
 msgstr ""
 
-#: core/admin/views/settings.php:181
+#: core/admin/views/settings.php:207
 msgid "Features"
 msgstr ""
 
-#: core/admin/views/settings.php:183 core/admin/views/settings.php:243
+#: core/admin/views/settings.php:209 core/admin/views/settings.php:269
 msgid "features"
 msgstr ""
 
-#: core/admin/views/settings.php:185 core/admin/views/settings.php:245
-#: core/admin/views/settings.php:319
+#: core/admin/views/settings.php:211 core/admin/views/settings.php:271
+#: core/admin/views/settings.php:345
 msgid ""
 "Get started by spending some time with the documentation to get familiar "
 "with ElementsKit."
 msgstr ""
 
-#: core/admin/views/settings.php:193 core/admin/views/settings.php:253
+#: core/admin/views/settings.php:219 core/admin/views/settings.php:279
 msgid "Easy to use"
 msgstr ""
 
-#: core/admin/views/settings.php:195 core/admin/views/settings.php:202
-#: core/admin/views/settings.php:209 core/admin/views/settings.php:216
-#: core/admin/views/settings.php:223 core/admin/views/settings.php:230
+#: core/admin/views/settings.php:221 core/admin/views/settings.php:228
+#: core/admin/views/settings.php:235 core/admin/views/settings.php:242
+#: core/admin/views/settings.php:249 core/admin/views/settings.php:256
 msgid ""
 "Get started by spending some time with the documentation to get familiar "
 "with MetForm"
 msgstr ""
 
-#: core/admin/views/settings.php:200
+#: core/admin/views/settings.php:226
 msgid "Moden Typography"
 msgstr ""
 
-#: core/admin/views/settings.php:207 core/admin/views/settings.php:259
+#: core/admin/views/settings.php:233 core/admin/views/settings.php:285
 msgid "Perfectly Match"
 msgstr ""
 
-#: core/admin/views/settings.php:214
+#: core/admin/views/settings.php:240
 msgid "Dynamic Forms"
 msgstr ""
 
-#: core/admin/views/settings.php:221
+#: core/admin/views/settings.php:247
 msgid "Create Faster"
 msgstr ""
 
-#: core/admin/views/settings.php:228
+#: core/admin/views/settings.php:254
 msgid "Awesome Layout"
 msgstr ""
 
-#: core/admin/views/settings.php:240
+#: core/admin/views/settings.php:266
 msgid "What included with Free &"
 msgstr ""
 
-#: core/admin/views/settings.php:241
+#: core/admin/views/settings.php:267
 #: core/integrations/onboard/views/onboard-steps/step-05.php:13
 msgid "PRO"
 msgstr ""
 
-#: core/admin/views/settings.php:253 core/admin/views/settings.php:256
-#: core/admin/views/settings.php:259
+#: core/admin/views/settings.php:279 core/admin/views/settings.php:282
+#: core/admin/views/settings.php:285 core/forms/views/modal-editor.php:125
+#: core/forms/views/modal-editor.php:141 core/forms/views/modal-editor.php:157
+#: core/forms/views/modal-editor.php:202 core/forms/views/modal-editor.php:252
+#: core/forms/views/modal-editor.php:267 core/forms/views/modal-editor.php:283
+#: core/forms/views/modal-editor.php:295 core/forms/views/modal-editor.php:311
+#: core/forms/views/modal-editor.php:336 core/forms/views/modal-editor.php:378
+#: core/forms/views/modal-editor.php:386 core/forms/views/modal-editor.php:546
+#: core/forms/views/modal-editor.php:570
 msgid "Pro"
 msgstr ""
 
-#: core/admin/views/settings.php:256
+#: core/admin/views/settings.php:282
 msgid "Modern Typography"
 msgstr ""
 
-#: core/admin/views/settings.php:268 core/admin/views/settings.php:284
-#: core/admin/views/settings.php:298
+#: core/admin/views/settings.php:294 core/admin/views/settings.php:310
+#: core/admin/views/settings.php:324
 msgid ""
 "Get started by spending some time with the documentation to get familiar "
 "with MetForm Get started by spending some time with the documentation to "
 "get notification in real time."
 msgstr ""
 
-#: core/admin/views/settings.php:271 core/admin/views/settings.php:287
-#: core/admin/views/settings.php:301
+#: core/admin/views/settings.php:297 core/admin/views/settings.php:313
+#: core/admin/views/settings.php:327
 msgid "Success Message"
 msgstr ""
 
-#: core/admin/views/settings.php:272 core/admin/views/settings.php:288
-#: core/admin/views/settings.php:302
+#: core/admin/views/settings.php:298 core/admin/views/settings.php:314
+#: core/admin/views/settings.php:328 core/forms/views/modal-editor.php:139
 msgid "Required Login"
 msgstr ""
 
-#: core/admin/views/settings.php:273 core/admin/views/settings.php:289
-#: core/admin/views/settings.php:303
+#: core/admin/views/settings.php:299 core/admin/views/settings.php:315
+#: core/admin/views/settings.php:329
 msgid "Hide Form After Submission"
 msgstr ""
 
-#: core/admin/views/settings.php:275 core/admin/views/settings.php:291
-#: core/admin/views/settings.php:305
+#: core/admin/views/settings.php:301 core/admin/views/settings.php:317
+#: core/admin/views/settings.php:331
 msgid "Store Entries"
 msgstr ""
 
-#: core/admin/views/settings.php:278
+#: core/admin/views/settings.php:304 core/forms/hooks.php:78
 msgid "View Details"
 msgstr ""
 
-#: core/admin/views/settings.php:316
+#: core/admin/views/settings.php:342
 #: core/integrations/onboard/views/settings-sections/dashboard.php:75
 msgid "General Knowledge Base"
 msgstr ""
 
-#: core/admin/views/settings.php:317
+#: core/admin/views/settings.php:343
 #: core/integrations/onboard/views/settings-sections/dashboard.php:76
 msgid "FAQ"
 msgstr ""
 
-#: core/admin/views/settings.php:327
+#: core/admin/views/settings.php:353
 msgid "1. How to create a Invitation Form using MetForm?"
 msgstr ""
 
-#: core/admin/views/settings.php:331 core/admin/views/settings.php:342
-#: core/admin/views/settings.php:353
+#: core/admin/views/settings.php:357 core/admin/views/settings.php:368
+#: core/admin/views/settings.php:379
 #: core/integrations/onboard/views/settings-sections/dashboard.php:86
 #: core/integrations/onboard/views/settings-sections/dashboard.php:94
 #: core/integrations/onboard/views/settings-sections/dashboard.php:102
@@ -303,643 +492,781 @@ msgid ""
 "library and we’re continuously updating the numbers there."
 msgstr ""
 
-#: core/admin/views/settings.php:338
+#: core/admin/views/settings.php:364
 msgid "2. How to translate language with WPML?"
 msgstr ""
 
-#: core/admin/views/settings.php:349
+#: core/admin/views/settings.php:375
 #: core/integrations/onboard/views/settings-sections/dashboard.php:99
 msgid "3. How to add custom css in specific section shortcode?"
 msgstr ""
 
-#: core/admin/views/settings.php:360
+#: core/admin/views/settings.php:386
 #: core/integrations/onboard/views/settings-sections/dashboard.php:110
 msgid "View all faq’s"
 msgstr ""
 
-#: core/admin/views/settings.php:367
+#: core/admin/views/settings.php:393
 #: core/integrations/onboard/views/settings-sections/dashboard.php:8
 #: core/integrations/onboard/views/settings-sections/dashboard.php:128
 msgid "Documentation Thumb"
 msgstr ""
 
-#: core/admin/views/settings.php:371
+#: core/admin/views/settings.php:397
 #: core/integrations/onboard/views/settings-sections/dashboard.php:12
 msgid "Easy Documentation"
 msgstr ""
 
-#: core/admin/views/settings.php:372
+#: core/admin/views/settings.php:398
 #: core/integrations/onboard/views/settings-sections/dashboard.php:13
 msgid "Docs"
 msgstr ""
 
-#: core/admin/views/settings.php:374
+#: core/admin/views/settings.php:400
 msgid "Check out the docs and start building awesome forms with MetForm!"
 msgstr ""
 
-#: core/admin/views/settings.php:381
+#: core/admin/views/settings.php:407
 #: core/integrations/onboard/views/settings-sections/dashboard.php:17
 msgid "Get started"
 msgstr ""
 
-#: core/admin/views/settings.php:389
+#: core/admin/views/settings.php:415
 msgid "Top-notch &amp; Friendly Support"
 msgstr ""
 
-#: core/admin/views/settings.php:390
+#: core/admin/views/settings.php:416
 #: core/integrations/onboard/views/settings-sections/dashboard.php:119
 msgid "Support"
 msgstr ""
 
-#: core/admin/views/settings.php:392
+#: core/admin/views/settings.php:418
 msgid "Stuck somewhere? Feel free to open a ticket for getting Pro support."
 msgstr ""
 
-#: core/admin/views/settings.php:394
+#: core/admin/views/settings.php:420
 #: core/integrations/onboard/views/settings-sections/dashboard.php:123
 msgid "Join support forum"
 msgstr ""
 
-#: core/admin/views/settings.php:399
+#: core/admin/views/settings.php:425
 msgid "Support Thumb"
 msgstr ""
 
-#: core/admin/views/settings.php:407
+#: core/admin/views/settings.php:433
 msgid "Feature Request Thumb"
 msgstr ""
 
-#: core/admin/views/settings.php:411
+#: core/admin/views/settings.php:437
 msgid "Maybe we're missing something you can't live without."
 msgstr ""
 
-#: core/admin/views/settings.php:418
+#: core/admin/views/settings.php:444
 msgid "Request a Feature"
 msgstr ""
 
-#: core/admin/views/settings.php:430
+#: core/admin/views/settings.php:456
 #: core/integrations/onboard/views/settings-sections/dashboard.php:152
 msgid "Satisfied?"
 msgstr ""
 
-#: core/admin/views/settings.php:430
+#: core/admin/views/settings.php:456
 msgid "Don't forget to rate MetForm!"
 msgstr ""
 
-#: core/admin/views/settings.php:432
+#: core/admin/views/settings.php:458
 msgid "review"
 msgstr ""
 
-#: core/admin/views/settings.php:438
+#: core/admin/views/settings.php:464
 #: core/integrations/onboard/views/settings-sections/dashboard.php:154
 msgid "Rate it now"
 msgstr ""
 
-#: core/admin/views/settings.php:444
+#: core/admin/views/settings.php:470
 #: core/integrations/onboard/views/settings-sections/dashboard.php:159
 msgid "Rate Now Thumb"
 msgstr ""
 
-#: core/admin/views/settings.php:459
+#: core/admin/views/settings.php:485
 msgid "reCAPTCHA Settings"
 msgstr ""
 
-#: core/admin/views/settings.php:464
+#: core/admin/views/settings.php:490
 msgid "Select version:"
 msgstr ""
 
-#: core/admin/views/settings.php:468
+#: core/admin/views/settings.php:494
 msgid "reCAPTCHA V2"
 msgstr ""
 
-#: core/admin/views/settings.php:471
+#: core/admin/views/settings.php:497
 msgid "reCAPTCHA V3"
 msgstr ""
 
-#: core/admin/views/settings.php:476
+#: core/admin/views/settings.php:502
 msgid "Select Google reCAPTCHA version which one want to use."
 msgstr ""
 
-#: core/admin/views/settings.php:489 core/admin/views/settings.php:514
+#: core/admin/views/settings.php:515 core/admin/views/settings.php:540
 msgid "Site key:"
 msgstr ""
 
-#: core/admin/views/settings.php:491 core/admin/views/settings.php:516
+#: core/admin/views/settings.php:517 core/admin/views/settings.php:542
 msgid "Insert site key"
 msgstr ""
 
-#: core/admin/views/settings.php:493
+#: core/admin/views/settings.php:519
 msgid "Create Google reCAPTCHA site key from reCAPTCHA admin panel. "
 msgstr ""
 
-#: core/admin/views/settings.php:493 core/admin/views/settings.php:503
-#: core/admin/views/settings.php:518 core/admin/views/settings.php:528
-#: core/admin/views/settings.php:576 core/admin/views/settings.php:586
-#: core/admin/views/settings.php:689 core/admin/views/settings.php:858
-#: core/admin/views/settings.php:866 core/admin/views/settings.php:935
-#: core/admin/views/settings.php:943 core/admin/views/settings.php:962
-#: core/admin/views/settings.php:969 core/admin/views/settings.php:1194
-#: core/admin/views/settings.php:1203
+#: core/admin/views/settings.php:519 core/admin/views/settings.php:529
+#: core/admin/views/settings.php:544 core/admin/views/settings.php:554
+#: core/admin/views/settings.php:602 core/admin/views/settings.php:612
+#: core/admin/views/settings.php:715 core/admin/views/settings.php:884
+#: core/admin/views/settings.php:892 core/admin/views/settings.php:961
+#: core/admin/views/settings.php:969 core/admin/views/settings.php:988
+#: core/admin/views/settings.php:995 core/admin/views/settings.php:1220
+#: core/admin/views/settings.php:1229
 msgid "Create from here"
 msgstr ""
 
-#: core/admin/views/settings.php:499 core/admin/views/settings.php:524
+#: core/admin/views/settings.php:525 core/admin/views/settings.php:550
 msgid "Secret key:"
 msgstr ""
 
-#: core/admin/views/settings.php:501 core/admin/views/settings.php:526
+#: core/admin/views/settings.php:527 core/admin/views/settings.php:552
 msgid "Insert secret key"
 msgstr ""
 
-#: core/admin/views/settings.php:503
+#: core/admin/views/settings.php:529
 msgid "Create Google reCAPTCHA secret key from reCAPTCHA admin panel. "
 msgstr ""
 
-#: core/admin/views/settings.php:518
+#: core/admin/views/settings.php:544
 msgid "Create Google reCAPTCHA site key from reCaptcha admin panel. "
 msgstr ""
 
-#: core/admin/views/settings.php:528
+#: core/admin/views/settings.php:554
 msgid "Create Google reCAPTCHA secret key from reCaptcha admin panel. "
 msgstr ""
 
-#: core/admin/views/settings.php:540
+#: core/admin/views/settings.php:566
 msgid "Form Entry File Management"
 msgstr ""
 
-#: core/admin/views/settings.php:549
+#: core/admin/views/settings.php:575
 msgid "Remove Uploaded Files When Entry Is Deleted"
 msgstr ""
 
-#: core/admin/views/settings.php:555
+#: core/admin/views/settings.php:581
 msgid ""
 "If <strong>enabled</strong>, when an entry is permanently deleted, the "
 "files associated with it will also be deleted."
 msgstr ""
 
-#: core/admin/views/settings.php:563
+#: core/admin/views/settings.php:589
 msgid "Dropbox Settings"
 msgstr ""
 
-#: core/admin/views/settings.php:572
+#: core/admin/views/settings.php:598
 msgid "App ID:"
 msgstr ""
 
-#: core/admin/views/settings.php:574
+#: core/admin/views/settings.php:600
 msgid "Insert App ID"
 msgstr ""
 
-#: core/admin/views/settings.php:576
+#: core/admin/views/settings.php:602
 msgid "Create App ID from Dropbox developers panel. "
 msgstr ""
 
-#: core/admin/views/settings.php:582
+#: core/admin/views/settings.php:608
 msgid "App Secret:"
 msgstr ""
 
-#: core/admin/views/settings.php:584
+#: core/admin/views/settings.php:610
 msgid "Insert app secret"
 msgstr ""
 
-#: core/admin/views/settings.php:586
+#: core/admin/views/settings.php:612
 msgid "Create Dropbox App secret from Dropbox developers panel. "
 msgstr ""
 
-#: core/admin/views/settings.php:600
+#: core/admin/views/settings.php:626
 msgid "Are you sure you want to disconnect Dropbox?"
 msgstr ""
 
-#: core/admin/views/settings.php:601
+#: core/admin/views/settings.php:627
 msgid "Disconnect Dropbox"
 msgstr ""
 
-#: core/admin/views/settings.php:606 core/admin/views/settings.php:663
+#: core/admin/views/settings.php:632 core/admin/views/settings.php:689
 msgid "Check how to create App/Project On Dropbox developer account"
 msgstr ""
 
-#: core/admin/views/settings.php:607 core/admin/views/settings.php:664
-#: core/admin/views/settings.php:1221 core/admin/views/settings.php:1267
+#: core/admin/views/settings.php:633 core/admin/views/settings.php:690
+#: core/admin/views/settings.php:1247 core/admin/views/settings.php:1293
 msgid "Must add the following URL to the \"Valid OAuth redirect URIs\" field:"
 msgstr ""
 
-#: core/admin/views/settings.php:608 core/admin/views/settings.php:665
-#: core/admin/views/settings.php:1222 core/admin/views/settings.php:1268
+#: core/admin/views/settings.php:634 core/admin/views/settings.php:691
+#: core/admin/views/settings.php:1248 core/admin/views/settings.php:1294
 msgid "After getting the App ID & App Secret, put those information"
 msgstr ""
 
-#: core/admin/views/settings.php:609 core/admin/views/settings.php:666
-#: core/admin/views/settings.php:1223 core/admin/views/settings.php:1269
+#: core/admin/views/settings.php:635 core/admin/views/settings.php:692
+#: core/admin/views/settings.php:1249 core/admin/views/settings.php:1295
 msgid "Click on \"Save Changes\""
 msgstr ""
 
-#: core/admin/views/settings.php:610
+#: core/admin/views/settings.php:636
 msgid "Click on \"Connect Your Dropbox Account\""
 msgstr ""
 
-#: core/admin/views/settings.php:618
+#: core/admin/views/settings.php:644
 msgid "Connect Your Dropbox Account"
 msgstr ""
 
-#: core/admin/views/settings.php:624
+#: core/admin/views/settings.php:650
 msgid "Dropbox is a premium feature—Get MetForm Pro to use it!"
 msgstr ""
 
-#: core/admin/views/settings.php:625 core/admin/views/settings.php:696
-#: core/admin/views/settings.php:783 core/admin/views/settings.php:1037
+#: core/admin/views/settings.php:651 core/admin/views/settings.php:722
+#: core/admin/views/settings.php:809 core/admin/views/settings.php:1063
+#: core/integrations/crm/hubspot/loader.php:124
 msgid "Get full access to premium features by upgrading today."
 msgstr ""
 
-#: core/admin/views/settings.php:628
+#: core/admin/views/settings.php:654
 msgid "Dropbox Is Exclusive To Mid Tiers!"
 msgstr ""
 
-#: core/admin/views/settings.php:629 core/admin/views/settings.php:700
-#: core/admin/views/settings.php:885 core/admin/views/settings.php:981
-#: core/admin/views/settings.php:1033
+#: core/admin/views/settings.php:655 core/admin/views/settings.php:726
+#: core/admin/views/settings.php:911 core/admin/views/settings.php:1007
+#: core/admin/views/settings.php:1059
 msgid "Get access by upgrading to MetForm Professional Plan."
 msgstr ""
 
-#: core/admin/views/settings.php:636
+#: core/admin/views/settings.php:662
 msgid "Dropbox"
 msgstr ""
 
-#: core/admin/views/settings.php:653 core/admin/views/settings.php:658
-#: core/admin/views/settings.php:685
+#: core/admin/views/settings.php:679 core/admin/views/settings.php:684
+#: core/admin/views/settings.php:711 core/admin/views/settings.php:750
 msgid "API:"
 msgstr ""
 
-#: core/admin/views/settings.php:653 core/admin/views/settings.php:658
+#: core/admin/views/settings.php:679 core/admin/views/settings.php:684
 msgid "Insert Dropbox API key"
 msgstr ""
 
-#: core/admin/views/settings.php:653
+#: core/admin/views/settings.php:679
 msgid "Create Dropbox APP ID from Dropbox developers panel"
 msgstr ""
 
-#: core/admin/views/settings.php:658
+#: core/admin/views/settings.php:684
 msgid "Create Dropbox APP Secrate from Dropbox developers panel"
 msgstr ""
 
-#: core/admin/views/settings.php:663 core/admin/views/settings.php:1220
-#: plugin.php:386
-msgid "Documentation"
-msgstr ""
-
-#: core/admin/views/settings.php:667
+#: core/admin/views/settings.php:693
 msgid "Click on \"Connect your dropbox account\""
 msgstr ""
 
-#: core/admin/views/settings.php:673
+#: core/admin/views/settings.php:699
 msgid "Connect your dropbox account"
 msgstr ""
 
-#: core/admin/views/settings.php:682 core/admin/views/settings.php:707
+#: core/admin/views/settings.php:708 core/admin/views/settings.php:733
 msgid "Map"
 msgstr ""
 
-#: core/admin/views/settings.php:687
+#: core/admin/views/settings.php:713 core/admin/views/settings.php:750
 msgid "Insert map API key"
 msgstr ""
 
-#: core/admin/views/settings.php:689
+#: core/admin/views/settings.php:715
 msgid "Create Google map API key from Google developer console. "
 msgstr ""
 
-#: core/admin/views/settings.php:695
+#: core/admin/views/settings.php:721
 msgid "Map is a premium feature—Get MetForm Pro to use it!"
 msgstr ""
 
-#: core/admin/views/settings.php:699
+#: core/admin/views/settings.php:725
 msgid "Maps Are Exclusive To Higher Tiers!"
 msgstr ""
 
-#: core/admin/views/settings.php:735 core/admin/views/settings.php:777
+#: core/admin/views/settings.php:750
+msgid "Create Google map API key from google developer console"
+msgstr ""
+
+#: core/admin/views/settings.php:761 core/admin/views/settings.php:803
 msgid "Smart Form Settings"
 msgstr ""
 
-#: core/admin/views/settings.php:744
+#: core/admin/views/settings.php:770 core/admin/views/settings.php:822
 msgid "Save Form Progress ?"
 msgstr ""
 
-#: core/admin/views/settings.php:750
+#: core/admin/views/settings.php:776
 msgid ""
 "Turn this feature on if you want partial submissions to be saved for a form "
 "so that the user can complete the form submission later. "
 msgstr ""
 
-#: core/admin/views/settings.php:751
+#: core/admin/views/settings.php:777
 msgid "Please note "
 msgstr ""
 
-#: core/admin/views/settings.php:751
+#: core/admin/views/settings.php:777
 msgid ""
 "that the submissions will be saved for 2 hours, after which the form "
 "submissions will be reset. "
 msgstr ""
 
-#: core/admin/views/settings.php:760
+#: core/admin/views/settings.php:786
 msgid "Display Input Field Name Alongside Value "
 msgstr ""
 
-#: core/admin/views/settings.php:767
+#: core/admin/views/settings.php:793
 msgid ""
 "Turn this feature on if you want the input field title to be shown along "
 "with the value. By default, only the value is displayed. This feature works "
 "for"
 msgstr ""
 
-#: core/admin/views/settings.php:767
+#: core/admin/views/settings.php:793
 msgid ""
 "widgets like radio buttons, multi-select, select, image select, toggle "
 "select, checkboxes, and simple repeater."
 msgstr ""
 
-#: core/admin/views/settings.php:782
+#: core/admin/views/settings.php:808
 msgid "Smart Form is a premium feature — Get MetForm Pro to use it!"
 msgstr ""
 
-#: core/admin/views/settings.php:819 core/admin/views/settings.php:1151
-#: core/admin/views/settings.php:1289 utils/render.php:83
+#: core/admin/views/settings.php:823
+msgid ""
+"Turn this feature on if you want partial submissions to be saved for a form "
+"so that the user can complete the form submission later. Please note that "
+"the submissions will be saved for 2 hours, after which the form submissions "
+"will be reset."
+msgstr ""
+
+#: core/admin/views/settings.php:831
+msgid "Display Input Field Name Alongside Value"
+msgstr ""
+
+#: core/admin/views/settings.php:832
+msgid ""
+"Turn this feature on if you want the input field title to be shown along "
+"with the value. By default, only the value is displayed. This feature works "
+"for widgets like radio buttons, multi-select, select, image select, toggle "
+"select, checkboxes, and simple repeater."
+msgstr ""
+
+#: core/admin/views/settings.php:845 core/admin/views/settings.php:1177
+#: core/admin/views/settings.php:1315 core/admin/views/settings.php:1406
+#: utils/render.php:83
 msgid "Save Changes"
 msgstr ""
 
-#: core/admin/views/settings.php:840
+#: core/admin/views/settings.php:866
 msgid "Paypal"
 msgstr ""
 
-#: core/admin/views/settings.php:843
+#: core/admin/views/settings.php:869
 msgid "Stripe"
 msgstr ""
 
-#: core/admin/views/settings.php:855
+#: core/admin/views/settings.php:881 core/admin/views/settings.php:935
 msgid "Paypal email:"
 msgstr ""
 
-#: core/admin/views/settings.php:856
+#: core/admin/views/settings.php:882 core/admin/views/settings.php:935
 msgid "Paypal email"
 msgstr ""
 
-#: core/admin/views/settings.php:858
+#: core/admin/views/settings.php:884
 msgid "Enter here your paypal email. "
 msgstr ""
 
-#: core/admin/views/settings.php:863
+#: core/admin/views/settings.php:889 core/admin/views/settings.php:936
 msgid "Paypal token:"
 msgstr ""
 
-#: core/admin/views/settings.php:864
+#: core/admin/views/settings.php:890 core/admin/views/settings.php:936
 msgid "Paypal token"
 msgstr ""
 
-#: core/admin/views/settings.php:866
+#: core/admin/views/settings.php:892
 msgid "Enter here your paypal token. This is optional. "
 msgstr ""
 
-#: core/admin/views/settings.php:871 core/admin/views/settings.php:949
-#: core/admin/views/settings.php:1008
+#: core/admin/views/settings.php:897 core/admin/views/settings.php:937
+#: core/admin/views/settings.php:975 core/admin/views/settings.php:1034
 msgid "Enable sandbox mode:"
 msgstr ""
 
-#: core/admin/views/settings.php:875
+#: core/admin/views/settings.php:901
 msgid "Enable this for testing payment method. "
 msgstr ""
 
-#: core/admin/views/settings.php:884
+#: core/admin/views/settings.php:910
 msgid "PayPal Payment is Exclusive To Higher Tiers!"
 msgstr ""
 
-#: core/admin/views/settings.php:888 core/admin/views/settings.php:984
+#: core/admin/views/settings.php:914 core/admin/views/settings.php:1010
+#: core/integrations/crm/hubspot/loader.php:95
+#: core/integrations/crm/hubspot/loader.php:123
 msgid "You are currently using MetForm free version."
 msgstr ""
 
-#: core/admin/views/settings.php:889
+#: core/admin/views/settings.php:915
 msgid "Get premium access to use PayPal payment in forms."
 msgstr ""
 
-#: core/admin/views/settings.php:924 core/admin/views/settings.php:1005
+#: core/admin/views/settings.php:935
+msgid "Enter here your paypal email."
+msgstr ""
+
+#: core/admin/views/settings.php:936
+msgid "Enter here your paypal token. This is optional."
+msgstr ""
+
+#: core/admin/views/settings.php:937
+msgid "Enable this for testing payment method."
+msgstr ""
+
+#: core/admin/views/settings.php:950 core/admin/views/settings.php:1031
 msgid "Image url:"
 msgstr ""
 
-#: core/admin/views/settings.php:925 core/admin/views/settings.php:1005
+#: core/admin/views/settings.php:951 core/admin/views/settings.php:1031
 msgid "Stripe image url"
 msgstr ""
 
-#: core/admin/views/settings.php:927
+#: core/admin/views/settings.php:953
 msgid ""
 "Enter here your stripe image url. This image will show on stripe payment "
 "pop up modal. "
 msgstr ""
 
-#: core/admin/views/settings.php:932
+#: core/admin/views/settings.php:958
 msgid "Live publishiable key:"
 msgstr ""
 
-#: core/admin/views/settings.php:933
+#: core/admin/views/settings.php:959
 msgid "Stripe live publishiable key"
 msgstr ""
 
-#: core/admin/views/settings.php:935
+#: core/admin/views/settings.php:961
 msgid "Enter here your stripe live publishiable key. "
 msgstr ""
 
-#: core/admin/views/settings.php:940 core/admin/views/settings.php:1007
+#: core/admin/views/settings.php:966 core/admin/views/settings.php:1033
 msgid "Live secret key:"
 msgstr ""
 
-#: core/admin/views/settings.php:941 core/admin/views/settings.php:1007
+#: core/admin/views/settings.php:967 core/admin/views/settings.php:1033
 msgid "Stripe live secret key"
 msgstr ""
 
-#: core/admin/views/settings.php:943
+#: core/admin/views/settings.php:969
 msgid "Enter here your stripe live secret key. "
 msgstr ""
 
-#: core/admin/views/settings.php:953
+#: core/admin/views/settings.php:979
 msgid "Enable this for testing your payment system. "
 msgstr ""
 
-#: core/admin/views/settings.php:959
+#: core/admin/views/settings.php:985
 msgid "Test publishiable key:"
 msgstr ""
 
-#: core/admin/views/settings.php:960
+#: core/admin/views/settings.php:986
 msgid "Stripe test publishiable key"
 msgstr ""
 
-#: core/admin/views/settings.php:962
+#: core/admin/views/settings.php:988
 msgid "Enter here your test publishiable key. "
 msgstr ""
 
-#: core/admin/views/settings.php:966 core/admin/views/settings.php:1010
+#: core/admin/views/settings.php:992 core/admin/views/settings.php:1036
 msgid "Test secret key:"
 msgstr ""
 
-#: core/admin/views/settings.php:967 core/admin/views/settings.php:1010
+#: core/admin/views/settings.php:993 core/admin/views/settings.php:1036
 msgid "Stripe test secret key"
 msgstr ""
 
-#: core/admin/views/settings.php:969
+#: core/admin/views/settings.php:995
 msgid "Enter here your test secret key. "
 msgstr ""
 
-#: core/admin/views/settings.php:980
+#: core/admin/views/settings.php:1006
 msgid "Stripe Payment is Exclusive To Higher Tiers!"
 msgstr ""
 
-#: core/admin/views/settings.php:985
+#: core/admin/views/settings.php:1011
 msgid "Get premium access to use Stripe payment in forms."
 msgstr ""
 
-#: core/admin/views/settings.php:1005
+#: core/admin/views/settings.php:1031
 msgid ""
 "Enter here your stripe image url. This image will show on stripe payment "
 "pop up modal."
 msgstr ""
 
-#: core/admin/views/settings.php:1006
+#: core/admin/views/settings.php:1032
 msgid "Live publishable key:"
 msgstr ""
 
-#: core/admin/views/settings.php:1006 core/admin/views/settings.php:1009
+#: core/admin/views/settings.php:1032 core/admin/views/settings.php:1035
 msgid "Stripe test publishable key"
 msgstr ""
 
-#: core/admin/views/settings.php:1006
+#: core/admin/views/settings.php:1032
 msgid "Enter here your publishable key."
 msgstr ""
 
-#: core/admin/views/settings.php:1007
+#: core/admin/views/settings.php:1033
 msgid "Enter here your stripe live secret key."
 msgstr ""
 
-#: core/admin/views/settings.php:1008
+#: core/admin/views/settings.php:1034
 msgid "Enable this for testing your payment system."
 msgstr ""
 
-#: core/admin/views/settings.php:1009
+#: core/admin/views/settings.php:1035
 msgid "Test publishable key:"
 msgstr ""
 
-#: core/admin/views/settings.php:1009
+#: core/admin/views/settings.php:1035
 msgid "Enter here your test publishable key."
 msgstr ""
 
-#: core/admin/views/settings.php:1010
+#: core/admin/views/settings.php:1036
 msgid "Enter here your test secret key."
 msgstr ""
 
-#: core/admin/views/settings.php:1023
+#: core/admin/views/settings.php:1049
 msgid "Redirect Page Settings "
 msgstr ""
 
-#: core/admin/views/settings.php:1032
+#: core/admin/views/settings.php:1058
 msgid "Redirect Page is Exclusive To Higher Tiers!"
 msgstr ""
 
-#: core/admin/views/settings.php:1036
+#: core/admin/views/settings.php:1062
 msgid "Redirect Page is a premium feature—get Pro to use it!"
 msgstr ""
 
-#: core/admin/views/settings.php:1060
+#: core/admin/views/settings.php:1086 core/admin/views/settings.php:1112
 msgid "Select Thank You Page :"
 msgstr ""
 
-#: core/admin/views/settings.php:1063 core/admin/views/settings.php:1106
+#: core/admin/views/settings.php:1089 core/admin/views/settings.php:1112
+#: core/admin/views/settings.php:1132 core/admin/views/settings.php:1158
 msgid "Select a page"
 msgstr ""
 
-#: core/admin/views/settings.php:1075
+#: core/admin/views/settings.php:1101
 msgid ""
 "Handle successful payment redirection page. Learn more about Thank you "
 "page. "
 msgstr ""
 
-#: core/admin/views/settings.php:1075
+#: core/admin/views/settings.php:1101
 msgid "Here"
 msgstr ""
 
-#: core/admin/views/settings.php:1079 core/admin/views/settings.php:1093
+#: core/admin/views/settings.php:1105 core/admin/views/settings.php:1119
 msgid "Create Thank You Page"
 msgstr ""
 
-#: core/admin/views/settings.php:1103
+#: core/admin/views/settings.php:1112
+msgid ""
+"Handle successfull payment redirection page. Learn more about Thank you "
+"page."
+msgstr ""
+
+#: core/admin/views/settings.php:1129 core/admin/views/settings.php:1158
 msgid "Select Cancel Page :"
 msgstr ""
 
-#: core/admin/views/settings.php:1119
+#: core/admin/views/settings.php:1145 core/admin/views/settings.php:1158
 msgid "Handle canceled payment redirection page. Learn more about cancel page."
 msgstr ""
 
-#: core/admin/views/settings.php:1125 core/admin/views/settings.php:1139
+#: core/admin/views/settings.php:1151 core/admin/views/settings.php:1165
 msgid "Create Cancel Page"
 msgstr ""
 
-#: core/admin/views/settings.php:1181
+#: core/admin/views/settings.php:1207
 msgid "Google Sheets & Drive Integration"
 msgstr ""
 
-#: core/admin/views/settings.php:1191
+#: core/admin/views/settings.php:1217 core/admin/views/settings.php:1282
 msgid "Google Client Id:"
 msgstr ""
 
-#: core/admin/views/settings.php:1192
+#: core/admin/views/settings.php:1218
 msgid "Google OAuth Client Id"
 msgstr ""
 
-#: core/admin/views/settings.php:1194
+#: core/admin/views/settings.php:1220
 msgid "Enter here your google client id. "
 msgstr ""
 
-#: core/admin/views/settings.php:1200
+#: core/admin/views/settings.php:1226 core/admin/views/settings.php:1287
 msgid "Google Client Secret:"
 msgstr ""
 
-#: core/admin/views/settings.php:1201
+#: core/admin/views/settings.php:1227
 msgid "Google OAuth Client Secret"
 msgstr ""
 
-#: core/admin/views/settings.php:1203
+#: core/admin/views/settings.php:1229
 msgid "Enter here your google secret id. "
 msgstr ""
 
-#: core/admin/views/settings.php:1214
+#: core/admin/views/settings.php:1240
 msgid "Are you sure you want to disconnect GoogleServices integration?"
 msgstr ""
 
-#: core/admin/views/settings.php:1215
+#: core/admin/views/settings.php:1241
 msgid "Disconnect Google Services"
 msgstr ""
 
-#: core/admin/views/settings.php:1220 core/admin/views/settings.php:1266
+#: core/admin/views/settings.php:1246 core/admin/views/settings.php:1292
 msgid "Check how to create App/Project On Google developer account"
 msgstr ""
 
-#: core/admin/views/settings.php:1224
+#: core/admin/views/settings.php:1250
 msgid "Click on \"Connect Google Services\""
 msgstr ""
 
-#: core/admin/views/settings.php:1232 core/admin/views/settings.php:1277
+#: core/admin/views/settings.php:1258 core/admin/views/settings.php:1303
 msgid "Connect Google Services"
 msgstr ""
 
-#: core/admin/views/settings.php:1236 core/admin/views/settings.php:1279
+#: core/admin/views/settings.php:1262 core/admin/views/settings.php:1305
 msgid ""
 "Note: After 200 days your token will be expired, before the expiration of "
 "your token, generate a new token."
 msgstr ""
 
-#: core/admin/views/settings.php:1243
+#: core/admin/views/settings.php:1269
 msgid "Upgrade to sync forms with Google Sheets & Drive!"
 msgstr ""
 
-#: core/admin/views/settings.php:1244
+#: core/admin/views/settings.php:1270
 msgid "Get access to premium features by upgrading today."
 msgstr ""
 
-#: core/admin/views/settings.php:1270
+#: core/admin/views/settings.php:1282
+msgid "Google Client Id"
+msgstr ""
+
+#: core/admin/views/settings.php:1282
+msgid "Enter here your google client id."
+msgstr ""
+
+#: core/admin/views/settings.php:1287
+msgid "Google Client Secret"
+msgstr ""
+
+#: core/admin/views/settings.php:1287
+msgid "Enter here your google client secret."
+msgstr ""
+
+#: core/admin/views/settings.php:1296
 msgid "Click on \"Generate Access Token\""
 msgstr ""
 
-#: core/entries/action.php:43
+#: core/admin/views/settings.php:1333 core/admin/views/settings.php:1377
+msgid "Enable Form Analytics:"
+msgstr ""
+
+#: core/admin/views/settings.php:1335 core/admin/views/settings.php:1380
+msgid "Enable this to collect and retain analytics data for form submissions."
+msgstr ""
+
+#: core/admin/views/settings.php:1343 core/admin/views/settings.php:1388
+msgid "Delete Analytics Data"
+msgstr ""
+
+#: core/admin/views/settings.php:1345 core/admin/views/settings.php:1391
+msgid "6 Months"
+msgstr ""
+
+#: core/admin/views/settings.php:1346 core/admin/views/settings.php:1392
+msgid "1 Year"
+msgstr ""
+
+#: core/admin/views/settings.php:1347 core/admin/views/settings.php:1393
+msgid "2 Years"
+msgstr ""
+
+#: core/admin/views/settings.php:1348 core/admin/views/settings.php:1394
+msgid "Keep Forever"
+msgstr ""
+
+#: core/admin/views/settings.php:1350 core/admin/views/settings.php:1397
+msgid ""
+"Selected duration is used as data retention policy. Older analytics data is "
+"auto-deleted daily. Click delete to run cleanup now."
+msgstr ""
+
+#: core/admin/views/settings.php:1358
+msgid "Upgrade to Get Form Analytics Insights"
+msgstr ""
+
+#: core/admin/views/settings.php:1358
+msgid "Make Smarter Decisions with Form Analytics"
+msgstr ""
+
+#: core/admin/views/settings.php:1359
+msgid ""
+"You're one upgrade away from full access to conversion tracking, traffic "
+"sources, geographic data, and quiz analytics."
+msgstr ""
+
+#: core/admin/views/settings.php:1359
+msgid "Get the MetForm Professional Plan to track your form performance."
+msgstr ""
+
+#: core/admin/views/settings.php:1439
+msgid "Add MailChimp Integrations"
+msgstr ""
+
+#: core/admin/views/settings.php:1443
+msgid "Mailchimp API Key:"
+msgstr ""
+
+#: core/admin/views/settings.php:1444
+msgid "Enter your API Key"
+msgstr ""
+
+#: core/admin/views/settings.php:1447
+msgid "Connect MailChimp Integration"
+msgstr ""
+
+#: core/admin/views/settings.php:1481
+msgid "Success"
+msgstr ""
+
+#: core/admin/views/settings.php:1482
+msgid "Settings saved successfully!"
+msgstr ""
+
+#: core/analytics/base.php:26 core/analytics/base.php:27
+msgid "Analytics"
+msgstr ""
+
+#: core/entries/action.php:43 core/forms/action.php:31
 msgid "Something went wrong."
 msgstr ""
 
@@ -1040,39 +1367,39 @@ msgstr ""
 msgid " Please wait... Redirecting to PayPal."
 msgstr ""
 
-#: core/entries/action.php:721
+#: core/entries/action.php:729
 msgid "Problem with your RestApi integration."
 msgstr ""
 
-#: core/entries/action.php:745
+#: core/entries/action.php:753
 msgid " Please wait... Redirecting to paypal."
 msgstr ""
 
-#: core/entries/action.php:788
+#: core/entries/action.php:796
 msgid " Please wait... Open a Stripe Popup Box."
 msgstr ""
 
-#: core/entries/action.php:930
+#: core/entries/action.php:938
 msgid "ssl certificate or google oauth credentials problem"
 msgstr ""
 
-#: core/entries/action.php:960
+#: core/entries/action.php:968
 msgid "Google Drive upload failed: SSL certificate or OAuth credentials problem"
 msgstr ""
 
-#: core/entries/action.php:1127
+#: core/entries/action.php:1143
 msgid "Mail not found."
 msgstr ""
 
-#: core/entries/action.php:1133 core/entries/action.php:1186
+#: core/entries/action.php:1149 core/entries/action.php:1202
 msgid "Please setup your SMTP mail server."
 msgstr ""
 
-#: core/entries/action.php:1176
+#: core/entries/action.php:1192
 msgid "Admin mail not found to send email."
 msgstr ""
 
-#: core/entries/action.php:1364
+#: core/entries/action.php:1380
 msgid "There was an error uploading your file."
 msgstr ""
 
@@ -1111,11 +1438,11 @@ msgstr ""
 msgid "Entry Attributes"
 msgstr ""
 
-#: core/entries/cpt.php:20 core/forms/cpt.php:538
+#: core/entries/cpt.php:20 core/forms/cpt.php:550
 msgid "Parent Item:"
 msgstr ""
 
-#: core/entries/cpt.php:21 core/forms/hooks.php:36
+#: core/entries/cpt.php:21 core/forms/hooks.php:35
 msgid "Entries"
 msgstr ""
 
@@ -1123,7 +1450,7 @@ msgstr ""
 msgid "Add New Item"
 msgstr ""
 
-#: core/entries/cpt.php:23 core/forms/cpt.php:541
+#: core/entries/cpt.php:23 core/forms/cpt.php:553
 msgid "Add New"
 msgstr ""
 
@@ -1151,27 +1478,27 @@ msgstr ""
 msgid "Search Item"
 msgstr ""
 
-#: core/entries/cpt.php:30 core/forms/cpt.php:548
+#: core/entries/cpt.php:30 core/forms/cpt.php:560
 msgid "Not found"
 msgstr ""
 
-#: core/entries/cpt.php:31 core/forms/cpt.php:549
+#: core/entries/cpt.php:31 core/forms/cpt.php:561
 msgid "Not found in Trash"
 msgstr ""
 
-#: core/entries/cpt.php:32 core/forms/cpt.php:550
+#: core/entries/cpt.php:32 core/forms/cpt.php:562
 msgid "Featured Image"
 msgstr ""
 
-#: core/entries/cpt.php:33 core/forms/cpt.php:551
+#: core/entries/cpt.php:33 core/forms/cpt.php:563
 msgid "Set featured image"
 msgstr ""
 
-#: core/entries/cpt.php:34 core/forms/cpt.php:552
+#: core/entries/cpt.php:34 core/forms/cpt.php:564
 msgid "Remove featured image"
 msgstr ""
 
-#: core/entries/cpt.php:35 core/forms/cpt.php:553
+#: core/entries/cpt.php:35 core/forms/cpt.php:565
 msgid "Use as featured image"
 msgstr ""
 
@@ -1219,35 +1546,51 @@ msgstr ""
 msgid "%1$s only allow %2$s file types."
 msgstr ""
 
-#: core/entries/form-data.php:268 core/entries/form-data.php:503
+#: core/entries/form-data.php:216
+msgid "Card Number:"
+msgstr ""
+
+#: core/entries/form-data.php:220
+msgid "Card Type:"
+msgstr ""
+
+#: core/entries/form-data.php:237
+msgid "Correct"
+msgstr ""
+
+#: core/entries/form-data.php:241
+msgid "Wrong"
+msgstr ""
+
+#: core/entries/form-data.php:463
 msgid "Number:"
 msgstr ""
 
-#: core/entries/form-data.php:272 core/entries/form-data.php:507
+#: core/entries/form-data.php:467
 msgid "Type:"
 msgstr ""
 
-#: core/entries/form-data.php:523 core/entries/meta-data.php:283
+#: core/entries/form-data.php:483 core/entries/meta-data.php:254
 msgid "Download"
 msgstr ""
 
-#: core/entries/hooks.php:38
+#: core/entries/hooks.php:39
 msgid "Form Name"
 msgstr ""
 
-#: core/entries/hooks.php:40
+#: core/entries/hooks.php:41
 msgid "Referral"
 msgstr ""
 
-#: core/entries/hooks.php:42
+#: core/entries/hooks.php:43
 msgid "Email Verified"
 msgstr ""
 
-#: core/entries/hooks.php:45
-msgid "Export Actions"
+#: core/entries/hooks.php:46 core/forms/hooks.php:38
+msgid "Actions"
 msgstr ""
 
-#: core/entries/hooks.php:84 traits/common-controls.php:136
+#: core/entries/hooks.php:85 traits/common-controls.php:136
 #: traits/common-controls.php:977 traits/quiz-control.php:303
 #: traits/quiz-control.php:393 traits/quiz-control.php:476
 #: traits/quiz-control.php:619 widgets/checkbox/checkbox.php:149
@@ -1263,7 +1606,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: core/entries/hooks.php:86 traits/common-controls.php:137
+#: core/entries/hooks.php:87 traits/common-controls.php:137
 #: traits/common-controls.php:978 traits/quiz-control.php:304
 #: traits/quiz-control.php:394 traits/quiz-control.php:477
 #: traits/quiz-control.php:620 widgets/checkbox/checkbox.php:150
@@ -1279,84 +1622,128 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: core/entries/hooks.php:101
-msgid "PDF Export"
+#: core/entries/hooks.php:114 core/entries/meta-data.php:258
+#: core/forms/hooks.php:125
+msgid "View"
 msgstr ""
 
-#: core/entries/hooks.php:103 core/forms/hooks.php:66
-msgid "Upgrade for premium access."
-msgstr ""
-
-#: core/entries/hooks.php:106
+#: core/entries/hooks.php:117
 msgid "Export PDF"
 msgstr ""
 
-#: core/entries/meta-data.php:64
-msgid "Info"
+#: core/entries/hooks.php:119
+msgid "Export PDF is a premium feature. Upgrade for premium acess"
 msgstr ""
 
-#: core/entries/meta-data.php:87
-msgid "Form Name "
+#: core/entries/hooks.php:122 core/forms/hooks.php:129
+msgid "Move to Trash"
 msgstr ""
 
-#: core/entries/meta-data.php:93
-msgid "Entry ID"
+#: core/entries/hooks.php:122
+msgid "Move this entry to trash?"
 msgstr ""
 
-#: core/entries/meta-data.php:104
-msgid "Entry By"
+#: core/entries/meta-data.php:77
+msgid "Entry Info"
+msgstr ""
+
+#: core/entries/meta-data.php:95
+msgid "FORM NAME"
+msgstr ""
+
+#: core/entries/meta-data.php:99
+msgid "ENTRY ID"
+msgstr ""
+
+#: core/entries/meta-data.php:106
+msgid "SUBMITTED BY"
 msgstr ""
 
 #: core/entries/meta-data.php:115
 msgid "Visitor"
 msgstr ""
 
-#: core/entries/meta-data.php:138
+#: core/entries/meta-data.php:130
 msgid "Data"
 msgstr ""
 
-#: core/entries/meta-data.php:141
+#: core/entries/meta-data.php:132
 msgid "Quiz Data"
 msgstr ""
 
-#: core/entries/meta-data.php:169
+#: core/entries/meta-data.php:158
 msgid "Browser Data"
 msgstr ""
 
-#: core/entries/meta-data.php:201
+#: core/entries/meta-data.php:178
 msgid "Browser data not captured."
 msgstr ""
 
-#: core/entries/meta-data.php:215
+#: core/entries/meta-data.php:192
 msgid "Files"
 msgstr ""
 
-#: core/entries/meta-data.php:284
-msgid "View"
-msgstr ""
-
-#: core/entries/meta-data.php:286
-msgid "This file is not uploaded."
-msgstr ""
-
-#: core/entries/meta-data.php:325
+#: core/entries/meta-data.php:292
 msgid "Woocommerce Checkout"
 msgstr ""
 
-#: core/entries/meta-data.php:348
-msgid "Order ID "
-msgstr ""
-
-#: core/entries/meta-data.php:354
-msgid "Order Status"
+#: core/entries/meta-data.php:321
+msgid "Order Details"
 msgstr ""
 
 #: core/entries/meta-data.php:361
-msgid "Total"
+msgid "Publish"
 msgstr ""
 
-#: core/entries/meta-data.php:371
-msgid "Order Details"
+#: core/entries/meta-data.php:372 core/entries/meta-data.php:377
+#: core/entries/meta-data.php:408
+msgid "Published"
+msgstr ""
+
+#: core/entries/meta-data.php:378 core/entries/meta-data.php:409
+msgid "Pending Review"
+msgstr ""
+
+#: core/entries/meta-data.php:379 core/entries/meta-data.php:410
+msgid "Draft"
+msgstr ""
+
+#: core/entries/meta-data.php:380 core/entries/meta-data.php:389
+#: core/entries/meta-data.php:425
+msgid "Private"
+msgstr ""
+
+#: core/entries/meta-data.php:381
+msgid "Trashed"
+msgstr ""
+
+#: core/entries/meta-data.php:382
+msgid "Scheduled"
+msgstr ""
+
+#: core/entries/meta-data.php:391 core/entries/meta-data.php:426
+msgid "Password Protected"
+msgstr ""
+
+#: core/entries/meta-data.php:393 core/entries/meta-data.php:424
+msgid "Public"
+msgstr ""
+
+#: core/entries/meta-data.php:400
+msgid "STATUS"
+msgstr ""
+
+#: core/entries/meta-data.php:412 core/entries/meta-data.php:431
+#: core/entries/meta-data.php:445
+msgid "OK"
+msgstr ""
+
+#: core/entries/meta-data.php:417
+msgid "VISIBILITY"
+msgstr ""
+
+#: core/entries/meta-data.php:436
+msgid "PUBLISHED"
 msgstr ""
 
 #: core/forms/action.php:78 core/forms/action.php:100
@@ -1383,7 +1770,7 @@ msgid ""
 "Confirmation/ Notification/ REST API/ MailChimp/ Slack/ Zapier\". "
 msgstr ""
 
-#: core/forms/api.php:380
+#: core/forms/api.php:459
 msgid "Not Authorized"
 msgstr ""
 
@@ -1391,84 +1778,100 @@ msgstr ""
 msgid "Thank you! Form submitted successfully."
 msgstr ""
 
-#: core/forms/cpt.php:534 core/forms/cpt.php:535 widgets/form.php:56
+#: core/forms/cpt.php:546 core/forms/cpt.php:547 widgets/form.php:56
 msgid "Form"
 msgstr ""
 
-#: core/forms/cpt.php:536
+#: core/forms/cpt.php:548
 msgid "Form Archives"
 msgstr ""
 
-#: core/forms/cpt.php:537
+#: core/forms/cpt.php:549
 msgid "Form Attributes"
 msgstr ""
 
-#: core/forms/cpt.php:539 core/forms/cpt.php:567
+#: core/forms/cpt.php:551 core/forms/cpt.php:579
 msgid "Forms"
 msgstr ""
 
-#: core/forms/cpt.php:540
+#: core/forms/cpt.php:552
 msgid "Add New Form"
 msgstr ""
 
-#: core/forms/cpt.php:542
+#: core/forms/cpt.php:554
 msgid "New Form"
 msgstr ""
 
-#: core/forms/cpt.php:543 widgets/form.php:74
+#: core/forms/cpt.php:555 widgets/form.php:74
 msgid "Edit Form"
 msgstr ""
 
-#: core/forms/cpt.php:544
+#: core/forms/cpt.php:556
 msgid "Update Form"
 msgstr ""
 
-#: core/forms/cpt.php:545
+#: core/forms/cpt.php:557
 msgid "View Form"
 msgstr ""
 
-#: core/forms/cpt.php:546
+#: core/forms/cpt.php:558
 msgid "View Forms"
 msgstr ""
 
-#: core/forms/cpt.php:547
+#: core/forms/cpt.php:559
 msgid "Search Forms"
 msgstr ""
 
-#: core/forms/cpt.php:554
+#: core/forms/cpt.php:566
 msgid "Insert into form"
 msgstr ""
 
-#: core/forms/cpt.php:555
+#: core/forms/cpt.php:567
 msgid "Uploaded to this form"
 msgstr ""
 
-#: core/forms/cpt.php:556
+#: core/forms/cpt.php:568
 msgid "Forms list"
 msgstr ""
 
-#: core/forms/cpt.php:557
+#: core/forms/cpt.php:569
 msgid "Forms list navigation"
 msgstr ""
 
-#: core/forms/cpt.php:558
+#: core/forms/cpt.php:570
 msgid "Filter froms list"
 msgstr ""
 
-#: core/forms/cpt.php:568
+#: core/forms/cpt.php:580
 msgid "metform form"
 msgstr ""
 
-#: core/forms/hooks.php:35
+#: core/forms/hooks.php:34
 msgid "Shortcode"
 msgstr ""
 
-#: core/forms/hooks.php:37
+#: core/forms/hooks.php:36
 msgid "Views/ Conversion"
 msgstr ""
 
-#: core/forms/hooks.php:64 core/forms/hooks.php:69
-msgid "Export CSV"
+#: core/forms/hooks.php:62 core/forms/hooks.php:67
+msgid "CSV"
+msgstr ""
+
+#: core/forms/hooks.php:80
+msgid "Upgrade for premium access."
+msgstr ""
+
+#: core/forms/hooks.php:127
+msgid "Edit with Elementor"
+msgstr ""
+
+#: core/forms/hooks.php:129
+msgid "Move this form to trash?"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:46
+msgid "Please upgrade to use this feature."
 msgstr ""
 
 #: core/forms/views/modal-editor.php:71
@@ -1523,17 +1926,21 @@ msgstr ""
 msgid "Show Quiz Summary:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:119
+#: core/forms/views/modal-editor.php:119 core/forms/views/modal-editor.php:124
 msgid ""
 "Quiz summary will be shown to user after form submission with success "
 "message."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:123 core/forms/views/modal-editor.php:294
+msgid "Show Quiz Summary"
 msgstr ""
 
 #: core/forms/views/modal-editor.php:133
 msgid "Required Login:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:135
+#: core/forms/views/modal-editor.php:135 core/forms/views/modal-editor.php:140
 msgid "Without login, users can't submit the form."
 msgstr ""
 
@@ -1541,8 +1948,12 @@ msgstr ""
 msgid "Capture User Browser Data:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:151
+#: core/forms/views/modal-editor.php:151 core/forms/views/modal-editor.php:156
 msgid "Store user's browser data (ip, browser name, etc)"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:155
+msgid "Capture User Browser Data"
 msgstr ""
 
 #: core/forms/views/modal-editor.php:164
@@ -1573,15 +1984,19 @@ msgstr ""
 msgid "Limit Total Entries:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:196
+#: core/forms/views/modal-editor.php:196 core/forms/views/modal-editor.php:201
 msgid "Limit the total number of submissions for this form."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:200
+msgid "Limit Total Entries"
 msgstr ""
 
 #: core/forms/views/modal-editor.php:209
 msgid "Form Scheduling:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:211
+#: core/forms/views/modal-editor.php:211 core/forms/views/modal-editor.php:251
 msgid "Start end time scheduling for form availability."
 msgstr ""
 
@@ -1609,20 +2024,32 @@ msgstr ""
 msgid "Expired  Message"
 msgstr ""
 
+#: core/forms/views/modal-editor.php:250
+msgid "Form scheduling"
+msgstr ""
+
 #: core/forms/views/modal-editor.php:259
 msgid "Count views:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:261
+#: core/forms/views/modal-editor.php:261 core/forms/views/modal-editor.php:266
 msgid "Track form views."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:265
+msgid "Count views"
 msgstr ""
 
 #: core/forms/views/modal-editor.php:275
 msgid "Stop Vertical Scrolling:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:277
+#: core/forms/views/modal-editor.php:277 core/forms/views/modal-editor.php:282
 msgid "Stop scrolling effect when submitting the form."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:281
+msgid "Stop Vertical Scrolling"
 msgstr ""
 
 #: core/forms/views/modal-editor.php:288
@@ -1637,654 +2064,839 @@ msgstr ""
 msgid "Users will be redirected to the this link after submission."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:312
+#: core/forms/views/modal-editor.php:310
+msgid "Redirect form data"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:325
 msgid "Confirmation mail to user :"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:315
+#: core/forms/views/modal-editor.php:328
 msgid "Want to send a submission copy to user by email? Active this one. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:316 core/forms/views/modal-editor.php:1006
+#: core/forms/views/modal-editor.php:329 core/forms/views/modal-editor.php:1019
 msgid "This form must include at least one required Email field."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:332 core/forms/views/modal-editor.php:391
+#: core/forms/views/modal-editor.php:334
+msgid "Confirmation mail to user"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:335
+msgid ""
+"Want to send a submission copy to user by email? Active this one. This form "
+"must include at least one required Email field."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:345 core/forms/views/modal-editor.php:404
 msgid "Email Subject:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:333 core/forms/views/modal-editor.php:392
+#: core/forms/views/modal-editor.php:346 core/forms/views/modal-editor.php:405
 msgid "Email subject"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:334 core/forms/views/modal-editor.php:393
+#: core/forms/views/modal-editor.php:347 core/forms/views/modal-editor.php:406
 msgid "Enter here email subject."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:338 core/forms/views/modal-editor.php:403
+#: core/forms/views/modal-editor.php:351 core/forms/views/modal-editor.php:416
 msgid "Email From:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:339
+#: core/forms/views/modal-editor.php:352
 msgid "From email"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:340
+#: core/forms/views/modal-editor.php:353
 msgid "Enter the email by which you want to send email to user."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:344 core/forms/views/modal-editor.php:409
+#: core/forms/views/modal-editor.php:357 core/forms/views/modal-editor.php:422
 msgid "Email Reply To:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:345
+#: core/forms/views/modal-editor.php:358
 msgid "Reply to email"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:346
+#: core/forms/views/modal-editor.php:359
 msgid "Enter email where user can reply/ you want to get reply."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:350
+#: core/forms/views/modal-editor.php:363
 msgid "Thank you message :"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:351
+#: core/forms/views/modal-editor.php:364
 msgid "Thank you message!"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:352
+#: core/forms/views/modal-editor.php:365
 msgid ""
 "Enter here your message to include it in email body. Which will be send to "
 "user."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:359
+#: core/forms/views/modal-editor.php:372 core/forms/views/modal-editor.php:377
 msgid "Want to send a copy of submitted form to user ?"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:371
+#: core/forms/views/modal-editor.php:384
 msgid "Email verification:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:372
+#: core/forms/views/modal-editor.php:385
 msgid ""
 "Want to send an email verification mail to the user by email? Active this "
 "one. This form must include at least one required Email field."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:385
+#: core/forms/views/modal-editor.php:398
 msgid "Notification mail to admin :"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:387
+#: core/forms/views/modal-editor.php:400
 msgid "Want to send a submission copy to admin by email? Active this one."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:397
+#: core/forms/views/modal-editor.php:410
 msgid "Email To:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:398
+#: core/forms/views/modal-editor.php:411
 msgid "example@mail.com, example@email.com"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:399
+#: core/forms/views/modal-editor.php:412
 msgid "Enter admin email where you want to send mail."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:399
+#: core/forms/views/modal-editor.php:412
 msgid " for multiple email addresses please use \",\" separator."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:404
+#: core/forms/views/modal-editor.php:417
 msgid "Email from"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:405
+#: core/forms/views/modal-editor.php:418
 msgid "Enter the email by which you want to send email to admin."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:410
+#: core/forms/views/modal-editor.php:423
 msgid "Email reply to"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:411
+#: core/forms/views/modal-editor.php:424
 msgid "Enter email where admin can reply/ you want to get reply."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:415
+#: core/forms/views/modal-editor.php:428
 msgid "Admin Note : "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:416
+#: core/forms/views/modal-editor.php:429
 msgid "Admin note!"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:417
+#: core/forms/views/modal-editor.php:430
 msgid "Enter here your email body. Which will be send to admin."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:427
+#: core/forms/views/modal-editor.php:440
 msgid "HubSpot Forms:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:429
+#: core/forms/views/modal-editor.php:442
 msgid "Integrate hubspot with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:429
+#: core/forms/views/modal-editor.php:442
 msgid "Configure HubSpot."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:434
+#: core/forms/views/modal-editor.php:447
 msgid "Fetch HubSpot Forms"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:451
+#: core/forms/views/modal-editor.php:464
 msgid "HubSpot Contact:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:461 core/forms/views/modal-editor.php:497
+#: core/forms/views/modal-editor.php:474 core/forms/views/modal-editor.php:510
 msgid "MailerLite:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:464
+#: core/forms/views/modal-editor.php:477
 msgid "Connect this form to MailerLite. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:465 core/forms/views/modal-editor.php:510
-#: core/forms/views/modal-editor.php:718 core/forms/views/modal-editor.php:750
-#: core/forms/views/modal-editor.php:782 core/forms/views/modal-editor.php:869
-#: core/forms/views/modal-editor.php:908 core/forms/views/modal-editor.php:972
+#: core/forms/views/modal-editor.php:478 core/forms/views/modal-editor.php:523
+#: core/forms/views/modal-editor.php:731 core/forms/views/modal-editor.php:763
+#: core/forms/views/modal-editor.php:795 core/forms/views/modal-editor.php:882
+#: core/forms/views/modal-editor.php:921 core/forms/views/modal-editor.php:985
 msgid "This form must include at least one required Email field. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:467
+#: core/forms/views/modal-editor.php:480
 msgid "Configure MailerLite."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:475
+#: core/forms/views/modal-editor.php:488
 msgid "MailerLite Group:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:484
+#: core/forms/views/modal-editor.php:497
 msgid "Select a Group"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:487
+#: core/forms/views/modal-editor.php:500
 msgid "Select the MailerLite Group you would like to add your contacts to."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:498
+#: core/forms/views/modal-editor.php:511
 msgid ""
 "Integrate MailerLite with this form. This form must include at least one "
 "required Email field."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:508
+#: core/forms/views/modal-editor.php:521 core/forms/views/modal-editor.php:544
 msgid "Mail Chimp:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:510
+#: core/forms/views/modal-editor.php:523
 msgid "Integrate mailchimp with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:510
+#: core/forms/views/modal-editor.php:523
 msgid "Configure Mail Chimp."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:515
+#: core/forms/views/modal-editor.php:528
 msgid "MailChimp List ID:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:526
+#: core/forms/views/modal-editor.php:539
 msgid "Mailchimp contact list id"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:542
+#: core/forms/views/modal-editor.php:545
+msgid ""
+"Integrate mailchimp with this form. This form must include at least one "
+"required Email field."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:555 core/forms/views/modal-editor.php:568
 msgid "Slack:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:544
+#: core/forms/views/modal-editor.php:557
 msgid "Integrate slack with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:544
+#: core/forms/views/modal-editor.php:557
 msgid "slack info."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:548
+#: core/forms/views/modal-editor.php:561
 msgid "Slack webhook:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:549
+#: core/forms/views/modal-editor.php:562
 msgid "Slack webhook"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:550
+#: core/forms/views/modal-editor.php:563
 msgid "Enter here slack web hook. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:550
+#: core/forms/views/modal-editor.php:563
 msgid "create from here"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:565 core/forms/views/modal-editor.php:588
+#: core/forms/views/modal-editor.php:569
+msgid "Integrate slack with this form."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:578 core/forms/views/modal-editor.php:601
 msgid "REST API:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:567
+#: core/forms/views/modal-editor.php:580
 msgid "Send entry data to third party api/webhook"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:572
+#: core/forms/views/modal-editor.php:585
 msgid "URL/Webhook:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:573
+#: core/forms/views/modal-editor.php:586
 msgid "Rest api url/webhook"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:574
+#: core/forms/views/modal-editor.php:587
 msgid "Enter rest api url/webhook here."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:579
+#: core/forms/views/modal-editor.php:592
 msgid "POST"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:580
+#: core/forms/views/modal-editor.php:593
 msgid "GET"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:589
+#: core/forms/views/modal-editor.php:602
 msgid "Send entry data to third parti api/webhook."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:599 core/forms/views/modal-editor.php:636
+#: core/forms/views/modal-editor.php:612 core/forms/views/modal-editor.php:649
 msgid "Google Sheet:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:601
+#: core/forms/views/modal-editor.php:614
 msgid "Integrate google sheet with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:601
+#: core/forms/views/modal-editor.php:614
 msgid "Configure Google Sheet."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:607
+#: core/forms/views/modal-editor.php:620
 msgid "Spreadsheets List:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:618
+#: core/forms/views/modal-editor.php:631
 msgid "Google Spreadsheet list id"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:621
+#: core/forms/views/modal-editor.php:634
 msgid "Sheets List:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:630
+#: core/forms/views/modal-editor.php:643
 msgid "Google Sheet list title"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:637
+#: core/forms/views/modal-editor.php:650
 msgid "Integrate google sheet with this form."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:647 core/forms/views/modal-editor.php:667
+#: core/forms/views/modal-editor.php:660 core/forms/views/modal-editor.php:680
 msgid "Dropbox:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:649
+#: core/forms/views/modal-editor.php:662
 msgid "Integrate dropbox with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:649
+#: core/forms/views/modal-editor.php:662
 msgid "Configure Dropbox."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:653 core/forms/views/modal-editor.php:685
+#: core/forms/views/modal-editor.php:666 core/forms/views/modal-editor.php:698
 msgid "Folder List:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:662
+#: core/forms/views/modal-editor.php:675
 msgid "Dropbox list title"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:668
+#: core/forms/views/modal-editor.php:681
 msgid "Integrate dropbox with this form."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:677
+#: core/forms/views/modal-editor.php:690
 msgid "Google Drive:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:679
+#: core/forms/views/modal-editor.php:692
 msgid "Integrate google drive with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:679
+#: core/forms/views/modal-editor.php:692
 msgid "Configure Google Drive."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:696
+#: core/forms/views/modal-editor.php:709
 msgid "Google Drive folder list id"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:702
+#: core/forms/views/modal-editor.php:715
 msgid "Google Drive :"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:703
+#: core/forms/views/modal-editor.php:716
 msgid "Integrate google drive file upload"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:714 core/forms/views/modal-editor.php:804
+#: core/forms/views/modal-editor.php:727 core/forms/views/modal-editor.php:817
 msgid "MailPoet:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:717
+#: core/forms/views/modal-editor.php:730
 msgid "Integrate MailPoet with this form."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:720
+#: core/forms/views/modal-editor.php:733
 msgid "Configure MailPoet."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:727
+#: core/forms/views/modal-editor.php:740
 msgid "MailPoet List ID:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:733
+#: core/forms/views/modal-editor.php:746
 msgid "Enter here MailPoet list id. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:734 core/forms/views/modal-editor.php:765
-#: core/forms/views/modal-editor.php:796 core/forms/views/modal-editor.php:932
-#: core/forms/views/modal-editor.php:949
+#: core/forms/views/modal-editor.php:747 core/forms/views/modal-editor.php:778
+#: core/forms/views/modal-editor.php:809 core/forms/views/modal-editor.php:945
+#: core/forms/views/modal-editor.php:962
 msgid "Refresh List"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:746 core/forms/views/modal-editor.php:827
+#: core/forms/views/modal-editor.php:759 core/forms/views/modal-editor.php:840
 msgid "Aweber:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:749
+#: core/forms/views/modal-editor.php:762
 msgid "Integrate aweber with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:752
+#: core/forms/views/modal-editor.php:765
 msgid "Configure aweber."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:759
+#: core/forms/views/modal-editor.php:772
 msgid "Aweber List ID:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:764
+#: core/forms/views/modal-editor.php:777
 msgid "Enter here aweber list id. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:778 core/forms/views/modal-editor.php:836
+#: core/forms/views/modal-editor.php:791 core/forms/views/modal-editor.php:849
 msgid "ConvertKit:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:781
+#: core/forms/views/modal-editor.php:794
 msgid "Integrate convertKit with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:784
+#: core/forms/views/modal-editor.php:797
 msgid "Configure ConvertKit."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:790
+#: core/forms/views/modal-editor.php:803
 msgid "ConvertKit Forms ID:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:794
+#: core/forms/views/modal-editor.php:807
 msgid "Enter here ConvertKit form id. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:805
+#: core/forms/views/modal-editor.php:818
 msgid ""
 "Integrate MailPoet with this form. This form must include at least one "
 "required Email field."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:809
+#: core/forms/views/modal-editor.php:822
 msgid "SMS Integrations (Twilio):"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:813
+#: core/forms/views/modal-editor.php:826
 msgid "SMS User:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:814
+#: core/forms/views/modal-editor.php:827
 msgid ""
 "Integrate SMS confirmation with this form.The form must have at least one "
 "mobile number widget and it should be required."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:818
+#: core/forms/views/modal-editor.php:831
 msgid "SMS Admin:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:828
+#: core/forms/views/modal-editor.php:841
 msgid ""
 "Integrate aweber with this form. This form must include at least one "
 "required Email field."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:837
+#: core/forms/views/modal-editor.php:850
 msgid ""
 "Integrate convertKit with this form. This form must include at least one "
 "required Email field."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:845 core/forms/views/modal-editor.php:865
+#: core/forms/views/modal-editor.php:858 core/forms/views/modal-editor.php:878
 msgid "GetResponse:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:846
+#: core/forms/views/modal-editor.php:859
 msgid ""
 "Integrate GetResponse with this form. This form must include at least one "
 "required Email field."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:854 core/forms/views/modal-editor.php:1004
+#: core/forms/views/modal-editor.php:867 core/forms/views/modal-editor.php:1017
 msgid "Zapier:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:855
+#: core/forms/views/modal-editor.php:868
 msgid ""
 "Integrate zapier with this form. This form must include at least one "
 "required Email field."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:868
+#: core/forms/views/modal-editor.php:881
 msgid "Integrate GetResponse with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:871
+#: core/forms/views/modal-editor.php:884
 msgid "Configure GetResponse."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:877
+#: core/forms/views/modal-editor.php:890
 msgid "GetResponse List ID:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:885
+#: core/forms/views/modal-editor.php:898
 msgid "GetResponse contact list id"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:886
+#: core/forms/views/modal-editor.php:899
 msgid "Enter here GetResponse list id. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:903 core/forms/views/modal-editor.php:956
+#: core/forms/views/modal-editor.php:916 core/forms/views/modal-editor.php:969
 msgid "ActiveCampaign:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:906
+#: core/forms/views/modal-editor.php:919
 msgid "Integrate ActiveCampaign with this form."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:910
+#: core/forms/views/modal-editor.php:923
 msgid "Configure ActiveCampaign."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:918
+#: core/forms/views/modal-editor.php:931
 msgid "Active campaign List ID:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:931
+#: core/forms/views/modal-editor.php:944
 msgid "Enter here list id. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:937
+#: core/forms/views/modal-editor.php:950
 msgid "Active campaign Tag ID:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:948
+#: core/forms/views/modal-editor.php:961
 msgid "Enter here tag id. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:957
+#: core/forms/views/modal-editor.php:970
 msgid ""
 "Integrate ActiveCampaign with this form. This form must include at least "
 "one required Email field."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:970
+#: core/forms/views/modal-editor.php:983
 msgid "Mailster:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:972
+#: core/forms/views/modal-editor.php:985
 msgid "Integrate Mailster with this form."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:976
+#: core/forms/views/modal-editor.php:989
 msgid "Mailster Forms"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1006
+#: core/forms/views/modal-editor.php:1019
 msgid "Integrate zapier with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1010
+#: core/forms/views/modal-editor.php:1023
 msgid "Zapier webhook:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1011
+#: core/forms/views/modal-editor.php:1024
 msgid "Zapier webhook"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1012
+#: core/forms/views/modal-editor.php:1025
 msgid "Enter here zapier web hook."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1085
-#: core/forms/views/modal-editor.php:1129
+#: core/forms/views/modal-editor.php:1038
+msgid "Australian dollar"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1039
+msgid "Brazilian real"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1040
+msgid "Canadian dollar"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1041
+msgid "Chinese Renmenbi"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1042
+msgid "Czech koruna"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1043
+msgid "Danish krone"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1044
+msgid "Euro"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1045
+msgid "Hong Kong dollar"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1046
+msgid "Hungarian forint"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1047
+msgid "Israeli new shekel"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1048
+msgid "Japanese yen"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1049
+msgid "Malaysian ringgit"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1050
+msgid "Mexican peso"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1051
+msgid "New Taiwan dollar"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1052
+msgid "New Zealand dollar"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1053
+msgid "Norwegian krone"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1054
+msgid "Philippine peso"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1055
+msgid "Polish złoty"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1056
+msgid "Pound sterling"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1057
+msgid "Russian ruble"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1058
+msgid "Singapore dollar"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1059
+msgid "Swedish krona"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1060
+msgid "Swiss franc"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1061
+msgid "Thai baht"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1062
+msgid "United States dollar"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1084
+msgid "Default currency"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1098
+#: core/forms/views/modal-editor.php:1142
 msgid "Paypal:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1087
+#: core/forms/views/modal-editor.php:1100
 msgid "Integrate paypal payment with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1088
+#: core/forms/views/modal-editor.php:1101
 msgid "Configure paypal payment."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1097
-#: core/forms/views/modal-editor.php:1137
+#: core/forms/views/modal-editor.php:1110
+#: core/forms/views/modal-editor.php:1150
 msgid "Stripe:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1099
+#: core/forms/views/modal-editor.php:1112
 msgid "Integrate stripe payment with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1099
+#: core/forms/views/modal-editor.php:1112
 msgid "Configure stripe payment."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1108
+#: core/forms/views/modal-editor.php:1121
 msgid "Require Payment For Submission?"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1111
+#: core/forms/views/modal-editor.php:1124
 msgid "Hold form submission before proceeding to payment."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1119
+#: core/forms/views/modal-editor.php:1132
 msgid "Default Currency"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1120
+#: core/forms/views/modal-editor.php:1133
 msgid "Select default currency"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1130
+#: core/forms/views/modal-editor.php:1143
 msgid "Integrate paypal payment with this form."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1138
+#: core/forms/views/modal-editor.php:1151
 msgid "Integrate stripe payment with this form."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1152
+#: core/forms/views/modal-editor.php:1165
+#: core/forms/views/modal-editor.php:1211
+#: core/forms/views/modal-editor.php:1255
 msgid "Zoho Contact:"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1154
+#: core/forms/views/modal-editor.php:1167
 msgid "Integrate Zoho contacts with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1155
+#: core/forms/views/modal-editor.php:1168
 msgid "Configure Zoho."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1160
+#: core/forms/views/modal-editor.php:1173
 msgid "Form Fields"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1169
+#: core/forms/views/modal-editor.php:1182
 msgid "Select Metform Field"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1175
+#: core/forms/views/modal-editor.php:1188
 msgid "Select Zoho Form Field"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1180
+#: core/forms/views/modal-editor.php:1193
 msgid "Delete"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1209
+#: core/forms/views/modal-editor.php:1202
+msgid "Add Field"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1212
+#: core/forms/views/modal-editor.php:1256
+msgid "Integrate Zoho Contact with this form."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1222
 msgid "Helpscout"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1211
+#: core/forms/views/modal-editor.php:1224
 msgid "Integrate Helpscout with this form. "
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1211
+#: core/forms/views/modal-editor.php:1224
 msgid "Configure Helpscout."
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1216
+#: core/forms/views/modal-editor.php:1229
 msgid "Available Mailboxes"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1291
+#: core/forms/views/modal-editor.php:1239
+msgid "No mailbox found"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1259
+msgid "Helpscout:"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1260
+msgid "Integrate Helpscout with this form."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1263
+msgid "Fluent:"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1264
+msgid ""
+"Integrate fluent with this form.This form must include at least one "
+"required Email field."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1275
+msgid "Login"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1276
+msgid "Enable or disable login system."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1279
+msgid "Registration"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1280
+msgid "Enable or disable user registration."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1289
+msgid "Form to Post"
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1290
+msgid "Create a post from form entries."
+msgstr ""
+
+#: core/forms/views/modal-editor.php:1304
 msgid "Edit content"
 msgstr ""
 
-#: core/forms/views/modal-editor.php:1293
+#: core/forms/views/modal-editor.php:1306
 msgid "Save changes"
 msgstr ""
 
@@ -2306,6 +2918,26 @@ msgstr ""
 
 #: core/integrations/crm/hubspot/loader.php:46
 msgid "HubSpot"
+msgstr ""
+
+#: core/integrations/crm/hubspot/loader.php:96
+msgid "Get premium access to integrate Zoho with your forms."
+msgstr ""
+
+#: core/integrations/crm/hubspot/loader.php:135
+msgid "App ID"
+msgstr ""
+
+#: core/integrations/crm/hubspot/loader.php:138
+msgid "Help Scout App ID"
+msgstr ""
+
+#: core/integrations/crm/hubspot/loader.php:142
+msgid "App Secret"
+msgstr ""
+
+#: core/integrations/crm/hubspot/loader.php:145
+msgid "Help Scout App Secret"
 msgstr ""
 
 #: core/integrations/crm/hubspot/loader.php:158
@@ -2419,27 +3051,27 @@ msgid "Email Customizer Activated"
 msgstr ""
 
 #: core/integrations/onboard/classes/ajax.php:95
-msgid "Social Integration Activated"
-msgstr ""
-
-#: core/integrations/onboard/classes/ajax.php:96
-msgid "Review Management Activated"
-msgstr ""
-
-#: core/integrations/onboard/classes/ajax.php:97
 msgid "Fundraising & Donations"
 msgstr ""
 
-#: core/integrations/onboard/classes/ajax.php:98
+#: core/integrations/onboard/classes/ajax.php:96
 msgid "Page Builder Blocks Activated"
 msgstr ""
 
-#: core/integrations/onboard/classes/ajax.php:99
+#: core/integrations/onboard/classes/ajax.php:97
 msgid "Popup Builder Activated"
 msgstr ""
 
-#: core/integrations/onboard/classes/ajax.php:100
+#: core/integrations/onboard/classes/ajax.php:98
 msgid "Table Builder Activated"
+msgstr ""
+
+#: core/integrations/onboard/classes/ajax.php:99
+msgid "Dynamic CPT Fields Activated"
+msgstr ""
+
+#: core/integrations/onboard/classes/ajax.php:100
+msgid "Appointment Booking Activated"
 msgstr ""
 
 #: core/integrations/onboard/classes/ajax.php:106
@@ -2447,17 +3079,17 @@ msgid "Plugin Activated"
 msgstr ""
 
 #: core/integrations/onboard/classes/plugin-status.php:57
-#: utils/apps/apps.php:373
+#: utils/apps/apps.php:387 utils/apps/apps.php:725 utils/apps/apps.php:728
 msgid "Activated"
 msgstr ""
 
 #: core/integrations/onboard/classes/plugin-status.php:60
-#: utils/apps/apps.php:376
+#: utils/apps/apps.php:390
 msgid "Activate Now"
 msgstr ""
 
 #: core/integrations/onboard/classes/plugin-status.php:65
-#: utils/apps/apps.php:381
+#: utils/apps/apps.php:395
 msgid "Install Now"
 msgstr ""
 
@@ -2532,7 +3164,7 @@ msgstr ""
 
 #: core/integrations/onboard/views/onboard-steps/step-01.php:29
 #: core/integrations/onboard/views/onboard-steps/step-02.php:16
-#: core/integrations/onboard/views/onboard-steps/step-03.php:172
+#: core/integrations/onboard/views/onboard-steps/step-03.php:174
 #: core/integrations/onboard/views/onboard-steps/step-04.php:29
 #: core/integrations/onboard/views/onboard-steps/step-05.php:32
 msgid "Back"
@@ -2567,6 +3199,7 @@ msgid "(We Never Spam)"
 msgstr ""
 
 #: core/integrations/onboard/views/onboard-steps/step-03.php:4
+#: utils/apps/apps.php:44
 msgid "Take your website to the next level"
 msgstr ""
 
@@ -2574,45 +3207,45 @@ msgstr ""
 msgid "A fleet of plugins with all types of features you will need for WordPress."
 msgstr ""
 
-#: core/integrations/onboard/views/onboard-steps/step-03.php:42
-msgid "Find top keywords, create winning content & track SEO results with AI."
-msgstr ""
-
-#: core/integrations/onboard/views/onboard-steps/step-03.php:59
-msgid "The ultimate solution to build a complete WooCommerce site in Elementor."
-msgstr ""
-
-#: core/integrations/onboard/views/onboard-steps/step-03.php:76
+#: core/integrations/onboard/views/onboard-steps/step-03.php:44
 msgid "Best companion for Elementor with top widgets and templates."
 msgstr ""
 
-#: core/integrations/onboard/views/onboard-steps/step-03.php:93
-msgid "Drag-and-drop email builder for WooCommerce & WordPress."
+#: core/integrations/onboard/views/onboard-steps/step-03.php:61
+msgid "Build and manage custom CPT fields for WordPress with AI and zero coding."
 msgstr ""
 
-#: core/integrations/onboard/views/onboard-steps/step-03.php:110 plugin.php:323
-msgid "Design popups that convert, right in your WordPress dashboard."
+#: core/integrations/onboard/views/onboard-steps/step-03.php:78
+msgid "Manage schedules, agents, and payments, all from one dashboard in WordPress."
 msgstr ""
 
-#: core/integrations/onboard/views/onboard-steps/step-03.php:127
-msgid "Build credibility for your business with the all-in-one review plugin."
+#: core/integrations/onboard/views/onboard-steps/step-03.php:95
+msgid "The ultimate solution to build a complete WooCommerce site in Elementor."
 msgstr ""
 
-#: core/integrations/onboard/views/onboard-steps/step-03.php:144
-msgid "WordPress integration with popular social platforms to show social proof."
-msgstr ""
-
-#: core/integrations/onboard/views/onboard-steps/step-03.php:163
+#: core/integrations/onboard/views/onboard-steps/step-03.php:113
 msgid ""
 "Enhance block capability with page builder features & templates for "
 "Gutenberg."
 msgstr ""
 
-#: core/integrations/onboard/views/onboard-steps/step-03.php:175
+#: core/integrations/onboard/views/onboard-steps/step-03.php:130 plugin.php:328
+msgid "Design popups that convert, right in your WordPress dashboard."
+msgstr ""
+
+#: core/integrations/onboard/views/onboard-steps/step-03.php:147
+msgid "Drag-and-drop email builder for WooCommerce & WordPress."
+msgstr ""
+
+#: core/integrations/onboard/views/onboard-steps/step-03.php:164
+msgid "Find top keywords, create winning content & track SEO results with AI."
+msgstr ""
+
+#: core/integrations/onboard/views/onboard-steps/step-03.php:177
 msgid "Continue"
 msgstr ""
 
-#: core/integrations/onboard/views/onboard-steps/step-03.php:176
+#: core/integrations/onboard/views/onboard-steps/step-03.php:178
 msgid "Unlock All & Continue"
 msgstr ""
 
@@ -2704,7 +3337,7 @@ msgid ""
 msgstr ""
 
 #: core/integrations/onboard/views/settings-sections/dashboard.php:26
-#: plugin.php:374
+#: plugin.php:401
 msgid "Video Tutorials"
 msgstr ""
 
@@ -2953,204 +3586,214 @@ msgstr ""
 msgid "Your data inserted on slack."
 msgstr ""
 
-#: plugin.php:249
+#: plugin.php:282 utils/apps/apps.php:43
+msgid "Our Plugins"
+msgstr ""
+
+#: plugin.php:283
+msgid "Unleash the Full Potential of Elementor and WordPress!"
+msgstr ""
+
+#: plugin.php:284
+msgid ""
+"Install other plugins from us and take your website to the next level for "
+"absolutely free!"
+msgstr ""
+
+#: plugin.php:289
 msgid "ElementsKit"
 msgstr ""
 
-#: plugin.php:252
+#: plugin.php:292
 msgid ""
 "All-in-one Elementor addon trusted by 1 Million+ users, makes your website "
 "builder process easier with ultimate freedom."
 msgstr ""
 
-#: plugin.php:256
-msgid "GetGenie"
-msgstr ""
-
-#: plugin.php:259
-msgid ""
-"Your personal AI assistant for content and SEO. Write content that ranks on "
-"Google with NLP keywords and SERP analysis data."
-msgstr ""
-
-#: plugin.php:263
+#: plugin.php:296
 msgid "GutenKit"
 msgstr ""
 
-#: plugin.php:266
+#: plugin.php:299
 msgid ""
 "Gutenberg blocks, patterns, and templates that extend the page-building "
 "experience using the WordPress block editor."
 msgstr ""
 
-#: plugin.php:270
+#: plugin.php:303
+msgid "Rox Dynamic CPT Fields"
+msgstr ""
+
+#: plugin.php:306
+msgid ""
+"Build custom post types, fields, taxonomies, and dynamic frontend layouts "
+"for WordPress, with zero coding and full AI-generated schema."
+msgstr ""
+
+#: plugin.php:310
+msgid "Rox Appointment Booking"
+msgstr ""
+
+#: plugin.php:313
+msgid ""
+"Manage bookings, agents, payments, and calendars from one dashboard! A "
+"complete appointment and scheduling solution for WordPress."
+msgstr ""
+
+#: plugin.php:317
 msgid "ShopEngine"
 msgstr ""
 
-#: plugin.php:273
+#: plugin.php:320
 msgid ""
 "Complete WooCommerce solution for Elementor to fully customize any pages "
 "including cart, checkout, shop page, and so on.\n"
 "                "
 msgstr ""
 
-#: plugin.php:278
-msgid "EmailKit"
-msgstr ""
-
-#: plugin.php:281
-msgid ""
-"Advanced email customizer for WooCommerce and WordPress. Build, customize, "
-"and send emails from WordPress to boost your sales!"
-msgstr ""
-
-#: plugin.php:285
-msgid "Wp Social"
-msgstr ""
-
-#: plugin.php:288
-msgid ""
-"Add social share, login, and engagement counter — unified solution for all "
-"social media with tons of different styles for your website."
-msgstr ""
-
-#: plugin.php:292
-msgid "WP Ultimate Review"
-msgstr ""
-
-#: plugin.php:295
-msgid ""
-"Collect and showcase reviews on your website to build brand credibility and "
-"social proof with the easiest solution."
-msgstr ""
-
-#: plugin.php:299
-msgid "FundEngine"
-msgstr ""
-
-#: plugin.php:302
-msgid ""
-"Create fundraising, crowdfunding, and donation websites with PayPal and "
-"Stripe payment gateway integration."
-msgstr ""
-
-#: plugin.php:306
-msgid "Blocks for ShopEngine"
-msgstr ""
-
-#: plugin.php:309
-msgid ""
-"All in one WooCommerce solution for Gutenberg! Build your WooCommerce pages "
-"in a block editor with full customization."
-msgstr ""
-
-#: plugin.php:313
-msgid "Genie Image"
-msgstr ""
-
-#: plugin.php:316
-msgid ""
-"AI-powered text-to-image generator for WordPress with OpenAI’s DALL-E 2 "
-"technology to generate high-quality images in one click."
-msgstr ""
-
-#: plugin.php:320
+#: plugin.php:325
 msgid "PopupKit"
 msgstr ""
 
-#: plugin.php:327
+#: plugin.php:332
 msgid "TableKit"
 msgstr ""
 
-#: plugin.php:330
+#: plugin.php:335
 msgid ""
 "Fully Customizable. Multi-Media Integration. Synch Any Data Files. All "
 "Within Block Editor."
 msgstr ""
 
-#: plugin.php:334
-msgid "Met Starter Templates"
+#: plugin.php:339
+msgid "GetGenie"
 msgstr ""
 
-#: plugin.php:337
+#: plugin.php:342
 msgid ""
-"Select template, customize and get your website live with Met StarterKit "
-"templates. It all happens in less than 30 seconds!"
+"Your personal AI assistant for content and SEO. Write content that ranks on "
+"Google with NLP keywords and SERP analysis data."
 msgstr ""
 
-#: plugin.php:367
+#: plugin.php:346
+msgid "EmailKit"
+msgstr ""
+
+#: plugin.php:349
+msgid ""
+"Advanced email customizer for WooCommerce and WordPress. Build, customize, "
+"and send emails from WordPress to boost your sales!"
+msgstr ""
+
+#: plugin.php:353
+msgid "Wp Social"
+msgstr ""
+
+#: plugin.php:356
+msgid ""
+"Add social share, login, and engagement counter — unified solution for all "
+"social media with tons of different styles for your website."
+msgstr ""
+
+#: plugin.php:360
+msgid "Blocks for ShopEngine"
+msgstr ""
+
+#: plugin.php:363
+msgid ""
+"All in one WooCommerce solution for Gutenberg! Build your WooCommerce pages "
+"in a block editor with full customization."
+msgstr ""
+
+#: plugin.php:379
+msgid "Go Premium"
+msgstr ""
+
+#: plugin.php:394
 msgid "Join the Community"
 msgstr ""
 
-#: plugin.php:369
+#: plugin.php:396
 msgid ""
 "Join our Facebook group to get 20% discount coupon on premium products. "
 "Follow us to get more exciting offers."
 msgstr ""
 
-#: plugin.php:376
+#: plugin.php:403
 msgid ""
 "Learn the step by step process for developing your site easily from video "
 "tutorials."
 msgstr ""
 
-#: plugin.php:380
+#: plugin.php:407
 msgid "Request a feature"
 msgstr ""
 
-#: plugin.php:382
+#: plugin.php:409
 msgid "Have any special feature in mind? Let us know through the feature request."
 msgstr ""
 
-#: plugin.php:388
+#: plugin.php:415
 msgid ""
 "Detailed documentation to help you understand the functionality of each "
 "feature."
 msgstr ""
 
-#: plugin.php:392
+#: plugin.php:419
 msgid "Public Roadmap"
 msgstr ""
 
-#: plugin.php:394
+#: plugin.php:421
 msgid "Check our upcoming new features, detailed development stories and tasks"
 msgstr ""
 
-#: plugin.php:434
+#: plugin.php:425 utils/stories/views/template.php:145
+msgid "Facebook Community"
+msgstr ""
+
+#: plugin.php:426
+msgid "Rate the plugin ★★★★★"
+msgstr ""
+
+#: plugin.php:461
 msgid "Minimum length should be "
 msgstr ""
 
-#: plugin.php:435
+#: plugin.php:462
 msgid " character long."
 msgstr ""
 
-#: plugin.php:436
+#: plugin.php:463
 msgid "Maximum length should be "
 msgstr ""
 
-#: plugin.php:437
+#: plugin.php:464
 msgid "Maximum number should be "
 msgstr ""
 
-#: plugin.php:438
+#: plugin.php:465
 msgid "Minimum number should be "
 msgstr ""
 
-#: plugin.php:623
+#: plugin.php:626
+msgid "All"
+msgstr ""
+
+#: plugin.php:660
 msgid "Activate Elementor"
 msgstr ""
 
-#: plugin.php:630
+#: plugin.php:667
 msgid "Install Elementor"
 msgstr ""
 
-#: plugin.php:634 plugin.php:651
+#: plugin.php:671 plugin.php:688
 #. translators: MetForm plugin version requirement. %s is the required
 #. Elementor version.
 msgid "MetForm requires Elementor version %1$s+, which is currently NOT RUNNING."
 msgstr ""
 
-#: plugin.php:646
+#: plugin.php:683
 msgid "Update Elementor"
 msgstr ""
 
@@ -3871,12 +4514,30 @@ msgstr ""
 msgid "Image select Options"
 msgstr ""
 
-#: utils/apps/apps.php:426
+#: utils/apps/apps.php:45
+msgid ""
+"We have some plugins you can install to get most from Wordpress. These are "
+"absolute FREE to use."
+msgstr ""
+
+#: utils/apps/apps.php:440
 msgid "Activate"
 msgstr ""
 
-#: utils/apps/apps.php:443
+#: utils/apps/apps.php:457
 msgid "Read Docs"
+msgstr ""
+
+#: utils/apps/apps.php:725 utils/apps/apps.php:728
+msgid "Activating..."
+msgstr ""
+
+#: utils/apps/apps.php:726
+msgid "Installing..."
+msgstr ""
+
+#: utils/apps/apps.php:726
+msgid "Installed"
 msgstr ""
 
 #: utils/feedback/plugin-unsubscribe.php:110
@@ -4002,10 +4663,6 @@ msgstr ""
 
 #: utils/stories/views/template.php:141
 msgid "Blog"
-msgstr ""
-
-#: utils/stories/views/template.php:145
-msgid "Facebook Community"
 msgstr ""
 
 #: utils/user-consent-banner/consent-check-view.php:44
@@ -4630,6 +5287,10 @@ msgstr ""
 
 #: widgets/email/email.php:66
 msgid "Show Logged in Email"
+msgstr ""
+
+#: widgets/email/email.php:72
+msgid "Set user's email as value"
 msgstr ""
 
 #: widgets/email/email.php:94
@@ -5321,6 +5982,12 @@ msgstr ""
 msgid "Unlock more possibilities"
 msgstr ""
 
+#: widgets/widget-notice.php:34
+#. translators: %1$s: opening anchor tag for the Pro version link, %2$s:
+#. closing anchor tag.
+msgid "Get the %1$sPro version%2$s for more awesome elements and powerful modules."
+msgstr ""
+
 #. Plugin URI of the plugin/theme
 msgid "http://wpmet.com/plugin/metform/"
 msgstr ""
@@ -5342,7 +6009,7 @@ msgctxt "Post Type General Name"
 msgid "Entries"
 msgstr ""
 
-#: core/forms/cpt.php:532
+#: core/forms/cpt.php:544
 msgctxt "Post Type General Name"
 msgid "Forms"
 msgstr ""
@@ -5352,7 +6019,7 @@ msgctxt "Post Type Singular Name"
 msgid "Entry"
 msgstr ""
 
-#: core/forms/cpt.php:533
+#: core/forms/cpt.php:545
 msgctxt "Post Type Singular Name"
 msgid "Form"
 msgstr ""

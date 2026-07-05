@@ -23,13 +23,27 @@ if( !class_exists('\Wpmet\Libs\Apps') ) {
         private $text_domain;
         private $parent_menu_slug;
         private $menu_slug = '_wpmet_plugins';
-        private $submenu_name = 'Our Plugins';
+        private $submenu_name;
         private $plugins = [];
         public $items_per_row = 4;
-        private $section_title = 'Take your website to the next level';
-        private $section_description = 'We have some plugins you can install to get most from Wordpress. These are absolute FREE to use.';
+        private $section_title;
+        private $section_description;
         private $installed_plugins = [];
         private $activated_plugins = [];
+
+        /**
+         * Sets translatable default values for the labels.
+         *
+         * Property defaults cannot use translation functions, so the defaults
+         * are initialized here instead.
+         *
+         * @since 1.0.0
+         */
+        public function __construct() {
+            $this->submenu_name        = __('Our Plugins', 'metform');
+            $this->section_title       = __('Take your website to the next level', 'metform');
+            $this->section_description = __('We have some plugins you can install to get most from Wordpress. These are absolute FREE to use.', 'metform');
+        }
         /**
          * Creates and returns an instance of the class.
          *
@@ -708,10 +722,10 @@ if( !class_exists('\Wpmet\Libs\Apps') ) {
     
                         if(plugin_status == 'not_installed'){
                             wpmet_install_active_plugin.call(this, installation_url, () => {
-                                wpmet_install_active_plugin.call(this, activation_url, null, 'Activating...', 'Activated');
-                            }, 'Installing...', 'Installed');
+                                wpmet_install_active_plugin.call(this, activation_url, null, '<?php echo esc_js(__('Activating...', 'metform')); ?>', '<?php echo esc_js(__('Activated', 'metform')); ?>');
+                            }, '<?php echo esc_js(__('Installing...', 'metform')); ?>', '<?php echo esc_js(__('Installed', 'metform')); ?>');
                         } else if (plugin_status == 'installed') {
-                            wpmet_install_active_plugin.call(this, activation_url, null, 'Activating...', 'Activated');
+                            wpmet_install_active_plugin.call(this, activation_url, null, '<?php echo esc_js(__('Activating...', 'metform')); ?>', '<?php echo esc_js(__('Activated', 'metform')); ?>');
                         }
                     });
     

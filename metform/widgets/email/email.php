@@ -69,7 +69,7 @@ class MetForm_Input_Email extends widget_base
 				'label_off' => __('No', 'metform'),
 				'return_value' => 'yes',
 				'default' => 'no',
-				'description' => 'Set user\'s email as value'
+				'description' => __('Set user\'s email as value', 'metform')
 			]
 		);
 		

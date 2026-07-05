@@ -28,7 +28,7 @@ Class Action {
 
 		$this->response = [
 			'saved'  => false,
-			'status' => esc_html("Something went wrong.", 'metform'),
+			'status' => esc_html__("Something went wrong.", 'metform'),
 			'data'   => [
 			],
 		];
@@ -275,6 +275,18 @@ Class Action {
 		}
 
 		$all_settings['mf_redirect_params_status'] = $mf_redirect_params_status;
+
+		// Attach conditional redirect settings with the form settings
+		
+		$mf_cr_status = get_post_meta( $post_id, 'mf_conditional_redirect_status', true );
+		$mf_cr_rules  = get_post_meta( $post_id, 'mf_conditional_redirect_rules', true );
+
+		$all_settings['mf_conditional_redirect_status'] = $mf_cr_status;
+
+		if ( $mf_cr_status === 'true' && ! empty( $mf_cr_rules ) ) {
+			$decoded = json_decode( $mf_cr_rules, true );
+			$all_settings['mf_conditional_redirect_rules'] = is_array( $decoded ) ? $decoded : [];
+		}
 
 		return $all_settings;
 	}

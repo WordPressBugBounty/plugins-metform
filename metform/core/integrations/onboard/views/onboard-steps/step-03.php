@@ -22,47 +22,15 @@ echo esc_html__('Take your website to the next level', 'metform'); ?></strong></
 
         $gutenkit = $pluginStatus->get_status( 'gutenkit-blocks-addon/gutenkit-blocks-addon.php' );
         $tablekit = $pluginStatus->get_status( 'table-builder-block/table-builder-block.php' );
+        $dynamic_cpt = $pluginStatus->get_status( 'rox-dynamic-cpt-fields-engine/rox-dynamic-cpt-fields-engine.php' );
+        $appointment_booking = $pluginStatus->get_status( 'rox-appointment-booking/rox-appointment-booking.php' );
 
         $woocommerce = $pluginStatus->get_status( 'woocommerce/woocommerce.php' );
         // Show unchecked when WooCommerce is active but ShopEngine is deactivated
         $shopengine_pre_check = '';
         ?>
         <div class="attr-col-lg-3">
-            <div class="mf-onboard-single-plugin <?php echo $getgenie['status'] == 'activated' ? 'activated' : ''; ?>">
-                <label>
-                    <div class="mf-onboard-single-plugin--header">
-                        <h3>AI Content & SEO Tool</h3>
-                    </div>
-                    <?php if($getgenie['status'] !== 'activated') : ?>
-                        <div class="mf-onboard-single-plugin--checkbox-wrapper">
-                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="getgenie/getgenie.php" name="our_plugins[]">
-                        </div>
-                    <?php endif; ?>
-                    <p class="mf-onboard-single-plugin--description">
-                        <?php echo esc_html__('Find top keywords, create winning content & track SEO results with AI.', 'metform' ); ?>
-                    </p>
-                </label>
-            </div>
-        </div>
-        <div class="attr-col-lg-3">
-            <div class="mf-onboard-single-plugin <?php echo $shopengine['status'] == 'activated' ? 'activated' : ''; ?>">
-                <label>
-                    <div class="mf-onboard-single-plugin--header">
-                        <h3>WooCommerce Builder</h3>
-                    </div>
-                    <?php if($shopengine['status'] !== 'activated') : ?>
-                        <div class="mf-onboard-single-plugin--checkbox-wrapper">
-                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="shopengine/shopengine.php" name="our_plugins[]" <?php echo esc_attr($shopengine_pre_check); ?>>
-                        </div>
-                    <?php endif; ?>
-                    <p class="mf-onboard-single-plugin--description">
-                        <?php echo esc_html__( 'The ultimate solution to build a complete WooCommerce site in Elementor.', 'metform' ); ?>
-                    </p>
-                </label>
-            </div>
-        </div>
-        <div class="attr-col-lg-3">
-            <div class="mf-onboard-single-plugin <?php echo $elementskit['status'] == 'activated' ? 'activated' : ''; ?>">
+            <div class="mf-onboard-single-plugin <?php echo esc_attr( $elementskit['status'] == 'activated' ? 'activated' : '' ); ?>">
                 <label>
                     <div class="mf-onboard-single-plugin--header">
                         <h3>Page Builder Elements</h3>
@@ -79,24 +47,76 @@ echo esc_html__('Take your website to the next level', 'metform'); ?></strong></
             </div>
         </div>
         <div class="attr-col-lg-3">
-            <div class="mf-onboard-single-plugin <?php echo $emailkit['status'] == 'activated' ? 'activated' : ''; ?>">
+            <div class="mf-onboard-single-plugin <?php echo esc_attr( $dynamic_cpt['status'] == 'activated' ? 'activated' : '' ); ?>">
                 <label>
                     <div class="mf-onboard-single-plugin--header">
-                        <h3>Email Customizer</h3>
+                        <h3>Dynamic CPT Fields</h3>
                     </div>
-                    <?php if($emailkit['status'] !== 'activated') : ?>
+                    <?php if($dynamic_cpt['status'] !== 'activated') : ?>
                         <div class="mf-onboard-single-plugin--checkbox-wrapper">
-                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="emailkit/EmailKit.php" name="our_plugins[]">
+                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="rox-dynamic-cpt-fields-engine/rox-dynamic-cpt-fields-engine.php" name="our_plugins[]">
                         </div>
                     <?php endif; ?>
                     <p class="mf-onboard-single-plugin--description">
-                        <?php echo esc_html__( 'Drag-and-drop email builder for WooCommerce & WordPress.', 'metform' ); ?>
+                        <?php echo esc_html__('Build and manage custom CPT fields for WordPress with AI and zero coding.', 'metform' ); ?>
                     </p>
                 </label>
             </div>
         </div>
         <div class="attr-col-lg-3">
-            <div class="mf-onboard-single-plugin <?php echo $popupkit['status'] == 'activated' ? 'activated' : ''; ?>">
+            <div class="mf-onboard-single-plugin <?php echo esc_attr( $appointment_booking['status'] == 'activated' ? 'activated' : '' ); ?>">
+                <label>
+                    <div class="mf-onboard-single-plugin--header">
+                        <h3>Appointment Booking</h3>
+                    </div>
+                    <?php if($appointment_booking['status'] !== 'activated') : ?>
+                        <div class="mf-onboard-single-plugin--checkbox-wrapper">
+                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="rox-appointment-booking/rox-appointment-booking.php" name="our_plugins[]">
+                        </div>
+                    <?php endif; ?>
+                    <p class="mf-onboard-single-plugin--description">
+                        <?php echo esc_html__('Manage schedules, agents, and payments, all from one dashboard in WordPress.', 'metform' ); ?>
+                    </p>
+                </label>
+            </div>
+        </div>
+        <div class="attr-col-lg-3">
+            <div class="mf-onboard-single-plugin <?php echo esc_attr( $shopengine['status'] == 'activated' ? 'activated' : '' ); ?>">
+                <label>
+                    <div class="mf-onboard-single-plugin--header">
+                        <h3>WooCommerce Builder</h3>
+                    </div>
+                    <?php if($shopengine['status'] !== 'activated') : ?>
+                        <div class="mf-onboard-single-plugin--checkbox-wrapper">
+                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="shopengine/shopengine.php" name="our_plugins[]" <?php echo esc_attr($shopengine_pre_check); ?>>
+                        </div>
+                    <?php endif; ?>
+                    <p class="mf-onboard-single-plugin--description">
+                        <?php echo esc_html__( 'The ultimate solution to build a complete WooCommerce site in Elementor.', 'metform' ); ?>
+                    </p>
+                </label>
+            </div>
+        </div>
+        <!-- Gutenberg plugins -->
+        <div class="attr-col-lg-3">
+            <div class="mf-onboard-single-plugin <?php echo esc_attr( $gutenkit['status'] == 'activated' ? 'activated' : '' ); ?>">
+                <label>
+                    <div class="mf-onboard-single-plugin--header">
+                        <h3>Gutenberg Blocks</h3>
+                    </div>
+                    <?php if($gutenkit['status'] !== 'activated') : ?>
+                        <div class="mf-onboard-single-plugin--checkbox-wrapper">
+                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="gutenkit-blocks-addon/gutenkit-blocks-addon.php" name="our_plugins[]">
+                        </div>
+                    <?php endif; ?>
+                    <p class="mf-onboard-single-plugin--description">
+                        <?php echo esc_html__( 'Enhance block capability with page builder features & templates for Gutenberg.', 'metform' ); ?>
+                    </p>
+                </label>
+            </div>
+        </div>
+         <div class="attr-col-lg-3">
+            <div class="mf-onboard-single-plugin <?php echo esc_attr( $popupkit['status'] == 'activated' ? 'activated' : '' ); ?>">
                 <label>
                     <div class="mf-onboard-single-plugin--header">
                         <h3>Popup Builder</h3>
@@ -113,58 +133,40 @@ echo esc_html__('Take your website to the next level', 'metform'); ?></strong></
             </div>
         </div>
         <div class="attr-col-lg-3">
-            <div class="mf-onboard-single-plugin <?php echo $review['status'] == 'activated' ? 'activated' : ''; ?>">
+            <div class="mf-onboard-single-plugin <?php echo esc_attr( $emailkit['status'] == 'activated' ? 'activated' : '' ); ?>">
                 <label>
                     <div class="mf-onboard-single-plugin--header">
-                        <h3>Review Management</h3>
+                        <h3>Email Customizer</h3>
                     </div>
-                    <?php if($review['status'] !== 'activated') : ?>
+                    <?php if($emailkit['status'] !== 'activated') : ?>
                         <div class="mf-onboard-single-plugin--checkbox-wrapper">
-                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="wp-ultimate-review/wp-ultimate-review.php" name="our_plugins[]">
+                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="emailkit/EmailKit.php" name="our_plugins[]">
                         </div>
                     <?php endif; ?>
                     <p class="mf-onboard-single-plugin--description">
-                        <?php echo esc_html__( 'Build credibility for your business with the all-in-one review plugin.', 'metform' ); ?>
+                        <?php echo esc_html__( 'Drag-and-drop email builder for WooCommerce & WordPress.', 'metform' ); ?>
                     </p>
                 </label>
             </div>
         </div>
         <div class="attr-col-lg-3">
-            <div class="mf-onboard-single-plugin <?php echo $social['status'] == 'activated' ? 'activated' : ''; ?>">
+            <div class="mf-onboard-single-plugin <?php echo esc_attr( $getgenie['status'] == 'activated' ? 'activated' : '' ); ?>">
                 <label>
                     <div class="mf-onboard-single-plugin--header">
-                        <h3>Social Integration</h3>
+                        <h3>AI Content & SEO Tool</h3>
                     </div>
-                    <?php if($social['status'] !== 'activated') : ?>
+                    <?php if($getgenie['status'] !== 'activated') : ?>
                         <div class="mf-onboard-single-plugin--checkbox-wrapper">
-                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="wp-social/wp-social.php" name="our_plugins[]">
+                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="getgenie/getgenie.php" name="our_plugins[]">
                         </div>
                     <?php endif; ?>
                     <p class="mf-onboard-single-plugin--description">
-                        <?php echo esc_html__( 'WordPress integration with popular social platforms to show social proof.', 'metform' ); ?>
+                        <?php echo esc_html__('Find top keywords, create winning content & track SEO results with AI.', 'metform' ); ?>
                     </p>
                 </label>
             </div>
         </div>
 
-        <!-- Gutenberg plugins -->
-        <div class="attr-col-lg-3">
-            <div class="mf-onboard-single-plugin <?php echo $gutenkit['status'] == 'activated' ? 'activated' : ''; ?>">
-                <label>
-                    <div class="mf-onboard-single-plugin--header">
-                        <h3>Gutenberg Blocks</h3>
-                    </div>
-                    <?php if($gutenkit['status'] !== 'activated') : ?>
-                        <div class="mf-onboard-single-plugin--checkbox-wrapper">
-                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="gutenkit-blocks-addon/gutenkit-blocks-addon.php" name="our_plugins[]">
-                        </div>
-                    <?php endif; ?>
-                    <p class="mf-onboard-single-plugin--description">
-                        <?php echo esc_html__( 'Enhance block capability with page builder features & templates for Gutenberg.', 'metform' ); ?>
-                    </p>
-                </label>
-            </div>
-        </div>
     </div>
 </div>
 <div class="mf-onboard-pagination">

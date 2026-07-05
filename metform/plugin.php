@@ -30,7 +30,7 @@ final class Plugin {
 
     public function version()
     {
-        return '4.1.5';
+        return '4.1.6';
     }
 
     public function package_type()
@@ -228,6 +228,46 @@ final class Plugin {
             //metform confirmation to user email template edit with emailkit
             Emailkit_Builder::instance()->init();
         }
+
+
+        /*
+        * Fix for conflict with Enhanced Tooltip Glossary plugin which is not allowing our script to load in the frontend and causing js error.
+        * It is due to the way they are handling the content and parsing the scripts from it. So we are applying a fix for that by using regex to extract our scripts and replace them back after their parsing.
+        * This is a temporary fix until they provide a proper solution for this conflict.
+        */
+
+        if ( ! function_exists( 'is_plugin_active' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+        
+        if ( is_plugin_active( 'enhanced-tooltipglossary/enhanced-tooltipglossary.php' ) ) {
+            add_filter( 'the_content', function( $content ) {
+                global $cmtt_metform_scripts;
+                $cmtt_metform_scripts = [];
+                $result = preg_replace_callback(
+                    '#<script[^>]+class=["\'][^"\']*mf-template[^"\']*["\'][^>]*>[\s\S]*?</script>#i',
+                    function( $matches ) {
+                        global $cmtt_metform_scripts;
+                        $key = 'METFORM_TPL_' . count( $cmtt_metform_scripts );
+                        $cmtt_metform_scripts[ $key ] = $matches[0];
+                        return '<!--' . $key . '-->';
+                    },
+                    $content
+                );
+                return $result ?? $content;
+            }, 19999 );
+
+            add_filter( 'the_content', function( $content ) {
+                global $cmtt_metform_scripts;
+                if ( ! empty( $cmtt_metform_scripts ) ) {
+                    foreach ( $cmtt_metform_scripts as $key => $script ) {
+                        $content = str_replace( '<!--' . $key . '-->', $script, $content );
+                    }
+                    $cmtt_metform_scripts = [];
+                }
+                return $content;
+            }, 20002 );
+        }
     }
 
     function metform_load_textdomain_on_init(){
@@ -239,9 +279,9 @@ final class Plugin {
          */
         \Wpmet\Libs\Apps::instance()->init('metform')
         ->set_parent_menu_slug('metform-menu')
-        ->set_submenu_name('Our Plugins')
-        ->set_section_title('Unleash the Full Potential of Elementor and WordPress!')
-        ->set_section_description('Install other plugins from us and take your website to the next level for absolutely free!')
+        ->set_submenu_name(__('Our Plugins', 'metform'))
+        ->set_section_title(__('Unleash the Full Potential of Elementor and WordPress!', 'metform'))
+        ->set_section_description(__('Install other plugins from us and take your website to the next level for absolutely free!', 'metform'))
         ->set_items_per_row(4)
         ->set_plugins(
         [
@@ -252,19 +292,26 @@ final class Plugin {
                 'desc' => esc_html__('All-in-one Elementor addon trusted by 1 Million+ users, makes your website builder process easier with ultimate freedom.', 'metform'),
                 'docs' => 'https://wpmet.com/doc/elementskit/',
             ],
-            'getgenie/getgenie.php' => [
-                'name' => esc_html__('GetGenie', 'metform'),
-                'url'  => 'https://wordpress.org/plugins/getgenie/',
-                'icon' => $apps_img_path.'getgenie.gif',
-                'desc' => esc_html__('Your personal AI assistant for content and SEO. Write content that ranks on Google with NLP keywords and SERP analysis data.', 'metform'),
-                'docs' => 'https://getgenie.ai/docs/',
-            ],
             'gutenkit-blocks-addon/gutenkit-blocks-addon.php' => [
                 'name' => esc_html__('GutenKit', 'metform'),
                 'url'  => 'https://wordpress.org/plugins/gutenkit-blocks-addon/',
                 'icon' => $apps_img_path. 'guten-kit.png',
                 'desc' => esc_html__('Gutenberg blocks, patterns, and templates that extend the page-building experience using the WordPress block editor.', 'metform'),
                 'docs' => 'https://wpmet.com/doc/gutenkit/',
+            ],
+            'rox-dynamic-cpt-fields-engine/rox-dynamic-cpt-fields-engine.php' => [
+                'name' => esc_html__('Rox Dynamic CPT Fields', 'metform'),
+                'url'  => 'https://wordpress.org/plugins/rox-dynamic-cpt-fields-engine/',
+                'icon' => 'https://ps.w.org/rox-dynamic-cpt-fields-engine/assets/icon-256x256.jpeg?rev=3538537',
+                'desc' => esc_html__('Build custom post types, fields, taxonomies, and dynamic frontend layouts for WordPress, with zero coding and full AI-generated schema.', 'metform'),
+                'docs' => 'https://wpmet.com/doc/rox-dynamic-cpt-fields-engine/',
+            ],
+             'rox-appointment-booking/rox-appointment-booking.php' => [
+                'name' => esc_html__('Rox Appointment Booking', 'metform'),
+                'url'  => 'https://wordpress.org/plugins/rox-appointment-booking/',
+                'icon' => 'https://ps.w.org/rox-appointment-booking/assets/icon-256x256.png?rev=3575641',
+                'desc' => esc_html__('Manage bookings, agents, payments, and calendars from one dashboard! A complete appointment and scheduling solution for WordPress.', 'metform'),
+                'docs' => 'https://wpmet.com/doc/rox-appointment-booking/',
             ],
             'shopengine/shopengine.php' => [
                 'name' => esc_html__('ShopEngine', 'metform'),
@@ -273,6 +320,27 @@ final class Plugin {
                 'desc' => esc_html__('Complete WooCommerce solution for Elementor to fully customize any pages including cart, checkout, shop page, and so on.
                 ', 'metform'),
                 'docs' => 'https://wpmet.com/doc/shopengine/',
+            ],
+            'popup-builder-block/popup-builder-block.php' => [
+                'name' => esc_html__('PopupKit', 'metform'),
+                'url'  => 'https://wordpress.org/plugins/popup-builder-block/',
+                'icon' => 'https://ps.w.org/popup-builder-block/assets/icon-256x256.png?rev=3316844',
+                'desc' => esc_html__('Design popups that convert, right in your WordPress dashboard.', 'metform'),
+                'docs' => 'https://wpmet.com/doc/popupkit/',
+            ],
+            'table-builder-block/table-builder-block.php' => [
+                'name' => esc_html__('TableKit', 'metform'),
+                'url'  => 'https://wordpress.org/plugins/table-builder-block/',
+                'icon' => 'https://ps.w.org/table-builder-block/assets/icon-256x256.png?rev=3509972',
+                'desc' => esc_html__('Fully Customizable. Multi-Media Integration. Synch Any Data Files. All Within Block Editor.', 'metform'),
+                'docs' => 'https://wpmet.com/doc/tablekit/',
+            ],
+            'getgenie/getgenie.php' => [
+                'name' => esc_html__('GetGenie', 'metform'),
+                'url'  => 'https://wordpress.org/plugins/getgenie/',
+                'icon' => $apps_img_path.'getgenie.gif',
+                'desc' => esc_html__('Your personal AI assistant for content and SEO. Write content that ranks on Google with NLP keywords and SERP analysis data.', 'metform'),
+                'docs' => 'https://getgenie.ai/docs/',
             ],
             'emailkit/EmailKit.php' => [
                 'name' => esc_html__('EmailKit', 'metform'),
@@ -288,20 +356,6 @@ final class Plugin {
                 'desc' => esc_html__('Add social share, login, and engagement counter — unified solution for all social media with tons of different styles for your website.', 'metform'),
                 'docs' => 'https://wpmet.com/doc/wp-social/',
             ],
-            'wp-ultimate-review/wp-ultimate-review.php' => [
-                'name' => esc_html__('WP Ultimate Review', 'metform'),
-                'url'  => 'https://wordpress.org/plugins/wp-ultimate-review/',
-                'icon' => $apps_img_path . 'ultimate-review.png',
-                'desc' => esc_html__('Collect and showcase reviews on your website to build brand credibility and social proof with the easiest solution.', 'metform'),
-                'docs' => 'https://wpmet.com/doc/wp-ultimate-review/',
-            ],
-            'wp-fundraising-donation/wp-fundraising.php' => [
-                'name' => esc_html__('FundEngine', 'metform'),
-                'url'  => 'https://wordpress.org/plugins/wp-fundraising-donation/',
-                'icon' => $apps_img_path . 'fundengine.png',
-                'desc' => esc_html__('Create fundraising, crowdfunding, and donation websites with PayPal and Stripe payment gateway integration.', 'metform'),
-                'docs' => 'https://wpmet.com/doc/fundengine/',
-            ],
             'blocks-for-shopengine/shopengine-gutenberg-addon.php' => [
                 'name' => esc_html__('Blocks for ShopEngine', 'metform'),
                 'url'  => 'https://wordpress.org/plugins/blocks-for-shopengine/',
@@ -309,34 +363,7 @@ final class Plugin {
                 'desc' => esc_html__('All in one WooCommerce solution for Gutenberg! Build your WooCommerce pages in a block editor with full customization.', 'metform'),
                 'docs' => 'https://wpmet.com/doc/shopengine/',
             ],
-            'genie-image-ai/genie-image-ai.php' => [
-                'name' => esc_html__('Genie Image', 'metform'),
-                'url'  => 'https://wordpress.org/plugins/genie-image-ai/',
-                'icon' => $apps_img_path . 'genie-image.png',
-                'desc' => esc_html__('AI-powered text-to-image generator for WordPress with OpenAI’s DALL-E 2 technology to generate high-quality images in one click.', 'metform'),
-                'docs' => 'https://getgenie.ai/docs/',
-            ],
-            'popup-builder-block/popup-builder-block.php' => [
-                'name' => esc_html__('PopupKit', 'metform'),
-                'url'  => 'https://wordpress.org/plugins/popup-builder-block/',
-                'icon' => 'https://ps.w.org/popup-builder-block/assets/icon-256x256.png?rev=3316844',
-                'desc' => esc_html__('Design popups that convert, right in your WordPress dashboard.', 'metform'),
-                'docs' => 'https://wpmet.com/docs/gutenkit/',
-            ],
-            'table-builder-block/table-builder-block.php' => [
-                'name' => esc_html__('TableKit', 'metform'),
-                'url'  => 'https://wordpress.org/plugins/table-builder-block/',
-                'icon' => 'https://ps.w.org/table-builder-block/assets/icon-256x256.jpg?rev=3168211',
-                'desc' => esc_html__('Fully Customizable. Multi-Media Integration. Synch Any Data Files. All Within Block Editor.', 'metform'),
-                'docs' => 'https://wpmet.com/docs/gutenkit/',
-            ],
-            'met-starter-templates/met-starter-templates.php' => [
-                'name' => esc_html__('Met Starter Templates', 'metform'),
-                'url'  => 'https://wordpress.org/plugins/met-starter-templates/',
-                'icon' => 'https://ps.w.org/met-starter-templates/assets/icon-256x256.png?rev=3316844',
-                'desc' => esc_html__('Select template, customize and get your website live with Met StarterKit templates. It all happens in less than 30 seconds!', 'metform'),
-                'docs' => 'https://wpmet.com/docs/met-starter-templates/',
-            ],
+           
         ]
         )
         ->call();
@@ -349,7 +376,7 @@ final class Plugin {
         $is_pro_active = '';
 
         if (!in_array('metform-pro/metform-pro.php', apply_filters('active_plugins', get_option('active_plugins')))) {
-            $is_pro_active = 'Go Premium';
+            $is_pro_active = __('Go Premium', 'metform');
         }
 
 		$pro_awareness = \Wpmet\Libs\Pro_Awareness::instance('metform');
@@ -394,16 +421,16 @@ final class Plugin {
 					'description' => esc_html__( 'Check our upcoming new features, detailed development stories and tasks', 'metform' )
 				])
 
-			    ->set_plugin_row_meta('Documentation', 'https://help.wpmet.com/docs-cat/metform/', ['target' => '_blank'])
-			    ->set_plugin_row_meta('Facebook Community', 'https://wpmet.com/fb-group', ['target' => '_blank'])
-			    ->set_plugin_row_meta('Rate the plugin ★★★★★', 'https://wordpress.org/support/plugin/metform/reviews/#new-post', ['target' => '_blank'])
-			    ->set_plugin_action_link('Settings', admin_url() . 'admin.php?page=metform-menu-settings')
+			    ->set_plugin_row_meta(__('Documentation', 'metform'), 'https://help.wpmet.com/docs-cat/metform/', ['target' => '_blank'])
+			    ->set_plugin_row_meta(__('Facebook Community', 'metform'), 'https://wpmet.com/fb-group', ['target' => '_blank'])
+			    ->set_plugin_row_meta(__('Rate the plugin ★★★★★', 'metform'), 'https://wordpress.org/support/plugin/metform/reviews/#new-post', ['target' => '_blank'])
+			    ->set_plugin_action_link(__('Settings', 'metform'), admin_url() . 'admin.php?page=metform-menu-settings')
 			    ->set_plugin_action_link($is_pro_active, 'https://wpmet.com/plugin/metform/pricing/', ['target' => '_blank', 'style' => 'color: #FCB214; font-weight: bold;'])
 			    ->call();
 		}
 
         Core\Forms\Base::instance()->init();
-
+        Core\Analytics\Base::instance()->init();
         $this->entries = Core\Entries\Base::instance();
         
      }
@@ -550,9 +577,19 @@ final class Plugin {
             ]);
         }
 
+        if (in_array($screen->id, ['edit-metform-entry', 'metform-entry', 'edit-metform-form'])) {
+            wp_enqueue_style('admin-form-list-style', $this->public_url() . 'assets/css/admin-form-list-style.css', [], $this->version());
+        }
+
         if ($screen->id == 'edit-metform-entry' || $screen->id == 'metform-entry') {
             wp_enqueue_style('metform-ui', $this->public_url() . 'assets/css/metform-ui.css', false, $this->version());
+            wp_enqueue_style('metform-admin-entries-view', $this->public_url() . 'assets/css/admin-entries-view.css', false, $this->version());
             wp_enqueue_script('metform-entry-script', $this->public_url() . 'assets/js/admin-entry-script.js', [], $this->version(), true);
+        }
+
+        if ($screen->id == 'edit-metform-form') {
+            wp_enqueue_style('metform-admin-entries-view', $this->public_url() . 'assets/css/admin-entries-view.css', [], $this->version());
+            wp_enqueue_script('metform-form-script', $this->public_url() . 'assets/js/admin-form-script.js', ['jquery'], $this->version(), true);
         }
     }
 
@@ -586,7 +623,7 @@ final class Plugin {
             $get_form_id = isset($_GET['form_id']) ? sanitize_key($_GET['form_id']) : '';
 ?>
             <div id='metform-formlist' style='display:none;'><select name='mf_form_id' id='metform-form_id'>
-                <option value='all' <?php echo esc_attr(((($get_form_id == 'all') || ($get_form_id == '')) ? 'selected=selected' : '')); ?>>All</option>
+                <option value='all' <?php echo esc_attr(((($get_form_id == 'all') || ($get_form_id == '')) ? 'selected=selected' : '')); ?>><?php echo esc_html__('All', 'metform'); ?></option>
                 <?php
 
                 foreach ($forms as $form) {

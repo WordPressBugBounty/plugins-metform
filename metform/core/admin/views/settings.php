@@ -15,6 +15,16 @@ defined('ABSPATH') || exit;
 
 $settings = Base::instance()->get_settings_option();
 
+$is_metform_pro_active = class_exists(Package::class);
+$is_analytics_enabled = !empty($settings['mf_enable_form_analytics']);
+
+// Hide the Form Analytics settings when the user is on a Pro tier that should
+// have analytics (mid/top) but the Pro analytics implementation
+// (MetForm_Pro\Core\Analytics\Base) is missing (e.g. an older Pro build).
+$hide_analytics_settings = $is_metform_pro_active
+	&& (Util::is_mid_tier() || Util::is_top_tier())
+	&& ! class_exists('\MetForm_Pro\Core\Analytics\Base');
+
 include __DIR__ . "/icons.php";
 include __DIR__ . "/integrations.php";
 
@@ -128,6 +138,22 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 								</div>
 							</a>
 						</li>
+						<?php if (! $hide_analytics_settings) : ?>
+						<li>
+							<a href="#mf-form_analytics" class="mf-setting-nav-link">
+								<div class="mf-setting-tab-content">
+									<span class="mf-setting-title"><span><?php echo esc_html__('Form Analytics', 'metform'); ?></span><span class="mf-setting-new-badge"><svg width="37" height="21" viewBox="0 0 37 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="36.6951" height="20.1" rx="5" fill="#FF26C5"/>
+<path d="M11.2312 11.7025V5.80005H12.8309V14.3H11.2192L7.60575 8.40361V14.3H6V5.80005H7.60575L11.2312 11.7025ZM20.0809 7.06716H16.0706V9.30897H19.5092V10.5409H16.0706V13.039H20.099V14.3H14.4648V5.80005H20.0809V7.06716ZM23.4823 11.9447L24.9966 5.80005H26.3512L27.8614 11.9527L29.0954 5.80005H30.6951L28.7678 14.3H27.1741L25.6709 8.41767L24.1616 14.3H22.5679L20.6416 5.80005H22.2353L23.4823 11.9447Z" fill="white"/>
+</svg></span></span>
+									<span class="mf-setting-subtitle"><?php echo esc_html__('View and analyze form performance', 'metform'); ?></span>
+								</div>
+								<div>
+									<span class="mf-setting-tab-icon"><?php Util::metform_content_renderer( $icons['analytics'] ); ?></span>
+								</div>
+							</a>
+						</li>
+						<?php endif; ?>
 						<li>
 							<a href="#mf-newsletter_integration" class="mf-setting-nav-link">
 								<div class="mf-setting-tab-content">
@@ -715,13 +741,13 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 															<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																	<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																	<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																</svg> Upgrade </a>
+																</svg> <?php esc_html_e('Upgrade', 'metform'); ?> </a>
 														</div>
 													</div>
 													<div class="attr-row">
 														<div class="attr-col-lg-12">
 															<?php
-															mf_dummy_simple_input('API:', 'Insert map API key', 'Create Google map API key from google developer console');
+															mf_dummy_simple_input(__('API:', 'metform'), __('Insert map API key', 'metform'), __('Create Google map API key from google developer console', 'metform'));
 															?>
 														</div>
 													</div>
@@ -786,15 +812,15 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 															<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																	<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																	<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																</svg> Upgrade</a>
+																</svg> <?php esc_html_e('Upgrade', 'metform'); ?></a>
 														</div>
 													</div>
 
 													<div class="info-list">
 														<?php
 															mf_dummy_checkbox_input(
-																'Save Form Progress ?', 
-																'Turn this feature on if you want partial submissions to be saved for a form so that the user can complete the form submission later. Please note that the submissions will be saved for 2 hours, after which the form submissions will be reset.'
+																__('Save Form Progress ?', 'metform'),
+																__('Turn this feature on if you want partial submissions to be saved for a form so that the user can complete the form submission later. Please note that the submissions will be saved for 2 hours, after which the form submissions will be reset.', 'metform')
 															);
 														?>
 													</div>
@@ -802,8 +828,8 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 													<div class="info-list">
 														<?php
 															mf_dummy_checkbox_input(
-																'Display Input Field Name Alongside Value', 
-																'Turn this feature on if you want the input field title to be shown along with the value. By default, only the value is displayed. This feature works for widgets like radio buttons, multi-select, select, image select, toggle select, checkboxes, and simple repeater.'
+																__('Display Input Field Name Alongside Value', 'metform'),
+																__('Turn this feature on if you want the input field title to be shown along with the value. By default, only the value is displayed. This feature works for widgets like radio buttons, multi-select, select, image select, toggle select, checkboxes, and simple repeater.', 'metform')
 															);
 														?>
 													</div>
@@ -900,15 +926,15 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 																	<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																			<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																			<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																		</svg> Upgrade</a>
+																		</svg> <?php esc_html_e('Upgrade', 'metform'); ?></a>
 																</div>
 															</div>
 															<div class="attr-row" style="margin: 0 -10px;">
 																<div class="attr-col-lg-12">
 																	<?php
-																	mf_dummy_simple_input('Paypal email:', 'Paypal email', 'Enter here your paypal email.');
-																	mf_dummy_simple_input('Paypal token:', 'Paypal token', 'Enter here your paypal token. This is optional.');
-																	mf_dummy_checkbox_input('Enable sandbox mode:', 'Enable this for testing payment method.');
+																	mf_dummy_simple_input(__('Paypal email:', 'metform'), __('Paypal email', 'metform'), __('Enter here your paypal email.', 'metform'));
+																	mf_dummy_simple_input(__('Paypal token:', 'metform'), __('Paypal token', 'metform'), __('Enter here your paypal token. This is optional.', 'metform'));
+																	mf_dummy_checkbox_input(__('Enable sandbox mode:', 'metform'), __('Enable this for testing payment method.', 'metform'));
 																	?>
 																</div>
 															</div>
@@ -995,7 +1021,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 																<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																		<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																		<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																	</svg> Upgrade </a>
+																	</svg> <?php esc_html_e('Upgrade', 'metform'); ?> </a>
 															</div>
 														</div>
 														<div class="mf-pro-missing">
@@ -1083,7 +1109,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 													<div class="mf-pro-missing-wrapper attr-tab-pane" id="mf-thankyou-tab" role="tabpanel" aria-labelledby="mf-thankyou-tab-label">
 														<div class="mf-pro-missing">
 															<?php
-															mf_dummy_simple_input('Select Thank You Page :', 'Select a page', 'Handle successfull payment redirection page. Learn more about Thank you page.');
+															mf_dummy_simple_input(__('Select Thank You Page :', 'metform'), __('Select a page', 'metform'), __('Handle successfull payment redirection page. Learn more about Thank you page.', 'metform'));
 															?>
 															<a class="mf-setting-btn-link btn-link-two disable" href="#">
 																<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none">
@@ -1129,7 +1155,7 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 													<div class="mf-pro-missing-wrapper attr-tab-pane" id="mf-cancel-tab" role="tabpanel" aria-labelledby="mf-cancel-tab-label">
 														<div class="mf-pro-missing">
 															<?php
-															mf_dummy_simple_input('Select Cancel Page :', 'Select a page', 'Handle canceled payment redirection page. Learn more about cancel page.');
+															mf_dummy_simple_input(__('Select Cancel Page :', 'metform'), __('Select a page', 'metform'), __('Handle canceled payment redirection page. Learn more about cancel page.', 'metform'));
 															?>
 															<a class="mf-setting-btn-link btn-link-two disable" href="#">
 																<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none">
@@ -1247,23 +1273,23 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 																<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
 																		<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 																		<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-																	</svg> Upgrade </a>
+																	</svg> <?php esc_html_e('Upgrade', 'metform'); ?> </a>
 															</div>
 														</div>
 														<div class="attr-row">
 															<div class="attr-col-lg-6">
 																<?php
-																mf_dummy_simple_input('Google Client Id:', 'Google Client Id', 'Enter here your google client id.');
+																mf_dummy_simple_input(__('Google Client Id:', 'metform'), __('Google Client Id', 'metform'), __('Enter here your google client id.', 'metform'));
 																?>
 															</div>
 															<div class="attr-col-lg-6">
 																<?php
-																mf_dummy_simple_input('Google Client Secret:', 'Google Client Secret', 'Enter here your google client secret.');
+																mf_dummy_simple_input(__('Google Client Secret:', 'metform'), __('Google Client Secret', 'metform'), __('Enter here your google client secret.', 'metform'));
 																?>
 															</div>
 														</div>
 														<ol class="xs_social_ol">
-															<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Google developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://help.wpmet.com/docs/google-sheet-integration" target="_blank">Documentation</a></li>
+															<li><span class="pointer">1</span><?php echo esc_html__('Check how to create App/Project On Google developer account', 'metform') ?> - <a class="mf-setting-btn-link" href="https://help.wpmet.com/docs/google-sheet-integration" target="_blank"><?php echo esc_html__('Documentation', 'metform'); ?></a></li>
 															<li><span class="pointer">2</span><?php echo esc_html__('Must add the following URL to the "Valid OAuth redirect URIs" field:', 'metform') ?> <strong style="font-weight:500;"><?php echo esc_url(admin_url('admin.php?page=metform-menu-settings')) ?></strong></li>
 															<li><span class="pointer">3</span><?php echo esc_html__('After getting the App ID & App Secret, put those information', 'metform') ?></li>
 															<li><span class="pointer">4</span><?php echo esc_html__('Click on "Save Changes"', 'metform') ?></li>
@@ -1290,7 +1316,98 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 							</div>
 						</form>
 						<!-- Integrations settings action -->
+						<!-- Analytics settings tab -->
+						<?php if (! $hide_analytics_settings) : ?>
+							<form action="" method="post" class="mf-settings-form-common mf-form-analytics-tab-form" id="mf-analytics-form">
+							<div class="mf-settings-section" id="mf-form_analytics">
+								<div class="mf-settings-single-section list-item">
+									<div class="tab-header">
+										<h4 class="list-item-header"><?php esc_html_e('Form Analytics', 'metform'); ?></h4>
+									</div>
+									<?php if ($is_metform_pro_active && (Util::is_mid_tier() || Util::is_top_tier()) ) : ?>
+										<div class="attr-row" style="margin: 0 -10px;">
+											<div class="attr-col-lg-12">
+												<div class="mf-setting-input-group">
+													<label class="mf-setting-label mf-setting-switch mf-setting-input-heading">
+														<input type="checkbox" name="mf_enable_form_analytics" value="1" class="attr-form-control mf-enable-form-analytics" <?php echo esc_attr($is_analytics_enabled ? 'Checked' : ''); ?>>
+														<span><?php esc_html_e('Enable Form Analytics:', 'metform'); ?></span>
+													</label>
+													<p class="description"><?php esc_html_e('Enable this to collect and retain analytics data for form submissions.', 'metform'); ?></p>
+												</div>
+											</div>
+										</div>
 
+										<div class="attr-row mf-analytics-delete-controls" style="margin-top: 20px;">
+											<div class="attr-col-lg-12" style="padding: 0px 5px 0px 0px;">
+												<div class="mf-setting-input-group">
+													<label class="mf-setting-label attr-input-label" for="mf-analytics-delete-range"><?php esc_html_e('Delete Analytics Data', 'metform'); ?></label>
+													<select name="mf_analytics_delete_range" id="mf-analytics-delete-range" class="mf-setting-input attr-form-control mf-analytics-delete-range">
+														<option value="6_months" <?php selected(isset($settings['mf_analytics_delete_range']) ? $settings['mf_analytics_delete_range'] : '6_months', '6_months'); ?>><?php esc_html_e('6 Months', 'metform'); ?></option>
+														<option value="1_year" <?php selected(isset($settings['mf_analytics_delete_range']) ? $settings['mf_analytics_delete_range'] : '', '1_year'); ?>><?php esc_html_e('1 Year', 'metform'); ?></option>
+														<option value="2_years" <?php selected(isset($settings['mf_analytics_delete_range']) ? $settings['mf_analytics_delete_range'] : '', '2_years'); ?>><?php esc_html_e('2 Years', 'metform'); ?></option>
+														<option value="keep_forever" <?php selected(isset($settings['mf_analytics_delete_range']) ? $settings['mf_analytics_delete_range'] : '', 'keep_forever'); ?>><?php esc_html_e('Keep Forever', 'metform'); ?></option>
+													</select>
+													<p class="description"><?php esc_html_e('Selected duration is used as data retention policy. Older analytics data is auto-deleted daily. Click delete to run cleanup now.', 'metform'); ?></p>
+												</div>
+											</div>
+											<div class="attr-col-lg-6" style="padding: 0px 0px 0px 5px;"></div>
+										</div>
+									<?php else : ?>
+										<div class="mf-pro-alert" style="margin-bottom: 20px;">
+											<div class="pro-content">
+												<h5 class="alert-heading"><?php echo $is_metform_pro_active ? esc_html__('Upgrade to Get Form Analytics Insights', 'metform') : esc_html__('Make Smarter Decisions with Form Analytics', 'metform'); ?></h5>
+												<p class="alert-description"><?php echo $is_metform_pro_active ? esc_html__("You're one upgrade away from full access to conversion tracking, traffic sources, geographic data, and quiz analytics.", 'metform') : esc_html__('Get the MetForm Professional Plan to track your form performance.', 'metform'); ?></p>
+											</div>
+											<div class="pro-btn">
+												<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank">
+													<svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
+														<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+														<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+													</svg>
+													<?php esc_html_e('Upgrade', 'metform'); ?>
+												</a>
+											</div>
+										</div>
+										<div class="attr-row" style="margin: 0 -10px;">
+											<div class="attr-col-lg-12">
+												<div class="mf-setting-input-group">
+													<label class="mf-setting-label mf-setting-switch mf-setting-input-heading">
+														<div class="mf-setting-disabled-input-wrapper">
+															<input disabled type="checkbox" class="attr-form-control mf-enable-form-analytics" <?php echo esc_attr($is_analytics_enabled ? 'Checked' : ''); ?>>
+															<span><?php esc_html_e('Enable Form Analytics:', 'metform'); ?></span>
+														</div>
+													</label>
+													<p class="description"><?php esc_html_e('Enable this to collect and retain analytics data for form submissions.', 'metform'); ?></p>
+												</div>
+											</div>
+										</div>
+
+										<div class="attr-row mf-analytics-delete-controls" style="margin-top: 20px;">
+											<div class="attr-col-lg-12" style="padding: 0px 5px 0px 0px;">
+												<div class="mf-setting-input-group">
+													<label class="mf-setting-label attr-input-label" for="mf-analytics-delete-range"><?php esc_html_e('Delete Analytics Data', 'metform'); ?></label>
+													<div class="mf-setting-disabled-input-wrapper">
+														<select id="mf-analytics-delete-range" class="mf-setting-input attr-form-control mf-analytics-delete-range" disabled>
+															<option value="6_months" <?php selected(isset($settings['mf_analytics_delete_range']) ? $settings['mf_analytics_delete_range'] : '6_months', '6_months'); ?>><?php esc_html_e('6 Months', 'metform'); ?></option>
+															<option value="1_year" <?php selected(isset($settings['mf_analytics_delete_range']) ? $settings['mf_analytics_delete_range'] : '', '1_year'); ?>><?php esc_html_e('1 Year', 'metform'); ?></option>
+															<option value="2_years" <?php selected(isset($settings['mf_analytics_delete_range']) ? $settings['mf_analytics_delete_range'] : '', '2_years'); ?>><?php esc_html_e('2 Years', 'metform'); ?></option>
+															<option value="keep_forever" <?php selected(isset($settings['mf_analytics_delete_range']) ? $settings['mf_analytics_delete_range'] : '', 'keep_forever'); ?>><?php esc_html_e('Keep Forever', 'metform'); ?></option>
+														</select>
+													</div>
+													<p class="description"><?php esc_html_e('Selected duration is used as data retention policy. Older analytics data is auto-deleted daily. Click delete to run cleanup now.', 'metform'); ?></p>
+												</div>
+											</div>
+											<div class="attr-col-lg-6" style="padding: 0px 0px 0px 5px;"></div>
+										</div>
+									<?php endif; ?>
+								</div>
+								<button type="submit" name="submit" id="mf-analytics-submit" class="mf-settings-form-submit-btn mt-8 mf-admin-setting-btn active"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M6.00024 12C2.68654 12 0.000244141 9.31373 0.000244141 6C0.000244141 2.68629 2.68654 0 6.00024 0C9.31397 0 12.0002 2.68629 12.0002 6C12.0002 9.31373 9.31397 12 6.00024 12ZM7.81269 3.73358L5.1368 6.65269L4.15367 5.66953L3.36434 6.4589L5.17191 8.26644L8.63556 4.48788L7.81269 3.73358Z" fill="white" />
+									</svg><?php esc_attr_e('Save Changes', 'metform'); ?></button>
+							</div>
+						</form>
+						<?php endif; ?>
+							<!-- End analytics settings tab -->
 						<?php do_action('metform_settings_content'); ?>
 
 						<!-- Integrations settings action end -->
@@ -1319,15 +1436,15 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 			</div>
 			<div class="mf-dashboard__settings-api__content ">
 				<div class="mf-dashboard__settings-api__content-header">
-					<h2>Add MailChimp Integrations</h2>
+					<h2><?php echo esc_html__('Add MailChimp Integrations', 'metform'); ?></h2>
 				</div>
 				<div class="mf-dashboard__settings-api__lists-content">
 					<div class="mf-dashboard__settings-api__content-input">
-						<h4 class="field-key">Mailchimp API Key:</h4>
-						<input type="text" placeholder="Enter your API Key" id="apikey" value="">
-						<p class="help-text">Enter here your Mailchimp API key. <a href="#">Get API</a></p>
+						<h4 class="field-key"><?php echo esc_html__('Mailchimp API Key:', 'metform'); ?></h4>
+						<input type="text" placeholder="<?php echo esc_attr__('Enter your API Key', 'metform'); ?>" id="apikey" value="">
+						<p class="help-text"><?php echo esc_html__('Enter here your Mailchimp API key.', 'metform'); ?> <a href="#"><?php echo esc_html__('Get API', 'metform'); ?></a></p>
 					</div>
-					<button type="button" class="components-button save-btn">Connect MailChimp Integration</button><button type="button" class="components-button cancel-btn" data-dismiss="modal">Cancel</button>
+					<button type="button" class="components-button save-btn"><?php echo esc_html__('Connect MailChimp Integration', 'metform'); ?></button><button type="button" class="components-button cancel-btn" data-dismiss="modal"><?php echo esc_html__('Cancel', 'metform'); ?></button>
 				</div>
 			</div>
 		</div>
@@ -1361,8 +1478,8 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 				</svg>
 			</div>
 			<div class="info">
-				<span>Success</span>
-				<p class="toaster-message">Settings saved successfully!</p>
+				<span><?php echo esc_html__('Success', 'metform'); ?></span>
+				<p class="toaster-message"><?php echo esc_html__('Settings saved successfully!', 'metform'); ?></p>
 			</div>
 		</div>
 	</div>

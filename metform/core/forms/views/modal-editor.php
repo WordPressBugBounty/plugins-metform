@@ -43,7 +43,7 @@
                                 <div class="mf-svg-text"><?php echo esc_html__('Upgrade', 'metform'); ?></div>
                             </div>
                         </div>
-                        <div class="tooltip">Please upgrade to use this feature.</div>
+                        <div class="tooltip"><?php esc_html_e('Please upgrade to use this feature.', 'metform'); ?></div>
                     </div>
                     <label class="attr-input-label">
                         <input type="checkbox" disabled class="mf-admin-control-input">
@@ -120,9 +120,9 @@
                                 </div>
                             <?php else: ?>
                             <?php mf_dummy_switch_input([
-                                    'label' => 'Show Quiz Summary',
-                                    'help' => 'Quiz summary will be shown to user after form submission with success message.',
-                                    'badge' => 'Pro',
+                                    'label' => __('Show Quiz Summary', 'metform'),
+                                    'help' => __('Quiz summary will be shown to user after form submission with success message.', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif; ?>
 
@@ -136,9 +136,9 @@
                             </div>
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
-                                    'label' => 'Required Login',
-                                    'help' => 'Without login, users can\'t submit the form.',
-                                    'badge' => 'Pro',
+                                    'label' => __('Required Login', 'metform'),
+                                    'help' => __('Without login, users can\'t submit the form.', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif; ?>
 
@@ -152,9 +152,9 @@
                             </div>
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
-                                    'label' => 'Capture User Browser Data',
-                                    'help' => 'Store user\'s browser data (ip, browser name, etc)',
-                                    'badge' => 'Pro',
+                                    'label' => __('Capture User Browser Data', 'metform'),
+                                    'help' => __('Store user\'s browser data (ip, browser name, etc)', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif; ?>
 
@@ -197,9 +197,9 @@
                             </div>
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
-                                    'label' => 'Limit Total Entries',
-                                    'help' => 'Limit the total number of submissions for this form.',
-                                    'badge' => 'Pro',
+                                    'label' => __('Limit Total Entries', 'metform'),
+                                    'help' => __('Limit the total number of submissions for this form.', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif; ?>
                             <?php if(class_exists('MetForm_Pro\Base\Package') ): ?>
@@ -247,9 +247,9 @@
                             </div>
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
-                                    'label' => 'Form scheduling',
-                                    'help' => 'Start end time scheduling for form availability.',
-                                    'badge' => 'Pro',
+                                    'label' => __('Form scheduling', 'metform'),
+                                    'help' => __('Start end time scheduling for form availability.', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif; ?>
                             <?php if(\MetForm\Utils\Util::is_using_feature('count_views') || class_exists('MetForm_Pro\Base\Package')): ?>
@@ -262,9 +262,9 @@
                             </div>
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
-                                    'label' => 'Count views',
-                                    'help' => 'Track form views.',
-                                    'badge' => 'Pro',
+                                    'label' => __('Count views', 'metform'),
+                                    'help' => __('Track form views.', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif; ?>
 
@@ -278,9 +278,9 @@
                             </div>
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
-                                    'label' => 'Stop Vertical Scrolling',
-                                    'help' => 'Stop scrolling effect when submitting the form.',
-                                    'badge' => 'Pro',
+                                    'label' => __('Stop Vertical Scrolling', 'metform'),
+                                    'help' => __('Stop scrolling effect when submitting the form.', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif; ?>
 
@@ -291,16 +291,29 @@
                             </div>
                              <?php if (!class_exists('MetForm_Pro\Base\Package')) :
                                 mf_dummy_switch_input([
-                                    'label' => 'Show Quiz Summary',
-                                    'badge' => 'Pro',
+                                    'label' => __('Show Quiz Summary', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]);
+                             endif; ?>
+
+                            <?php do_action( 'mf_add_conditional_redirect_input' ); ?>
+
+                            <?php if ( ! class_exists( 'MetForm_Pro\Base\Package' ) ) : ?>
+                            <?php mf_dummy_switch_input( [
+                                'label' => 'Conditional Redirect',
+                                'badge' => 'Pro',
+                            ] ); ?>
+                            <?php endif; ?>
+
+                             <?php if (!class_exists('MetForm_Pro\Base\Package')) :
                                 mf_dummy_switch_input([
-                                    'label' => 'Redirect form data',
-                                    'badge' => 'Pro',
+                                    'label' => __('Redirect form data', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]);
                              endif; ?>
 
                             <?php do_action('mf_add_url_databypass_input');  ?>
+
                         </div>
                     </div>
                     <div role="tabpanel" class="attr-tab-pane" id="mf-confirmation">
@@ -318,9 +331,9 @@
                             </div>
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
-                                    'label' => 'Confirmation mail to user',
-                                    'help' => 'Want to send a submission copy to user by email? Active this one. This form must include at least one required Email field.',
-                                    'badge' => 'Pro',
+                                    'label' => __('Confirmation mail to user', 'metform'),
+                                    'help' => __('Want to send a submission copy to user by email? Active this one. This form must include at least one required Email field.', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif; ?>
                             
@@ -361,8 +374,8 @@
                             </div>
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
-                                    'label' => 'Want to send a copy of submitted form to user ?',
-                                    'badge' => 'Pro',
+                                    'label' => __('Want to send a copy of submitted form to user ?', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif; ?>
 
@@ -370,7 +383,7 @@
                                 mf_dummy_switch_input([
                                     'label' => esc_html__('Email verification:', 'metform'),
                                     'help' => esc_html__('Want to send an email verification mail to the user by email? Active this one. This form must include at least one required Email field.', 'metform'),
-                                    'badge' => 'Pro',
+                                    'badge' => __('Pro', 'metform'),
                                 ]);
                             endif; ?>
 
@@ -528,9 +541,9 @@
                                 </div>
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
-                                    'label' => 'Mail Chimp:',
-                                    'help' => 'Integrate mailchimp with this form. This form must include at least one required Email field.',
-                                    'badge' => 'Pro',
+                                    'label' => __('Mail Chimp:', 'metform'),
+                                    'help' => __('Integrate mailchimp with this form. This form must include at least one required Email field.', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif; ?>
 
@@ -552,9 +565,9 @@
                                 </div>
                             <?php else: ?>
                                 <?php mf_dummy_switch_input([
-                                    'label' => 'Slack:',
-                                    'help' => 'Integrate slack with this form.',
-                                    'badge' => 'Pro',
+                                    'label' => __('Slack:', 'metform'),
+                                    'help' => __('Integrate slack with this form.', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif ?>
                             <?php if (class_exists('MetForm_Pro\Core\Integrations\Rest_Api') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_top_tier() || \MetForm\Utils\Util::is_using_feature('mf_rest_api'))) : ?>
@@ -1022,31 +1035,31 @@
                         <div class="attr-modal-body" id="metform_form_modal_body">
                             <?php 
                             $currencies = [
-                                'AUD' => 'Australian dollar',
-                                'BRL' => 'Brazilian real',
-                                'CAD' => 'Canadian dollar',
-                                'CNY' => 'Chinese Renmenbi',
-                                'CZK' => 'Czech koruna',
-                                'DKK' => 'Danish krone',
-                                'EUR' => 'Euro',
-                                'HKD' => 'Hong Kong dollar',
-                                'HUF' => 'Hungarian forint',
-                                'ILS' => 'Israeli new shekel',
-                                'JPY' => 'Japanese yen',
-                                'MYR' => 'Malaysian ringgit',
-                                'MXN' => 'Mexican peso',
-                                'TWD' => 'New Taiwan dollar',
-                                'NZD' => 'New Zealand dollar',
-                                'NOK' => 'Norwegian krone',
-                                'PHP' => 'Philippine peso',
-                                'PLN' => 'Polish złoty',
-                                'GBP' => 'Pound sterling',
-                                'RUB' => 'Russian ruble',
-                                'SGD' => 'Singapore dollar',
-                                'SEK' => 'Swedish krona',
-                                'CHF' => 'Swiss franc',
-                                'THB' => 'Thai baht',
-                                'USD' => 'United States dollar',
+                                'AUD' => __('Australian dollar', 'metform'),
+                                'BRL' => __('Brazilian real', 'metform'),
+                                'CAD' => __('Canadian dollar', 'metform'),
+                                'CNY' => __('Chinese Renmenbi', 'metform'),
+                                'CZK' => __('Czech koruna', 'metform'),
+                                'DKK' => __('Danish krone', 'metform'),
+                                'EUR' => __('Euro', 'metform'),
+                                'HKD' => __('Hong Kong dollar', 'metform'),
+                                'HUF' => __('Hungarian forint', 'metform'),
+                                'ILS' => __('Israeli new shekel', 'metform'),
+                                'JPY' => __('Japanese yen', 'metform'),
+                                'MYR' => __('Malaysian ringgit', 'metform'),
+                                'MXN' => __('Mexican peso', 'metform'),
+                                'TWD' => __('New Taiwan dollar', 'metform'),
+                                'NZD' => __('New Zealand dollar', 'metform'),
+                                'NOK' => __('Norwegian krone', 'metform'),
+                                'PHP' => __('Philippine peso', 'metform'),
+                                'PLN' => __('Polish złoty', 'metform'),
+                                'GBP' => __('Pound sterling', 'metform'),
+                                'RUB' => __('Russian ruble', 'metform'),
+                                'SGD' => __('Singapore dollar', 'metform'),
+                                'SEK' => __('Swedish krona', 'metform'),
+                                'CHF' => __('Swiss franc', 'metform'),
+                                'THB' => __('Thai baht', 'metform'),
+                                'USD' => __('United States dollar', 'metform'),
                             ];
 
                             // Check if at least one payment method is available
@@ -1068,7 +1081,7 @@
                             <?php if ($show_currency) : ?>
                                 <div class="mf-input-group mf-form-bottom-spacing">
                                     <label class="attr-input-label">
-                                        Default currency
+                                        <?php esc_html_e('Default currency', 'metform'); ?>
                                     </label>
                                     <select name="mf_payment_currency" id="" class="mf_payment_currency attr-form-control">
                                         <?php foreach ($currencies as $key => $value) { ?>
@@ -1186,7 +1199,7 @@
                                                             <path fill="#000" fill-rule="evenodd" d="M9 17a1 1 0 1 0 2 0v-6h6a1 1 0 1 0 0-2h-6V3a1 1 0 1 0-2 0v6H3a1 1 0 0 0 0 2h6v6z"/>
                                                         </svg>
                                                     </span>
-                                                    <span>Add Field</span>
+                                                    <span><?php esc_html_e('Add Field', 'metform'); ?></span>
                                                 </button>
                                             </div>
                                         </div>
@@ -1195,8 +1208,8 @@
                                 </div>
                             <?php else: 
                                 mf_dummy_switch_input([
-                                    'label' => 'Zoho Contact:',
-                                    'help' => 'Integrate Zoho Contact with this form.',
+                                    'label' => __('Zoho Contact:', 'metform'),
+                                    'help' => __('Integrate Zoho Contact with this form.', 'metform'),
                                 ]);
                            endif; ?>
                             <!-- Helpscout integration -->
@@ -1219,11 +1232,11 @@
                                         <?php if (get_option('mf_helpscout_mailboxes') && is_array(get_option('mf_helpscout_mailboxes'))) : ?>
                                             <select id="mf_helpscout_mailbox" name='mf_helpscout_mailbox' class="attr-form-control helpscout_mailboxes">
                                                 <?php foreach (get_option('mf_helpscout_mailboxes') as $mailbox) : ?>
-                                                    <option value="<?php echo esc_html($mailbox['id'], 'metform') ?>"><?php echo esc_html($mailbox['name'], 'metform') ?></option>
+                                                    <option value="<?php echo esc_attr($mailbox['id']); ?>"><?php echo esc_html($mailbox['name']); ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                         <?php else : ?>
-                                            <span>No mailbox found</span>
+                                            <span><?php esc_html_e('No mailbox found', 'metform'); ?></span>
                                         <?php endif; ?>
                                         <br><br>
                                         <div id="mf-helpscout-fileds"></div>
@@ -1239,16 +1252,16 @@
                             </div>
                            <?php else:
                                 mf_dummy_switch_input([
-                                    'label' => 'Zoho Contact:',
-                                    'help' => 'Integrate Zoho Contact with this form.',
+                                    'label' => __('Zoho Contact:', 'metform'),
+                                    'help' => __('Integrate Zoho Contact with this form.', 'metform'),
                                 ]);
                                 mf_dummy_switch_input([
-                                    'label' => 'Helpscout:',
-                                    'help' => 'Integrate Helpscout with this form.',
+                                    'label' => __('Helpscout:', 'metform'),
+                                    'help' => __('Integrate Helpscout with this form.', 'metform'),
                                 ]);
                                 mf_dummy_switch_input([
-                                    'label' => 'Fluent:',
-                                    'help' => 'Integrate fluent with this form.This form must include at least one required Email field.',
+                                    'label' => __('Fluent:', 'metform'),
+                                    'help' => __('Integrate fluent with this form.This form must include at least one required Email field.', 'metform'),
                                 ]);
                             endif; 
                             ?>
@@ -1259,12 +1272,12 @@
                             <div class="attr-modal-body" id="metform_form_modal_body">
                                 <?php
                                     mf_dummy_switch_input([
-                                        'label' => 'Login',
-                                        'help' => 'Enable or disable login system.',
+                                        'label' => __('Login', 'metform'),
+                                        'help' => __('Enable or disable login system.', 'metform'),
                                     ]);
                                     mf_dummy_switch_input([
-                                        'label' => 'Registration',
-                                        'help' => 'Enable or disable user registration.',
+                                        'label' => __('Registration', 'metform'),
+                                        'help' => __('Enable or disable user registration.', 'metform'),
                                     ]);
                                 ?>
                             </div>
@@ -1273,8 +1286,8 @@
                             <div class="attr-modal-body" id="metform_form_modal_body">
                                 <?php
                                     mf_dummy_switch_input([
-                                        'label' => 'Form to Post',
-                                        'help' => 'Create a post from form entries.',
+                                        'label' => __('Form to Post', 'metform'),
+                                        'help' => __('Create a post from form entries.', 'metform'),
                                     ]); 
                                     ?>
                             </div>

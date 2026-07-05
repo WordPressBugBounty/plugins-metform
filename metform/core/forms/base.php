@@ -41,7 +41,8 @@ Class Base extends \MetForm\Base\Common{
 
     public function enqueue_react_modal_scripts(){
         $screen = get_current_screen();
-
+        $settings = get_option('metform_option__settings', []);
+       // $formAnalyticsEnabled = class_exists('\MetForm_Pro\Plugin') && (\MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier()) && !empty($settings['mf_enable_form_analytics']);
         // Only enqueue on metform-form post type edit page
         if($screen->id == 'edit-metform-form'){
             $plugin = \MetForm\Plugin::instance();
@@ -74,6 +75,42 @@ Class Base extends \MetForm\Base\Common{
                     'hasQuiz' => class_exists('\MetForm_Pro\Core\Features\Quiz\Integration'),
                     'templates' => $this->get_templates_for_js(),
                     'wpVersion' => get_bloginfo('version'),
+                ]);
+            }
+        }
+        if ($screen->id == 'metform_page_metform-analytics') {
+            $plugin = \MetForm\Plugin::instance();
+            $asset_file = $plugin->plugin_dir() . 'build/form-analytics.asset.php';
+            $is_analytics_enable = !empty($settings['mf_enable_form_analytics']);
+            // analytics base class check as a pro activation
+            $is_metform_pro_active = class_exists(\MetForm_Pro\Core\Analytics\Base::class);            
+            $is_mid_tier =  \MetForm\Utils\Util::is_mid_tier();
+            $is_top_tier =  \MetForm\Utils\Util::is_top_tier();
+            if (file_exists($asset_file)) {
+                $asset = include $asset_file;
+                
+                wp_enqueue_script(
+                    'metform-form-analytics',
+                    $plugin->plugin_url() . 'build/form-analytics.js',
+                    $asset['dependencies'],
+                    $asset['version'],
+                    true
+                );
+
+                wp_enqueue_style(
+                    'metform-form-analytics',
+                    $plugin->plugin_url() . 'build/style-form-analytics.css',
+                    array('wp-components'),
+                    $asset['version']
+                );
+                wp_localize_script('metform-form-analytics', 'metformAnalytics', [
+                    'apiUrl' => rest_url('metform-pro/v1/analytics'),
+                    'nonce' => wp_create_nonce('wp_rest'),
+                    'admin_url' => admin_url(),
+                    'is_analytics_enable' => $is_analytics_enable,
+                    'is_metform_pro_active' => $is_metform_pro_active,
+                    'is_mid_tier' => $is_mid_tier,
+                    'is_top_tier' => $is_top_tier,
                 ]);
             }
         }

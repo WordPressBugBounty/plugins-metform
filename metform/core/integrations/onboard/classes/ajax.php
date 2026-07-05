@@ -92,12 +92,12 @@ class Ajax {
 			'shopengine/shopengine.php' => esc_html__('WooCommerce Builder Activated', 'metform'),
 			'metform/metform.php' => esc_html__('Form Builder Activated', 'metform'),
 			'emailkit/EmailKit.php' => esc_html__('Email Customizer Activated', 'metform'),
-			'wp-social/wp-social.php' => esc_html__('Social Integration Activated', 'metform'),
-			'wp-ultimate-review/wp-ultimate-review.php' => esc_html__('Review Management Activated', 'metform'),
 			'wp-fundraising-donation/wp-fundraising.php' => esc_html__('Fundraising & Donations', 'metform'),
 			'gutenkit-blocks-addon/gutenkit-blocks-addon.php' => esc_html__('Page Builder Blocks Activated', 'metform'),
 			'popup-builder-block/popup-builder-block.php' => esc_html__('Popup Builder Activated', 'metform'),
 			'table-builder-block/table-builder-block.php' => esc_html__('Table Builder Activated', 'metform'),
+			'rox-dynamic-cpt-fields-engine/rox-dynamic-cpt-fields-engine.php' => esc_html__('Dynamic CPT Fields Activated', 'metform'),
+			'rox-appointment-booking/rox-appointment-booking.php' => esc_html__('Appointment Booking Activated', 'metform'),
 		];
 
 		if ( array_key_exists( $plugin_slug, $plugins_message ) ) {

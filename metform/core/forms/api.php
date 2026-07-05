@@ -39,6 +39,9 @@ class Api extends \MetForm\Base\Api
         
 
         $this->setup_url_param_fields($form_id);
+        if ( class_exists( 'MetForm_Pro\Base\Package' ) ) {
+            $this->setup_conditional_redirect($form_id);
+        }
 
 
         if(isset($existing_form_setting['form_type'])){
@@ -226,6 +229,82 @@ class Api extends \MetForm\Base\Api
                 
             }            
         }
+    }
+
+    /**
+     * Saving the conditional redirect rules
+     * @param $form_id ID of the form
+     */
+    private function setup_conditional_redirect( $form_id ) {
+
+        if ( isset( $this->request['mf_conditional_redirect_status'] ) ) {
+            update_post_meta( $form_id, 'mf_conditional_redirect_status', 'true' );
+        } else {
+            update_post_meta( $form_id, 'mf_conditional_redirect_status', 'false' );
+            update_post_meta( $form_id, 'mf_conditional_redirect_rules', '' );
+            return;
+        }
+
+        $redirect_urls = $this->request['mf_cr_redirect_url'] ?? [];
+        $logics        = $this->request['mf_cr_logic']        ?? [];
+        $fields        = $this->request['mf_cr_field']        ?? [];
+        $compares      = $this->request['mf_cr_compare']      ?? [];
+        $values        = $this->request['mf_cr_value']        ?? [];
+
+        $rules = [];
+
+        if ( ! is_array( $redirect_urls ) ) {
+            $redirect_urls = [];
+        }
+
+        foreach ( $redirect_urls as $index => $url ) {
+            if ( ! is_string( $url ) ) {
+                continue;
+            }
+
+            $url = esc_url_raw( trim( $url ) );
+            if ( empty( $url ) ) {
+                continue;
+            }
+
+            $group_fields   = ( isset( $fields[ $index ] )   && is_array( $fields[ $index ] ) )   ? $fields[ $index ]   : [];
+            $group_compares = ( isset( $compares[ $index ] ) && is_array( $compares[ $index ] ) ) ? $compares[ $index ] : [];
+            $group_values   = ( isset( $values[ $index ] )   && is_array( $values[ $index ] ) )   ? $values[ $index ]   : [];
+
+            $raw_logic = ( isset( $logics[ $index ] ) && is_string( $logics[ $index ] ) ) ? $logics[ $index ] : 'AND';
+            $logic     = sanitize_text_field( $raw_logic );
+            $logic     = in_array( $logic, [ 'AND', 'OR' ], true ) ? $logic : 'AND';
+
+            $conditions = [];
+            foreach ( $group_fields as $ci => $field_name ) {
+                $field_name = sanitize_text_field( $field_name );
+                $raw_compare  = $group_compares[ $ci ] ?? '==';
+                $compare      = in_array( $raw_compare, [ '==', '!=', '>', '>=', '<', '<=' ], true ) ? $raw_compare : '==';
+                $value      = sanitize_text_field( $group_values[ $ci ]   ?? '' );
+
+                if ( empty( $field_name ) ) {
+                    continue;
+                }
+
+                $conditions[] = [
+                    'field'   => $field_name,
+                    'compare' => $compare,
+                    'value'   => $value,
+                ];
+            }
+
+            if ( empty( $conditions ) ) {
+                continue;
+            }
+
+            $rules[] = [
+                'redirect_url' => $url,
+                'logic'        => $logic,
+                'conditions'   => $conditions,
+            ];
+        }
+
+        update_post_meta( $form_id, 'mf_conditional_redirect_rules', wp_json_encode( $rules ) );
     }
 
     public function get_get()
