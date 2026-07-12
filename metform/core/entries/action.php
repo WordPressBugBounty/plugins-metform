@@ -605,7 +605,33 @@ class Action
                 // Check if entry already exists (from payment-first flow)
                 $existing_entry_id = isset($form_data['mf_entry_id']) ? intval($form_data['mf_entry_id']) : 0;
                 
-                if ($existing_entry_id && get_post($existing_entry_id)) {
+                // Only adopt a caller-supplied entry id if it is genuinely a
+                // payment-pending temporary entry minted by this same payment-first
+                // flow. Without this guard an attacker could pass the id of any
+                // post/page and have store()/insert() overwrite it (IDOR + payment
+                // state forgery). See mint logic ~ line 535-544.
+                $is_valid_pending_entry = false;
+                if ($existing_entry_id) {
+                    $existing_post = get_post($existing_entry_id);
+                    if (
+                        $existing_post
+                        && $existing_post->post_type === $this->post_type
+                        && get_post_meta($existing_entry_id, 'mf_payment_pending', true) == '1'
+                        && (int) get_post_meta($existing_entry_id, $this->key_form_id, true) === (int) $this->form_id
+                    ) {
+                        $is_valid_pending_entry = true;
+                    }
+                }
+
+                // A supplied-but-invalid entry id is a tampering attempt: reject the
+                // submission instead of silently overwriting or creating anything.
+                if ($existing_entry_id && ! $is_valid_pending_entry) {
+                    $this->response->status = 0;
+                    $this->response->error[] = esc_html__('Unauthorized submission.', 'metform');
+                    return $this->response;
+                }
+
+                if ($is_valid_pending_entry) {
                     // Update existing entry from payment-first flow
                     $this->entry_id = $existing_entry_id;
                     

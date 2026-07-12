@@ -22,8 +22,6 @@ echo esc_html__('Take your website to the next level', 'metform'); ?></strong></
 
         $gutenkit = $pluginStatus->get_status( 'gutenkit-blocks-addon/gutenkit-blocks-addon.php' );
         $tablekit = $pluginStatus->get_status( 'table-builder-block/table-builder-block.php' );
-        $dynamic_cpt = $pluginStatus->get_status( 'rox-dynamic-cpt-fields-engine/rox-dynamic-cpt-fields-engine.php' );
-        $appointment_booking = $pluginStatus->get_status( 'rox-appointment-booking/rox-appointment-booking.php' );
 
         $woocommerce = $pluginStatus->get_status( 'woocommerce/woocommerce.php' );
         // Show unchecked when WooCommerce is active but ShopEngine is deactivated
@@ -42,40 +40,6 @@ echo esc_html__('Take your website to the next level', 'metform'); ?></strong></
                     <?php endif; ?>
                     <p class="mf-onboard-single-plugin--description">
                         <?php echo esc_html__( 'Best companion for Elementor with top widgets and templates.', 'metform' ); ?>
-                    </p>
-                </label>
-            </div>
-        </div>
-        <div class="attr-col-lg-3">
-            <div class="mf-onboard-single-plugin <?php echo esc_attr( $dynamic_cpt['status'] == 'activated' ? 'activated' : '' ); ?>">
-                <label>
-                    <div class="mf-onboard-single-plugin--header">
-                        <h3>Dynamic CPT Fields</h3>
-                    </div>
-                    <?php if($dynamic_cpt['status'] !== 'activated') : ?>
-                        <div class="mf-onboard-single-plugin--checkbox-wrapper">
-                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="rox-dynamic-cpt-fields-engine/rox-dynamic-cpt-fields-engine.php" name="our_plugins[]">
-                        </div>
-                    <?php endif; ?>
-                    <p class="mf-onboard-single-plugin--description">
-                        <?php echo esc_html__('Build and manage custom CPT fields for WordPress with AI and zero coding.', 'metform' ); ?>
-                    </p>
-                </label>
-            </div>
-        </div>
-        <div class="attr-col-lg-3">
-            <div class="mf-onboard-single-plugin <?php echo esc_attr( $appointment_booking['status'] == 'activated' ? 'activated' : '' ); ?>">
-                <label>
-                    <div class="mf-onboard-single-plugin--header">
-                        <h3>Appointment Booking</h3>
-                    </div>
-                    <?php if($appointment_booking['status'] !== 'activated') : ?>
-                        <div class="mf-onboard-single-plugin--checkbox-wrapper">
-                            <input type="checkbox" class="mf-onboard-single-plugin--input" value="rox-appointment-booking/rox-appointment-booking.php" name="our_plugins[]">
-                        </div>
-                    <?php endif; ?>
-                    <p class="mf-onboard-single-plugin--description">
-                        <?php echo esc_html__('Manage schedules, agents, and payments, all from one dashboard in WordPress.', 'metform' ); ?>
                     </p>
                 </label>
             </div>

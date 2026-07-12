@@ -3,12 +3,12 @@ Contributors: Roxnor, Ataurr, aion11
 Tags: form builder, Elementor form, contact form builder, Multi step form, custom form
 Requires at least: 6.0
 Tested up to: 7.0
-Stable tag: 4.1.6
+Stable tag: 4.1.7
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
-The most popular Elementor forms builder to create WordPress forms like contact forms, booking forms, feedback form, survey forms, application forms and other custom forms.
+Most popular Elementor forms builder to create WordPress forms like contact forms, booking forms, feedback form, survey forms, application forms & other custom forms.
 
 == Description ==
 
@@ -34,12 +34,19 @@ https://www.youtube.com/watch?v=aDlbP9m_mf8
 
 A standout feature of MetFom is the option to create custom field groups and reuse them in any form with one click. The lite version is enough to build forms like referral forms, testimonial forms, and client feedback forms.
 
-You’ll also get demos for multi-step, conditional, feedback, event, job application, booking, custom social signup, and product registration forms—making it ideal for beginners.
+You’ll also get demos for multi-step, conditional, feedback, event, job application, booking, custom social signup, and product registration forms, making it ideal for beginners.
 
 ## Pre-Built Form Templates
 
 MetForm provides [a comprehensive library of pre-built templates designed](https://wpmet.com/plugin/metform/templates/?utm_source=org&utm_medium=readme) to help you deploy functional forms quickly without having to build them entirely from scratch. The collection covers a wide variety of common use cases, ranging from simple contact and newsletter signup layouts to more complex event registrations, job applications, and multi-step booking systems.
 
+## 📊 Form Analytics – Track Every Contact Form's Performance
+
+MetForm Analytics gives you a complete performance dashboard for every form - conversion rate, traffic sources, top referrers, geographic breakdown, device and browser stats, and hourly submission patterns. No Google Analytics, no third-party scripts, no cookie complications, all data stays inside WordPress.
+
+https://youtu.be/q8LtRwg-zd4?si=mfrnXjgoAE95r_AL
+
+For quiz forms, get dedicated reporting with score distributions, pass/fail ratios, per-question difficulty analysis, and completion vs. abandonment rates, everything you need to improve your forms and maximize conversions.
 
 ## Mobile-friendly and Responsive Form Builder
 
@@ -67,13 +74,11 @@ Automate form availability by setting specific start and end dates. This control
 
 ## Convert Form to Post
 
-Automatically turn user submissions into WordPress posts. Map form fields to post titles, content, and custom post types to let visitors submit articles or reviews directly from the front end.
-
+Map form fields to post titles, content, and custom post types, let visitors submit articles or reviews directly from the front end.
 
 ## GDPR Compliant Form-Building
 
-Meet privacy regulations by easily adding mandatory consent checkboxes. This ensures you capture explicit user permission before collecting or storing personal data.
-
+Add mandatory consent checkboxes to meet privacy regulations and capture explicit user permission before storing any data.
 
 ## Quiz & Survey Forms Module
 
@@ -85,15 +90,15 @@ Want to Export form entries as CSV? Yes, you can do that too with the Metform El
 
 ## Free HubSpot Integration
 
-HubSpot integration is also available in MetForm. It ensures flawless customer relationship management. With MetForm HubSpot integration, you can store all the data properly in the HubSpot account and get access to any data in the shortest possible time. 
+Connect MetForm with HubSpot to automatically sync every form submission directly to your CRM, zero manual data entry.
 
 ## Mailchimp Integration
 
-You can use MailChimp in your contact form to collect and send leads from WordPress to MailChimp. Also, create MailChimp signup or lead generation forms and boxes with a custom style and expand your lead list.
+Send leads from any contact form straight to your Mailchimp list and grows your email subscribers on autopilot.
 
 ## ✨Top Features of MetForm — Elementor Form Builder
 
-- **Built with Elementor:** MetForm is based on Elementor. This means this contact form builder offers an Elementor-like intuitive drag-and-drop workflow and real-time preview of your customizations. And, this budget-friendly email building tool with impressive form-building functionality powered by Elementor Builder has no learning curve. 
+- **Built for Elementor:** MetForm is based on Elementor. This means this contact form builder offers an Elementor-like intuitive drag-and-drop workflow and real-time preview of your customizations. And, this budget-friendly email building tool with impressive form-building functionality powered by Elementor Builder has no learning curve. 
 
 So, beginners can easily create a query form to collect reporting and other forms like a contact form or booking form. Learn how to create a WordPress Booking form with MetForm 👇
 
@@ -105,27 +110,27 @@ https://youtu.be/K7YJmNn9nIY?si=vY3lBCRm8NkfLH60
 
 > Text field, Email field, Number field, Date field Time field, Select field, Textarea field, Checkbox field, Radio field, Switcher field, Range slider field, URL field, Password field, Response Message, Opt-in, reCAPTCHA, Rating, File Upload, and many more.
 
-- **User Confirmation Email:** Show a nice gesture to the form submitters by sending a confirmation email after they register or enter their data or at the end of your campaign. 
+- **User Confirmation Email:** Send automatic confirmation emails to form submitters right after they register or complete your campaign. 
 
 - **Admin Notification Email:** Notify admin of successful order notifications after users or customers complete a form submission.
 
 - **Saved Form Entries in the Admin Panel:** Save all the data that users give to fill up the form and display it in the admin panel.
 
-- **Export Form Entries as CSV:** Export multiple data from your MetForm that the user enters in a single CSV file and downloads in a spreadsheet.
+- **Export Form Entries as CSV:** Export all form submissions, contacts, and messages directly to Google Sheets with one integration.
 
 - **Export Form to Google Sheets:** The popular Elementor form creator MetForm allows you to export all your users’ personal contacts, databases, and messages on Google Sheets. 
 
-- **Required Login to Submit the Form:** Make sure a secured and spam-free contact form by showing the required fields. Notify with a simple red star or an error message when those fields are empty.
+- **Required Login to Submit the Form:** Mark required fields with a red star or error message to keep your contact form spam-free and complete. 
 
 - **Capture User Browser Data:** Displays the user’s browser information like Web browser, Visited URL, Title, Visit Time, Visit Count, User Profile, etc.
 
 - **Hide Form After Submission:** Hide your public Elementor form after the user fills all the necessary fields and hits the submit button.
 
-- **Limit Total Entries:** Enable limit to the number of submission entries to your Elementor form. This Elementor contact form builder feature will also give an error message after getting crossed.
+- **Limit Total Entries:** Set a maximum submission limit on any form and display an error message automatically once the limit is reached with this Elementor Contact form builder.
 
-- **Redirect After Successful Form Submission:** Simply add the desired destination URL and redirect to that page after successfully submitting the form. It is possible with Elementor form maker MetForm.
+- **Redirect After Successful Form Submission:** Redirect users to any URL immediately after a successful form submission, no code required with this Elementor form maker.
 
-- **Validate Required Form Fields:** The multi-step Elementor contact form builder helps you to validate your form’s required field and gives an error message if needed to make your form standard and way more professional.
+- **Validate Required Form Fields:** This multi-step Elementor contact form builder helps to validate required fields across every step of your multi-step form and show error messages instantly.
 
 - **Form Submission via AJAX without Page Refreshes:** Our Elementor contact form maker permits you to submit your contact us simple form without loading your page via AJAX to make it more user-friendly and time-saving. Therefore, online visitors can fill up the form using AJAX without page loading.
 
@@ -269,6 +274,10 @@ If you like using the MetForm form builder, then consider checking out our other
 **Check out** [Tutorials, Tips & Tricks](https://wpmet.com/blog)! 👌
 
 == Changelog ==
+Version: 4.1.7 // 2026-07-12
+Improved: Onboarding process.
+Fixed: Validate entry ownership before updating the form submission to prevent IDOR.
+
 Version: 4.1.6 // 2026-07-05
 Added: Form analytics feature to track submissions and monitor form performance with insights.
 Added: Conditional redirect support for form submissions based on rules.
