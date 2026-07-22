@@ -82,6 +82,9 @@ class Base{
             true
         );
 
+        // Register script translations so strings inside the modal JS are translated
+        wp_set_script_translations( 'metform-form-picker-modal-react', 'metform' );
+
         if ( file_exists( $plugin->plugin_dir() . 'build/style-form-picker-modal.css' ) ) {
             wp_enqueue_style(
                 'metform-form-picker-modal-react-style',

@@ -97,6 +97,9 @@ Class Base extends \MetForm\Base\Common{
                     true
                 );
 
+                // Register script translations so strings inside the analytics JS are translated
+                wp_set_script_translations( 'metform-form-analytics', 'metform' );
+
                 wp_enqueue_style(
                     'metform-form-analytics',
                     $plugin->plugin_url() . 'build/style-form-analytics.css',

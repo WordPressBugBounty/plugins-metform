@@ -89,6 +89,30 @@ Class Map_El {
                         }
                     }
                 }
+
+                /**
+                 * The map widget submits two extra hidden fields ({name}_lat, {name}_lng)
+                 * that aren't a real Elementor widget of their own, so they need to be
+                 * registered here too, otherwise entries/action.php::sanitize() drops them.
+                 */
+                if (!empty($v->widgetType) && $v->widgetType === 'mf-map-location' && isset($v->settings->mf_input_name)
+                    && isset($v->settings->mf_map_show_map) && $v->settings->mf_map_show_map === 'yes') {
+
+                    $lat_name = $v->settings->mf_input_name . '_lat';
+                    $lng_name = $v->settings->mf_input_name . '_lng';
+
+                    $this->_el[$lat_name] = (object) [
+                        'mf_input_label' => (isset($v->settings->mf_input_label) ? $v->settings->mf_input_label . ' (Latitude)' : 'Latitude'),
+                        'mf_input_name'  => $lat_name,
+                        'widgetType'     => $v->widgetType,
+                    ];
+
+                    $this->_el[$lng_name] = (object) [
+                        'mf_input_label' => (isset($v->settings->mf_input_label) ? $v->settings->mf_input_label . ' (Longitude)' : 'Longitude'),
+                        'mf_input_name'  => $lng_name,
+                        'widgetType'     => $v->widgetType,
+                    ];
+                }
             }
         }
     }

@@ -106,8 +106,10 @@ Class Hooks{
       break;
 
       case 'mf_date':
-        $post       = get_post( $post_id );
-        $date       = get_the_date( 'Y/m/d \a\t g:i a', $post );
+        $post        = get_post( $post_id );
+        // Get the date format and time format from WordPress settings
+        $date_format = get_option( 'date_format' ) . ' \a\t ' . get_option( 'time_format' );
+        $date        = get_the_date( $date_format, $post );
         echo esc_html( $date );
       break;
 

@@ -40,7 +40,7 @@ class Onboard {
     }
 
 	public function init() {
-		
+
 		new Classes\Ajax;
 
 		if ( get_option( $this->optionKey ) ) {
@@ -50,7 +50,14 @@ class Onboard {
 			}
 			return true;
 		}
-	
+
+		// Skip onboarding if MetForm was silently installed during another wpmet plugin's onboarding flow.
+		$auto_installed = (array) get_option( 'wpmet_onboarded_plugins', [] );
+		if ( isset( $auto_installed['metform/metform.php'] ) ) {
+			$this->finish_onboard();
+			return true;
+		}
+
 		add_action('metform/admin/after_save', [$this, 'ajax_action']);
 
 		$param      = isset( $_GET['met-onboard-steps'] ) ?  sanitize_text_field(wp_unslash($_GET['met-onboard-steps'])) : null;

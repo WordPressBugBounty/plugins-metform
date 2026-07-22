@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: MetForm 4.1.7\n"
+"Project-Id-Version: MetForm 4.1.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/metform\n"
-"POT-Creation-Date: 2026-07-12 07:36:29+00:00\n"
+"POT-Creation-Date: 2026-07-22 09:12:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -115,7 +115,7 @@ msgstr ""
 msgid "No content is added yet."
 msgstr ""
 
-#: core/admin/base.php:82 core/forms/hooks.php:126 plugin.php:427
+#: core/admin/base.php:82 core/forms/hooks.php:128 plugin.php:427
 #: traits/button-controls.php:32 widgets/checkbox/checkbox.php:191
 #: widgets/date/date.php:132 widgets/email/email.php:85
 #: widgets/file-upload/file-upload.php:108
@@ -1387,19 +1387,19 @@ msgstr ""
 msgid "Google Drive upload failed: SSL certificate or OAuth credentials problem"
 msgstr ""
 
-#: core/entries/action.php:1169
+#: core/entries/action.php:1195
 msgid "Mail not found."
 msgstr ""
 
-#: core/entries/action.php:1175 core/entries/action.php:1228
+#: core/entries/action.php:1201 core/entries/action.php:1260
 msgid "Please setup your SMTP mail server."
 msgstr ""
 
-#: core/entries/action.php:1218
+#: core/entries/action.php:1250
 msgid "Admin mail not found to send email."
 msgstr ""
 
-#: core/entries/action.php:1406
+#: core/entries/action.php:1438
 msgid "There was an error uploading your file."
 msgstr ""
 
@@ -1474,7 +1474,7 @@ msgstr ""
 msgid "View Items"
 msgstr ""
 
-#: core/entries/cpt.php:29
+#: core/entries/cpt.php:29 plugin.php:593
 msgid "Search Item"
 msgstr ""
 
@@ -1623,7 +1623,7 @@ msgid "No"
 msgstr ""
 
 #: core/entries/hooks.php:114 core/entries/meta-data.php:258
-#: core/forms/hooks.php:125
+#: core/forms/hooks.php:127
 msgid "View"
 msgstr ""
 
@@ -1635,7 +1635,8 @@ msgstr ""
 msgid "Export PDF is a premium feature. Upgrade for premium acess"
 msgstr ""
 
-#: core/entries/hooks.php:122 core/forms/hooks.php:129
+#: core/entries/hooks.php:122 core/forms/hooks.php:131 plugin.php:590
+#: plugin.php:603
 msgid "Move to Trash"
 msgstr ""
 
@@ -1818,7 +1819,7 @@ msgstr ""
 msgid "View Forms"
 msgstr ""
 
-#: core/forms/cpt.php:559
+#: core/forms/cpt.php:559 plugin.php:605
 msgid "Search Forms"
 msgstr ""
 
@@ -1862,11 +1863,11 @@ msgstr ""
 msgid "Upgrade for premium access."
 msgstr ""
 
-#: core/forms/hooks.php:127
+#: core/forms/hooks.php:129
 msgid "Edit with Elementor"
 msgstr ""
 
-#: core/forms/hooks.php:129
+#: core/forms/hooks.php:131
 msgid "Move this form to trash?"
 msgstr ""
 
@@ -3759,25 +3760,41 @@ msgstr ""
 msgid "Minimum number should be "
 msgstr ""
 
-#: plugin.php:626
+#: plugin.php:589 plugin.php:602
+msgid "Bulk actions"
+msgstr ""
+
+#: plugin.php:591 plugin.php:604
+msgid "Apply"
+msgstr ""
+
+#: plugin.php:592
+msgid "Filter"
+msgstr ""
+
+#: plugin.php:594
+msgid "Update"
+msgstr ""
+
+#: plugin.php:640
 msgid "All"
 msgstr ""
 
-#: plugin.php:660
+#: plugin.php:674
 msgid "Activate Elementor"
 msgstr ""
 
-#: plugin.php:667
+#: plugin.php:681
 msgid "Install Elementor"
 msgstr ""
 
-#: plugin.php:671 plugin.php:688
+#: plugin.php:685 plugin.php:702
 #. translators: MetForm plugin version requirement. %s is the required
 #. Elementor version.
 msgid "MetForm requires Elementor version %1$s+, which is currently NOT RUNNING."
 msgstr ""
 
-#: plugin.php:683
+#: plugin.php:697
 msgid "Update Elementor"
 msgstr ""
 

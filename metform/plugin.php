@@ -30,7 +30,7 @@ final class Plugin {
 
     public function version()
     {
-        return '4.1.7';
+        return '4.1.8';
     }
 
     public function package_type()
@@ -585,11 +585,25 @@ final class Plugin {
             wp_enqueue_style('metform-ui', $this->public_url() . 'assets/css/metform-ui.css', false, $this->version());
             wp_enqueue_style('metform-admin-entries-view', $this->public_url() . 'assets/css/admin-entries-view.css', false, $this->version());
             wp_enqueue_script('metform-entry-script', $this->public_url() . 'assets/js/admin-entry-script.js', [], $this->version(), true);
+            wp_localize_script('metform-entry-script', 'metform_entry_i18n', [
+                'bulk_actions'  => esc_html__('Bulk actions', 'metform'),
+                'move_to_trash' => esc_html__('Move to Trash', 'metform'),
+                'apply'         => esc_html__('Apply', 'metform'),
+                'filter'        => esc_html__('Filter', 'metform'),
+                'search_item'   => esc_html__('Search Item', 'metform'),
+                'update'        => esc_html__('Update', 'metform'),
+            ]);
         }
 
         if ($screen->id == 'edit-metform-form') {
             wp_enqueue_style('metform-admin-entries-view', $this->public_url() . 'assets/css/admin-entries-view.css', [], $this->version());
             wp_enqueue_script('metform-form-script', $this->public_url() . 'assets/js/admin-form-script.js', ['jquery'], $this->version(), true);
+            wp_localize_script('metform-form-script', 'metform_form_i18n', [
+                'bulk_actions'  => esc_html__('Bulk actions', 'metform'),
+                'move_to_trash' => esc_html__('Move to Trash', 'metform'),
+                'apply'         => esc_html__('Apply', 'metform'),
+                'search_forms'  => esc_html__('Search Forms', 'metform'),
+            ]);
         }
     }
 

@@ -6,6 +6,13 @@ defined( 'ABSPATH' ) || exit;
 
 class Plugin_Installer {
 
+	/**
+	 * Source plugin slug passed to Auto_Install_Tracker::mark().
+	 * Overridable via the constructor's second parameter if another wpmet
+	 * plugin reuses this class.
+	 */
+	private string $installed_by = 'metform';
+
 	private $plugin_file;
 	private $plugin_slug;
 
@@ -30,9 +37,10 @@ class Plugin_Installer {
 		if ( $this->is_plugin_installed() ) {
 			$ignore_silent_activation = ['popup-builder-block/popup-builder-block.php'];
 			$silent = in_array( $this->plugin_file, $ignore_silent_activation ) ? false : true;
-			
+
 			$activate = activate_plugin( $this->plugin_file, '', false, $silent );
 			if ( ! is_wp_error( $activate ) ) {
+				Auto_Install_Tracker::mark( $this->plugin_file, $this->installed_by );
 				return true;
 			}
 		} else {
@@ -65,6 +73,7 @@ class Plugin_Installer {
 
 			$activate = activate_plugin( $this->plugin_file, '', false, $silent );
 			if ( ! is_wp_error( $activate ) ) {
+				Auto_Install_Tracker::mark( $this->plugin_file, $this->installed_by );
 				return true;
 			}
 		}

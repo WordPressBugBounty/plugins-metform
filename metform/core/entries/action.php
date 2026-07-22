@@ -1121,6 +1121,25 @@ class Action
         $this->response->status = 1;
     }
 
+    /**
+     * Strip CR/LF and null bytes from a value before it is placed inside an
+     * email header block. Without this, a user-supplied field value injected
+     * via a shortcode (e.g. "[mf-email]" in Reply-To) such as
+     * "user@site.com\r\nBcc: victim@site.com" would be parsed by wp_mail() as
+     * an additional header line, allowing arbitrary Bcc/Cc/header injection
+     * (email header / CRLF injection).
+     */
+    private function mf_sanitize_header_field($value)
+    {
+        $value = str_replace("\0", '', (string) $value);
+        // Cut at the first line break instead of just deleting CR/LF chars,
+        // so injected header lines are dropped entirely rather than merged
+        // into the legitimate value (e.g. "a@b.com\r\nbcc: x@y.com" becomes
+        // "a@b.com", not the garbled "a@b.combcc: x@y.com").
+        $value = preg_split("/\r\n|\r|\n/", $value, 2)[0];
+        return trim($value);
+    }
+
     public function send_user_email($form_data, $file_info)
     {
         
@@ -1155,6 +1174,13 @@ class Action
         // body will be in the filter hook 
 
         $body = apply_filters('metform_confirmation_user_email_body', $body, $this->form_id, $form_data, $file_info, $this->form_settings);
+
+        // Prevent email header (CRLF) injection from user-supplied field values
+        // injected via shortcodes such as [mf-email].
+        $from = $this->mf_sanitize_header_field($from);
+        $reply_to = $this->mf_sanitize_header_field($reply_to);
+        $subject = $this->mf_sanitize_header_field($subject);
+        $user_mail = $this->mf_sanitize_header_field($user_mail);
 
         $headers = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
@@ -1202,6 +1228,12 @@ class Action
             $body .= '<a href="' . $edit_link . '">' . $edit_link . '</a>';
         }
         $body .= "</body></html>";
+
+        // Prevent email header (CRLF) injection from user-supplied field values
+        // injected via shortcodes such as [mf-email].
+        $from = $this->mf_sanitize_header_field($from);
+        $reply_to = $this->mf_sanitize_header_field($reply_to);
+        $subject = $this->mf_sanitize_header_field($subject);
 
         $headers = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
