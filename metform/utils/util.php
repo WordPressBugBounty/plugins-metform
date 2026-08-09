@@ -470,7 +470,22 @@ class Util{
 		}
 		return false;
 	}
-	public static function render_form_content($form, $widget_id){
+	/**
+	 * @param mixed  $form            A numeric MetForm form ID, or - only when
+	 *                                 $is_trusted_source is true - raw markup to
+	 *                                 echo directly.
+	 * @param mixed  $widget_id
+	 * @param bool   $is_trusted_source Set true only for callers rendering a
+	 *                                 metform-form CPT's own post_content (e.g.
+	 *                                 core/forms/hooks.php on the_content),
+	 *                                 which requires Editor+ capability
+	 *                                 (capability_type 'page') to populate.
+	 *                                 Every other caller passes a value that
+	 *                                 can be forged by Contributor+ via an
+	 *                                 Elementor widget setting and must never
+	 *                                 set this to true.
+	 */
+	public static function render_form_content($form, $widget_id, $is_trusted_source = false){
 		$rest_url = get_rest_url();
 		$form_unique_name = (is_numeric($form)) ? ($widget_id.'-'.$form) : $widget_id;
 		$form_id = (is_numeric($form)) ? $form : $widget_id;
@@ -580,8 +595,6 @@ class Util{
 									'cellpadding=',
 									'srcset',
 									'colspan',
-									'<script>',			// Script Start Tag
-									'</script>',		// Script End Tag
 									'<br>',
 									'<BR>'
 								),
@@ -592,13 +605,23 @@ class Util{
 									'cellPadding=',
 									'srcSet',
 									'colSpan',
-									'${(function(){',	// Script Start Tag
-									'})()}',			// Script End Tag
 									'<br/>',
 									'<br/>'
 								),
 							);
-							$form_content = is_numeric( $form ) ? \MetForm\Utils\Util::render_elementor_content( $form ) : $form;
+							// Security: a numeric $form always resolves through Elementor's own
+							// render pipeline. A non-numeric $form is only ever echoed raw when
+							// $is_trusted_source says this call is rendering a metform-form CPT's
+							// own post_content (Editor+ only, capability_type 'page') - never for
+							// an Elementor widget setting, which Contributor+ can forge. Any other
+							// non-numeric $form falls back to the "No content" message instead of
+							// being echoed. (The previous <script>/</script> -> ${(function(){ /
+							// })()} mapping was removed below - it let any HTML source be turned
+							// into an executable JS template-literal expression once it reached
+							// this point, which was the delivery mechanism for a stored XSS.)
+							$form_content = is_numeric( $form )
+								? \MetForm\Utils\Util::render_elementor_content( $form )
+								: ( $is_trusted_source ? $form : '<div class="mf-widget-container">' . esc_html__( 'No content is added yet.', 'metform' ) . '</div>' );
 							$form_content = \MetForm\Utils\Util::mfConvertStyleToReactObj($form_content);
 							$form_content = str_replace( $replaceStrings['from'], $replaceStrings['to'], $form_content );
 							$form_content = preg_replace( '/<!--(.|\s)*?-->/', '', $form_content ); // Removes HTML Comments

@@ -257,8 +257,9 @@ class File_Data_Validation
 
                     if (($file_data[$single_file_widget]['error']) == UPLOAD_ERR_INI_SIZE) {
                         self::$response['status'] = 0;
-                        self::$response['error'] = esc_html__($s_files['name'] . ' file size exceeded ' . size_format(wp_max_upload_size(), 2), 'metform');
-                        return self::$response; 
+                        // translators: %1$s is the file name, %2$s is the maximum allowed upload size.
+                        self::$response['error'] = sprintf(esc_html__('%1$s file size exceeded %2$s', 'metform'), $s_files['name'], size_format(wp_max_upload_size(), 2));
+                        return self::$response;
                     }
                 }
                 
@@ -271,7 +272,8 @@ class File_Data_Validation
                         }
                         if (($sf) == UPLOAD_ERR_INI_SIZE) {
                             self::$response['status'] = 0;
-                            self::$response['error'] = esc_html__($s_files['name'][$key] . ' file size exceeded ' . size_format(wp_max_upload_size(), 2), 'metform');
+                            // translators: %1$s is the file name, %2$s is the maximum allowed upload size.
+                            self::$response['error'] = sprintf(esc_html__('%1$s file size exceeded %2$s', 'metform'), $s_files['name'][$key], size_format(wp_max_upload_size(), 2));
                             return self::$response;
                         }
 

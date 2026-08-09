@@ -42,6 +42,7 @@ class Onboard {
 	public function init() {
 
 		new Classes\Ajax;
+		Classes\Auto_Install_Notice::init();
 
 		if ( get_option( $this->optionKey ) ) {
 			//phpcs:disable WordPress.Security.NonceVerification -- its just checking met-onboard-steps is finished or not.
@@ -73,23 +74,24 @@ class Onboard {
 		return true;
 	}
 
-	public  function ajax_action(){
+	public function ajax_action() {
 		$this->finish_onboard();
-		if( isset($_POST['nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])),'ajax-nonce')){
-	
-			if ( isset( $_POST['settings']['tut_term'] ) &&  sanitize_text_field(wp_unslash($_POST['settings']['tut_term'])) == 'user_agreed' ) {
+		if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce' ) ) {
+
+			if ( isset( $_POST['settings']['tut_term'] ) && sanitize_text_field( wp_unslash( $_POST['settings']['tut_term'] ) ) == 'user_agreed' ) {
 				Plugin_Data_Sender::instance()->send( 'diagnostic-data' ); // send non-sensitive diagnostic data and details about plugin usage.
 			}
 
-			if ( isset( $_POST['settings']['newsletter_email'] ) && !empty($_POST['settings']['newsletter_email'])) {
-				$data = [
-					'email'           =>  sanitize_text_field(wp_unslash($_POST['settings']['newsletter_email'])),
-					'slug'             => 'metform',
-				];
+			if ( isset( $_POST['settings']['newsletter_email'] ) && ! empty( $_POST['settings']['newsletter_email'] ) ) {
+				$email = sanitize_text_field( wp_unslash( $_POST['settings']['newsletter_email'] ) );
 
-				$response = Plugin_Data_Sender::instance()->sendEmailSubscribeData( 'plugin-subscribe', $data );
-				\MetForm\Utils\Util::metform_content_renderer($response);
-				exit;
+				Plugin_Data_Sender::instance()->sendEmailSubscribeData( 'plugin-subscribe', [
+					'email' => $email,
+					'slug'  => 'metform',
+				] );
+
+				update_option( Classes\Auto_Install_Notice::EMAIL_COLLECTED_KEY, true, false );
+				update_option( 'wpmet_onboard_collected_email', $email, false );
 			}
 		}
 	}

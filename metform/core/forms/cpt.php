@@ -531,6 +531,9 @@ class Cpt extends \MetForm\Base\Cpt
             ],
             'mf_analytics_delete_range' => [
                 'name'  => 'mf_analytics_delete_range'
+            ],
+            'mf_enable_submission_error_log' => [
+                'name'  => 'mf_enable_submission_error_log'
             ]
         ];
 

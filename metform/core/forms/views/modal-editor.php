@@ -268,6 +268,22 @@
                                 ]); ?>
                             <?php endif; ?>
 
+                            <?php if( class_exists('MetForm_Pro\Base\Package') && ( \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier() ) ): ?>
+                            <div class="mf-input-group mf-box-style">
+                                <label class="attr-input-label">
+                                    <input type="checkbox" value="1" name="mf_enable_submission_error_log" class="mf-admin-control-input mf-form-modalinput-submission_error_log">
+                                    <span><?php esc_html_e('Enable Submission Failure Log:', 'metform'); ?></span>
+                                </label>
+                                <span class='mf-input-help'><?php esc_html_e('Record failed form submissions so you can see them into every form.', 'metform'); ?></span>
+                            </div>
+                            <?php else: ?>
+                                <?php mf_dummy_switch_input([
+                                    'label' => __('Enable Submission Failure Log', 'metform'),
+                                    'help' => __('Record failed form submissions so you can see them into every form.', 'metform'),
+                                    'badge' => __('Pro', 'metform'),
+                                ]); ?>
+                            <?php endif; ?>
+
                             <?php if( \MetForm\Utils\Util::is_using_feature('mf_stop_vertical_scrolling') || ( class_exists('MetForm_Pro\Base\Package') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier()))): ?>
                             <div class="mf-input-group mf-box-style">
                                 <label class="attr-input-label">

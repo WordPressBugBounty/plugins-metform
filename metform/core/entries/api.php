@@ -27,7 +27,202 @@ class Api extends \MetForm\Base\Api
         $form_data = $this->request->get_params();
         $file_data = $this->request->get_file_params();
 
-        return Action::instance()->submit($id, $form_data, $file_data,$post_id);
+        // Snapshot the last PHP error so we can tell whether the submission itself
+        // triggered one (the real cause behind an otherwise generic failure).
+        $error_before = error_get_last();
+
+        // A FATAL error / uncaught exception inside submit() aborts the request before the
+        // status-0 logger below can ever run — yet that is exactly the vague "Something went
+        // wrong." case an admin most needs to see. Arm a shutdown guard that records the fatal,
+        // but only if submit() never returned normally (it is disarmed via $completed right after
+        // the call), so a normal rejection is never double-logged.
+        $completed = false;
+        register_shutdown_function(function () use (&$completed, $id, $post_id, $url, $form_data, $file_data, $error_before) {
+            if ($completed) {
+                return; // submit() returned — the status-0 path below already handled logging.
+            }
+
+            $fatal = error_get_last();
+
+            // Only genuine fatals abort mid-submission; a non-fatal end (e.g. client
+            // disconnect) is not a submission failure worth recording.
+            if (empty($fatal) || !isset($fatal['type']) || !in_array($fatal['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR], true)) {
+                return;
+            }
+
+            // Ignore a stale fatal that was already present before this submission ran.
+            if (
+                is_array($error_before)
+                && isset($error_before['message'], $error_before['file'], $error_before['line'])
+                && $error_before['message'] === $fatal['message']
+                && $error_before['file'] === $fatal['file']
+                && $error_before['line'] === $fatal['line']
+            ) {
+                return;
+            }
+
+            // A fatal leaves no response object, so this is always an unexpected failure with
+            // no message shown to the visitor; the exact PHP cause becomes the log headline.
+            $context = [
+                'type'       => '',
+                'unexpected' => true,
+                'page_id'    => $post_id,
+                'page_url'   => is_string($url) ? $url : '',
+                'user'       => is_user_logged_in() ? ('Logged in (#' . get_current_user_id() . ')') : 'Guest',
+                'fields'     => $this->collect_submitted_field_keys($form_data),
+                'has_files'  => !empty($file_data),
+                'debug'      => $this->format_php_error($fatal),
+            ];
+
+            do_action('metform_submission_failed', intval($id), [], $context);
+        });
+
+        $response = Action::instance()->submit($id, $form_data, $file_data, $post_id);
+        $completed = true;
+
+        // Notify the logger on every rejected submission (status 0), passing along the
+        // failure_type that Action::submit() tagged on the response at its source. That tag
+        // is what the Pro logger uses to decide what to keep: it stores only UNEXPECTED
+        // failures a developer/admin needs to see — the generic "Something went wrong.",
+        // nonce → "Unauthorized submission.", integration/config errors, or a PHP error —
+        // and skips the handled ones (entry limit, scheduling, validation, captcha, login
+        // required, file upload, duplicate, form access) that already showed the visitor a
+        // clear, self-explanatory message.
+        if (is_object($response) && empty($response->status)) {
+            $messages = (isset($response->error) && is_array($response->error)) ? $response->error : [];
+
+            // Drop the generic fallback so it never pollutes a typed headline.
+            $specific = $this->filter_specific_messages($messages);
+
+            // "Unexpected" = no source tag AND no specific message reached the visitor, i.e.
+            // a vague/generic failure — so the log surfaces the exact technical cause instead.
+            $unexpected = empty($response->failure_type) && empty($specific);
+
+            // Diagnostic context to help debug (no field values / no IP).
+            $context = [
+                'type'       => (isset($response->failure_type) && is_string($response->failure_type)) ? sanitize_key($response->failure_type) : '',
+                'unexpected' => $unexpected,
+                'page_id'    => $post_id,
+                'page_url'   => is_string($url) ? $url : '',
+                'user'       => is_user_logged_in() ? ('Logged in (#' . get_current_user_id() . ')') : 'Guest',
+                'fields'     => $this->collect_submitted_field_keys($form_data),
+                'has_files'  => !empty($file_data),
+                'debug'      => $this->capture_php_error($error_before),
+            ];
+
+            do_action('metform_submission_failed', intval($id), $specific, $context);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Return a description of a PHP error the submission triggered, if any, as
+     * "message in path:line" (path relative to the WordPress root). Empty when no new
+     * error occurred (the failure was a logic path rather than a PHP error).
+     *
+     * @param array|null $error_before The last PHP error captured before submit ran.
+     * @return string
+     */
+    private function capture_php_error($error_before)
+    {
+        $error = error_get_last();
+
+        if (empty($error) || !isset($error['message'])) {
+            return '';
+        }
+
+        // Ignore a stale error that was already present before the submission ran.
+        if (
+            is_array($error_before)
+            && isset($error_before['message'], $error_before['file'], $error_before['line'])
+            && $error_before['message'] === $error['message']
+            && $error_before['file'] === $error['file']
+            && $error_before['line'] === $error['line']
+        ) {
+            return '';
+        }
+
+        return $this->format_php_error($error);
+    }
+
+    /**
+     * Format a PHP error array (from error_get_last()) as "message in path:line", with the
+     * path made relative to the WordPress root. Returns '' for an empty/malformed error.
+     *
+     * @param array|null $error
+     * @return string
+     */
+    private function format_php_error($error)
+    {
+        if (empty($error) || !isset($error['message'])) {
+            return '';
+        }
+
+        // An uncaught-exception fatal carries its whole multi-line stack trace in the message;
+        // keep only the first line (the actual error) since file:line is appended separately.
+        $raw     = explode("\n", (string) $error['message'], 2)[0];
+        $message = sanitize_text_field($raw);
+        $file    = isset($error['file']) ? str_replace(ABSPATH, '', $error['file']) : '';
+        $line    = isset($error['line']) ? intval($error['line']) : 0;
+
+        return $file !== '' ? ($message . ' in ' . $file . ':' . $line) : $message;
+    }
+
+    /**
+     * Return only the specific, meaningful error messages — dropping empty entries and the
+     * generic "Something went wrong." fallback that is present on every rejected response.
+     *
+     * @param array $messages
+     * @return array
+     */
+    private function filter_specific_messages($messages)
+    {
+        $generic = trim(html_entity_decode(wp_strip_all_tags(esc_html__('Something went wrong.', 'metform')), ENT_QUOTES));
+
+        $specific = [];
+        foreach ((array) $messages as $message) {
+            $decoded = trim(html_entity_decode((string) $message, ENT_QUOTES));
+
+            if ($decoded === '' || $decoded === $generic) {
+                continue;
+            }
+
+            $specific[] = $message;
+        }
+
+        return $specific;
+    }
+
+    /**
+     * Collect submitted field names (keys only — never values) for failure diagnostics,
+     * excluding internal/technical keys.
+     *
+     * @param mixed $form_data
+     * @return array
+     */
+    private function collect_submitted_field_keys($form_data)
+    {
+        if (!is_array($form_data)) {
+            return [];
+        }
+
+        $ignore = ['hidden-fields', 'form_id', 'g-recaptcha-response', 'g-recaptcha-response-v3', 'mf-captcha-challenge', 'mf_captcha_challenge', '_wpnonce', 'action'];
+
+        $keys = [];
+        foreach (array_keys($form_data) as $key) {
+            if (in_array($key, $ignore, true)) {
+                continue;
+            }
+            $keys[] = sanitize_text_field($key);
+
+            // Keep the diagnostic list bounded.
+            if (count($keys) >= 40) {
+                break;
+            }
+        }
+
+        return $keys;
     }
     public function get_export()
     {

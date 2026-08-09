@@ -70,6 +70,7 @@ class Action
         $current_status = get_post_status ( $form_id );
 
         if( 'trash' == $current_status || ( !current_user_can( 'edit_posts') && 'draft' == $current_status)  ){
+            $this->response->failure_type = 'form_access';
             $this->response->error[0] = esc_html__('You are not permitted to access this form', 'metform');
             return $this->response;
         }
@@ -77,11 +78,13 @@ class Action
         $this->fields = $this->get_fields($form_id);
         if(isset($this->fields['mf-recaptcha']) && !isset($form_data['g-recaptcha-response']) && !isset($form_data['g-recaptcha-response-v3']))  {
             $this->response->status = 0;
+            $this->response->failure_type = 'security';
             $this->response->error[] = esc_html__('Unauthorized submission.', 'metform');
             return $this->response;
         }
         if(isset($this->fields['mf-simple-captcha']) && !isset($form_data['mf-captcha-challenge'])){
             $this->response->status = 0;
+            $this->response->failure_type = 'security';
             $this->response->error[] = esc_html__('Unauthorized submission.', 'metform');
             return $this->response;
         }
@@ -93,13 +96,15 @@ class Action
 
             if(isset($response['status']) && $response['status'] == 0){
                 $this->response->status = 0;
+                $this->response->failure_type = 'file_upload';
                 $this->response->error[0] = $response['error'] ?? esc_html__('File size exceeded.', 'metform');
                 return $this->response;
             }
-        
+
             // validate files
             if (count(File_Data_Validation::validate($this->fields, $file_data)) > 0) {
                 $this->response->status = 0;
+                $this->response->failure_type = 'file_upload';
                 $this->response->error[] = esc_html__('You are trying to upload wrong file!', 'metform');
                 return $this->response;
             }
@@ -129,6 +134,7 @@ class Action
                     : esc_html__('Form submission is now closed.', 'metform');
 
                 $this->response->status = 0;
+                $this->response->failure_type = 'scheduling';
                 $this->response->error  = [ $expired_message ];
                 $this->response->data['message'] = $expired_message;
 
@@ -145,6 +151,7 @@ class Action
            
             if($validated_data['status'] === 1){
                 $this->response->status = 0;
+                $this->response->failure_type = 'duplicate';
                 $this->response->error = [];
                 $this->response->error[0] = sprintf(esc_html__('%1$s %2$s already exist.', 'metform'), $validated_data['input_label'], $validated_data['duplicate_field']);
                 return $this->response;
@@ -160,6 +167,7 @@ class Action
         if (!$this->mf_is_woo_exists()) {
             if (!isset($form_data['form_nonce']) || !wp_verify_nonce($form_data['form_nonce'], 'form_nonce')) {
                 $this->response->status = 0;
+                $this->response->failure_type = 'security';
                 $this->response->error[] = esc_html__('Unauthorized submission.', 'metform');
                 return $this->response;
             }
@@ -170,6 +178,7 @@ class Action
         $validate = $this->validate_form_data($form_data);
         if ($validate == false) {
             $this->response->status = 0;
+            $this->response->failure_type = 'validation';
             $this->response->error =  [ esc_html__('Form validation failed', 'metform') ];
             return $this->response;
         }
@@ -178,6 +187,7 @@ class Action
         
         if (isset($filter_validate['is_valid']) && $filter_validate['is_valid'] == false) {
             $this->response->status = 0;
+            $this->response->failure_type = 'validation';
             $this->response->error =  [ $filter_validate['message'] ?? esc_html__('Form validation failed', 'metform') ];
             return $this->response;
         }
@@ -186,12 +196,14 @@ class Action
         if ((isset($form_data['g-recaptcha-response']) || isset($form_data['g-recaptcha-response-v3'])) && (isset($this->fields['mf-recaptcha'])) && (isset($this->form_settings['mf_recaptcha_site_key'])) && $this->form_settings['mf_recaptcha_site_key'] != '') {
             if (isset($form_data['g-recaptcha-response']) && ($form_data['g-recaptcha-response'] == "")) {
                 $this->response->status = 0;
+                $this->response->failure_type = 'captcha';
                 $this->response->error[] = esc_html__('Please solve the recaptcha.', 'metform');
                 return $this->response;
             }
 
             if ((isset($this->form_settings['mf_recaptcha_version']) && ($this->form_settings['mf_recaptcha_version'] == 'recaptcha-v3')) && (!isset($form_data['g-recaptcha-response-v3']) || ($form_data['g-recaptcha-response-v3'] == ""))) {
                 $this->response->status = 0;
+                $this->response->failure_type = 'captcha';
                 $this->response->error[] = esc_html__('Google captcha token not found.', 'metform');
                 return $this->response;
             }
@@ -207,6 +219,7 @@ class Action
             //$this->response->data['responseKeys'] = $response['responseKeys'];
             $this->response->status = $response['status'];
             if ($response['status'] == 0) {
+                $this->response->failure_type = 'captcha';
                 $this->response->error[] = (isset($response['error']) ? $response['error'] : '');
                 return $this->response;
             }
@@ -216,6 +229,7 @@ class Action
         if (isset($form_data['mf-captcha-challenge'])) {
             if (($form_data['mf-captcha-challenge']) == "") {
                 $this->response->status = 0;
+                $this->response->failure_type = 'captcha';
                 $this->response->error = [ esc_html__('Please solve the recaptcha.', 'metform') ];
                 return $this->response;
             }
@@ -240,6 +254,7 @@ class Action
 
             if (!isset($_SESSION['mf_captcha_text'])) {
                 $this->response->status = 0;
+                $this->response->failure_type = 'captcha';
                 $this->response->error = [ esc_html__('Time out of this captcha. Please reload or choose another one.', 'metform') ];
                 return $this->response;
             }
@@ -249,6 +264,7 @@ class Action
                 //$this->response->data['captcha'] = esc_html__('Captcha is verified.', 'metform');
             } else {
                 $this->response->status = 0;
+                $this->response->failure_type = 'captcha';
                 $this->response->error = [ esc_html__('Enter correct captcha.', 'metform') ];
                 return $this->response;
             }
@@ -259,6 +275,7 @@ class Action
 
         if (($required_loggin == 1) && (!is_user_logged_in())) {
             $this->response->status = 0;
+            $this->response->failure_type = 'login_required';
             $this->response->error = [ esc_html__('You must be logged in to submit form.', 'metform') ];
             return $this->response;
         }
@@ -269,6 +286,7 @@ class Action
 
             if (($entry_limit == 1) && ($this->get_entry_count() >= $this->form_settings['limit_total_entries'])) {
                 $this->response->status = 0;
+                $this->response->failure_type = 'entry_limit';
                 $this->response->error = [ esc_html__('Form submission limit exceeded.', 'metform') ];
 
                 return $this->response;
@@ -327,7 +345,7 @@ class Action
                 }
 
                 $this->response->status = isset($response['status']) ? $response['status'] : 0;
-	            if($this->response->status == 0) $this->response->error = [ esc_html__('Problem with your mailchimp integration.', 'metform') ];
+	            if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your mailchimp integration.', 'metform') ]; }
 
             }
         }
@@ -343,7 +361,7 @@ class Action
 
                 $this->response->status = isset($response['status']) ? $response['status'] : 0;
                 $this->response->active_campaign = isset($response['msgs']) ? $response['msgs'] : [];
-	            if($this->response->status == 0) $this->response->error = [ esc_html__('Problem with your activeCampaign integration.', 'metform') ];
+	            if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your activeCampaign integration.', 'metform') ]; }
             }
         }
 
@@ -358,7 +376,7 @@ class Action
                 $response = $get_response->call_api($form_data, ['auth' => $this->form_settings, 'email_name' => $this->email_name]);
 
                 $this->response->status = isset($response['status']) ? $response['status'] : 0;
-	            if($this->response->status == 0) $this->response->error = [ esc_html__('Problem with your GetResponse integration.', 'metform') ];
+	            if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your GetResponse integration.', 'metform') ]; }
             }
         }
 
@@ -379,7 +397,7 @@ class Action
                 }
 
                 $this->response->status = isset($response['status']) ? $response['status'] : 0;
-	            if($this->response->status == 0) $this->response->error = [ esc_html__('Problem with your zapier integration.', 'metform') ];
+	            if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your zapier integration.', 'metform') ]; }
             }
         }
 
@@ -402,7 +420,7 @@ class Action
                 }
 
                 $this->response->status = isset($response['status']) ? $response['status'] : 0;
-	            if($this->response->status == 0) $this->response->error = [ esc_html__('Problem with your slack integration.', 'metform') ];
+	            if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your slack integration.', 'metform') ]; }
             }
         }
 
@@ -418,7 +436,7 @@ class Action
                 $response = $cKit->call_api($form_data, ['mail_settings' => $this->form_settings, 'email_name' => $this->email_name]);
 
                 $this->response->status = isset($response['status']) ? $response['status'] : 0;
-	            if($this->response->status == 0) $this->response->error = [ esc_html__('Problem with convertKit.', 'metform') ];
+	            if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with convertKit.', 'metform') ]; }
             }
         }
 
@@ -434,7 +452,7 @@ class Action
                 $response = $aweber->call_api($form_data, ['mail_settings' => $this->form_settings, 'email_name' => $this->email_name]);
 
                 $this->response->status = isset($response['status']) ? $response['status'] : 0;
-	            if($this->response->status == 0) $this->response->error = [ esc_html__('Problem with your Aweber integration.', 'metform') ];
+	            if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your Aweber integration.', 'metform') ]; }
             }
         }
 
@@ -448,7 +466,7 @@ class Action
                 $response = $mPoet->call_api($form_data, ['mail_settings' => $this->form_settings, 'email_name' => $this->email_name]);
 
                 $this->response->status = isset($response['status']) ? $response['status'] : 0;
-	            if($this->response->status == 0) $this->response->error = [ esc_html__('Problem with your Mail Poet integration.', 'metform') ];
+	            if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your Mail Poet integration.', 'metform') ]; }
             }
         }
 
@@ -473,6 +491,7 @@ class Action
 
                     $this->response->status = isset($ml_response['status']) ? $ml_response['status'] : 0;
                     if ($this->response->status == 0) {
+                        $this->response->failure_type = 'integration';
                         $this->response->error = [
                             esc_html__('Problem with your MailerLite integration.', 'metform')
                             . (!empty($ml_response['message']) ? ' ' . $ml_response['message'] : '')
@@ -519,6 +538,7 @@ class Action
             // Safety check: Ensure form settings exist
             if (empty($this->form_settings)) {
                 $this->response->status = 0;
+                $this->response->failure_type = 'config';
                 $this->response->error[0] = esc_html__('Form settings not found. Please check form configuration.', 'metform');
                 return $this->response;
             }
@@ -627,6 +647,7 @@ class Action
                 // submission instead of silently overwriting or creating anything.
                 if ($existing_entry_id && ! $is_valid_pending_entry) {
                     $this->response->status = 0;
+                    $this->response->failure_type = 'security';
                     $this->response->error[] = esc_html__('Unauthorized submission.', 'metform');
                     return $this->response;
                 }
@@ -752,7 +773,7 @@ class Action
             );
             $this->response->status = isset($response['status']) ? $response['status'] : 0;
 
-	        if($this->response->status == 0) $this->response->error = [ esc_html__('Problem with your RestApi integration.', 'metform') ];
+	        if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your RestApi integration.', 'metform') ]; }
         }
 
         // send confirmation email to user
@@ -961,6 +982,7 @@ class Action
 
                 $sheet = \MetForm_Pro\Core\Integrations\Google_Sheet\WF_Google_Sheet::instance()->insert($this->form_id, $this->title, $this->form_data, $this->file_upload_info, $this->get_fields($this->form_id), $sheetdata );
                 if($sheet === false) {
+                    $this->response->failure_type = 'integration';
                     $this->response->error[] = esc_html__('ssl certificate or google oauth credentials problem', 'metform');
                     $this->response->status = 0;
                     return $this->response;
@@ -991,6 +1013,7 @@ class Action
                     );
                     
                     if ($drive === false) {
+                        $this->response->failure_type = 'integration';
                         $this->response->error[] = esc_html__('Google Drive upload failed: SSL certificate or OAuth credentials problem', 'metform');
                         $this->response->status = 0;
                         return $this->response;
@@ -1192,13 +1215,13 @@ class Action
         if (!$user_mail) {
 		if(current_user_can( 'manage_options' )){
 			$this->response->status = 0;
-          	$this->response->error[] = esc_html__('Mail not found.', 'metform');
+          	$this->response->failure_type = 'email'; $this->response->error[] = esc_html__('Mail not found.', 'metform');
 		}
         } else {
 		$status = wp_mail($user_mail, $subject, $body, $headers);
 		if(current_user_can( 'manage_options' )){
 			if(empty($status)){
-				$this->response->error[] = esc_html__('Please setup your SMTP mail server.', 'metform');
+				$this->response->failure_type = 'email'; $this->response->error[] = esc_html__('Please setup your SMTP mail server.', 'metform');
 				$this->response->status = 0;
 			}
 		}
@@ -1247,7 +1270,7 @@ class Action
         if (!$mail) {
 		if(current_user_can( 'manage_options' )){
 			$this->response->status = 0;
-          	$this->response->error[] = esc_html__('Admin mail not found to send email.', 'metform');
+          	$this->response->failure_type = 'email'; $this->response->error[] = esc_html__('Admin mail not found to send email.', 'metform');
 		}
         } else {
 			$admin_email = preg_replace('/\s+/', '', $mail);
@@ -1257,7 +1280,7 @@ class Action
 			}
 			if(current_user_can( 'manage_options' )){
 				if(empty($status)){
-					$this->response->error[] = esc_html__('Please setup your SMTP mail server.', 'metform');
+					$this->response->failure_type = 'email'; $this->response->error[] = esc_html__('Please setup your SMTP mail server.', 'metform');
 					$this->response->status = 0;
 				}
 			}

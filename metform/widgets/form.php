@@ -138,10 +138,22 @@ class Widget_Met_Form extends Widget_Base {
 			}else{
 				$form_id = $ffarg[0]->ID;
 			}
-		}else{			
+		}else{
 
 			$form_id = explode('***', $settings['mf_form_id']);
 			$form_id = $form_id[0];
+
+			// Security: mf_form_id must resolve to a numeric ID of an existing
+			// metform-form post. Elementor widget settings can be forged
+			// (e.g. via save_builder), so any other value - including raw
+			// non-numeric strings - must never be forwarded to the render
+			// pipeline. Form_Picker_Utils::parse() renders the standard
+			// "No content is added yet." message for an empty key.
+			if ( ! is_numeric( $form_id ) || 'metform-form' !== get_post_type( absint( $form_id ) ) ) {
+				$form_id = '';
+			} else {
+				$form_id = absint( $form_id );
+			}
 		}
 
 		$response_type = !empty($settings['mf_response_type']) ? $settings['mf_response_type'] : 'alert';

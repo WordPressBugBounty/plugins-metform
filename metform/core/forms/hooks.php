@@ -15,7 +15,15 @@ Class Hooks{
   public function get_form_content_on_preview($content) {
 
     if (isset($GLOBALS['post']) && $GLOBALS['post']->post_type == 'metform-form') {
-      return \MetForm\Utils\Util::render_form_content($content, get_the_ID());
+      // $is_trusted_source = true: this echoes metform-form's own raw
+      // post_content, which requires Editor+ capability to populate
+      // (capability_type 'page') - not the Contributor-reachable Elementor
+      // widget setting that render_form_content() otherwise guards against.
+      // (Re-deriving this via render_elementor_content(get_the_ID()) instead
+      // would re-enter Elementor's builder-content-for-display for the same
+      // post that's already being rendered; Elementor's own recursion guard
+      // then returns empty content, breaking every form's own preview page.)
+      return \MetForm\Utils\Util::render_form_content($content, get_the_ID(), true);
     }
     return $content;
   }
@@ -37,6 +45,21 @@ Class Hooks{
     $columns['mf_date']      = esc_html( $date_column );
     $columns['mf_actions']       = esc_html__( 'Actions', 'metform' );
     return $columns;
+  }
+
+  /**
+   * Output the standalone "submission failure log" action icon for a form row.
+   *
+   * Dynamic attributes are escaped with esc_attr(); the SVG is static markup.
+   *
+   * @param int $post_id Form ID.
+   */
+  private function render_error_log_icon( $post_id ) {
+    ?>
+    <a data-metform-form-id="<?php echo esc_attr( $post_id ); ?>" class="mf-individual-error-log mf-view-details-btn" href="#" title="<?php echo esc_attr__( 'View submission failure log', 'metform' ); ?>" data-mf-tooltip="<?php echo esc_attr__( 'Submission failure log', 'metform' ); ?>">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.333 1.333H4A1.333 1.333 0 0 0 2.667 2.667v10.666A1.333 1.333 0 0 0 4 14.667h8a1.333 1.333 0 0 0 1.333-1.334V5.333L9.333 1.333Z" stroke="#D63638" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.333 1.333v4h4" stroke="#D63638" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 7.667V10" stroke="#D63638" stroke-width="1.2" stroke-linecap="round"/><path d="M8 11.833h.007" stroke="#D63638" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </a>
+    <?php
   }
 
   public function render_column( $column, $post_id ) {
@@ -72,8 +95,16 @@ Class Hooks{
           $mf_pro_active = class_exists('\MetForm_Pro\Plugin') && (\MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier());
           // On mid/top tier Pro, hide the analytics action entirely when the Pro analytics implementation (MetForm_Pro\Core\Analytics\Base) is missing.
           $mf_hide_analytics = $mf_pro_active && ! class_exists('\MetForm_Pro\Core\Analytics\Base');
+
+          // Standalone submission failure log action, shown when the analytics popup is NOT
+          // available (analytics disabled/hidden) but this form has failure logging enabled.
+          $mf_error_log_available = $mf_pro_active && class_exists('\MetForm_Pro\Core\Submission_Log\Base');
+          $mf_form_settings = $mf_error_log_available ? get_post_meta($post_id, 'metform_form__form_setting', true) : [];
+          $mf_error_log_enabled = $mf_error_log_available && is_array($mf_form_settings) && !empty($mf_form_settings['mf_enable_submission_error_log']);
+
           if($mf_hide_analytics) :
-            // Pro analytics implementation missing — render nothing.
+            // Pro analytics implementation missing — no analytics popup; show the log-only icon when enabled.
+            if($mf_error_log_enabled) : $this->render_error_log_icon($post_id); endif;
           elseif($mf_pro_active && !empty($settings['mf_enable_form_analytics']) ) : ?>
             <a data-metform-form-id="<?php echo esc_attr($post_id); ?>" class='mf-individual-analytics mf-view-details-btn' href="#" data-mf-tooltip="<?php echo esc_attr__('View Details', 'metform'); ?>"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 7.33333L5.33333 4L8.66667 7.33333L14 2" stroke="#049E61" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 10V14M6 8.66667V14M10 10.6667V14M14 6V14" stroke="#049E61" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           <?php elseif(!$mf_pro_active) : ?>
@@ -83,9 +114,10 @@ Class Hooks{
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 7.33333L5.33333 4L8.66667 7.33333L14 2" stroke="#2271B1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 10V14M6 8.66667V14M10 10.6667V14M14 6V14" stroke="#2271B1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
             </div>
-          <?php else : ?>
-            <?php // Pro active + mid/top tier but analytics disabled in settings — render nothing. ?>
-          <?php endif; ?>
+          <?php else :
+            // Pro active + mid/top tier but analytics disabled in settings — show the log-only icon when enabled.
+            if($mf_error_log_enabled) : $this->render_error_log_icon($post_id); endif;
+          endif; ?>
         </div>
         <?php
         break;
