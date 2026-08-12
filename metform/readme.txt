@@ -1,14 +1,14 @@
-=== MetForm - Contact Form, Survey, Quiz, & Custom Form Builder for Elementor ===
+=== MetForm - Contact Form, Survey, Quiz, Conditional Forms, Form Templates & Custom Form Builder for Elementor ===
 Contributors: Roxnor, Ataurr, aion11
 Tags: form builder, Elementor form, contact form builder, Multi step form, custom form
 Requires at least: 6.0
 Tested up to: 7.0
-Stable tag: 4.1.9
+Stable tag: 4.2.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
-Most popular Elementor forms builder to create WordPress forms like contact forms, booking forms, feedback form, survey forms, application forms & other custom forms.
+Elementor forms builder to create WordPress forms like contact form, booking form, feedback form, survey form, application form & 40+ form templates. 
 
 == Description ==
 
@@ -26,17 +26,17 @@ MetForm extends WordPress's capability to help you create a wide range of custom
 
 > [Explore the Features](https://wpmet.com/plugin/metform/features/?utm_source=org&utm_medium=readme) |  [Need Support?](http://wpmet.com/support-help/)| [Check Documentation](https://wpmet.com/doc/metform/?utm_source=org&utm_medium=readme) | [Video Tutorials](https://www.youtube.com/watch?v=zg1QIouKO_Q&list=PL3t2OjZ6gY8NoB_48DwWKUDRtBEuBOxSc&ab_channel=Wpmet)  | [Check Roadmap and Request a Feature](https://wpmet.com/plugin/metform/roadmaps#ideas) | [ Buy Pro ](https://products.wpmet.com/metform/pricing/?utm_source=org&utm_medium=readme)
 
-## WordPress Contact Form Builder with Highest Flexibility
+## WordPress Contact Form Builder with Calculation Form & Conditional Form Support
 
 This WordPress form plugin is built with Elementor, where each field is an Elementor widget you can arrange using drag and drop facility. You can also add images or videos below your form to engage users. Our free contact form builder offers various field input styles to match your brand.
 
 https://www.youtube.com/watch?v=aDlbP9m_mf8
 
-A standout feature of MetFom is the option to create custom field groups and reuse them in any form with one click. The lite version is enough to build forms like referral forms, testimonial forms, and client feedback forms.
+A standout feature of MetForm is the option to create custom field groups and reuse them in any contact form with one click. The free version includes form templates for feedback forms, booking forms, and calculation forms.
 
 You’ll also get demos for multi-step, conditional, feedback, event, job application, booking, custom social signup, and product registration forms, making it ideal for beginners.
 
-## Pre-Built Form Templates
+## 44+ Form Templates – Contact Form Templates, Booking & Calculation Form Templates
 
 MetForm provides [a comprehensive library of pre-built templates designed](https://wpmet.com/plugin/metform/templates/?utm_source=org&utm_medium=readme) to help you deploy functional forms quickly without having to build them entirely from scratch. The collection covers a wide variety of common use cases, ranging from simple contact and newsletter signup layouts to more complex event registrations, job applications, and multi-step booking systems.
 
@@ -62,7 +62,7 @@ Your online form submission data can be saved in admin. So, it will send data to
 
 ## Build Smart Conditional Form
 
-Conditional Logic is a premium MetForm feature that helps you build smarter, more dynamic forms. It allows you to show or hide specific fields based on what the user selects or inputs. This means certain fields will only appear after the user takes a specific action or chooses a particular option, making your forms cleaner and more personalized.
+MetForm's conditional form builder is a premium feature for creating smart, dynamic forms. Show or hide fields based on what the user selects or inputs — certain fields only appear after specific actions, making your conditional form cleaner and more personalized. Choose from 6 ready-made conditional form templates to start fast.
 
 ## Create Multi-step Form
 
@@ -166,7 +166,7 @@ https://youtu.be/K7YJmNn9nIY?si=vY3lBCRm8NkfLH60
 
 - **Like-Dislike  Input Field:** Allow users to react using like and dislike fields
 
-## MetForm Form Builder Also Includes
+## MetForm Contact Form Builder Also Includes
 
 - **Multi-Step Form:** Divide your large form into multiple sections to make it more user-friendly for customers to increase the completion rate.
 
@@ -237,7 +237,7 @@ Learn [How to Install and Activate MetForm](https://www.youtube.com/watch?v=Ft1E
 
 ### 😍 BACKED BY A TRUSTED TEAM
 
-Metform is brought to you by **Wpmet, a name trusted by 10,00,000+ satisfied users worldwide**.
+MetForm is a contact form builder by Wpmet, trusted by 3,000,000+ WordPress users worldwide.
 
 ### » SOCIAL MEDIA SUPPORT
 
@@ -274,6 +274,9 @@ If you like using the MetForm form builder, then consider checking out our other
 **Check out** [Tutorials, Tips & Tricks](https://wpmet.com/blog)! 👌
 
 == Changelog ==
+Version: 4.2.0 // 2026-08-12
+Improved: Admin dashboard UI/UX.
+
 Version: 4.1.9 // 2026-08-09
 Fixed: Corrected the formatting of file validation strings to ensure they are properly translatable.
 Fixed: Text area field font size not applying on the frontend.
