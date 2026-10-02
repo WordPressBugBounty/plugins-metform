@@ -526,7 +526,12 @@ class Util{
 			if ( ! $post || 'metform-form' !== $post->post_type ) {
 				return '';
 			}
-			if ( ! current_user_can( 'read_post', $post->ID ) ) {
+			// Published, non-password-protected forms are public by design (the
+			// CPT is public/publicly_queryable) and must render for logged-out
+			// visitors, who have no 'read' capability. Anything else (draft,
+			// pending, private, password-protected) still needs read_post.
+			$is_public_form = 'publish' === $post->post_status && '' === $post->post_password;
+			if ( ! $is_public_form && ! current_user_can( 'read_post', $post->ID ) ) {
 				return '';
 			}
 		}
