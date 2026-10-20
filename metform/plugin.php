@@ -4,6 +4,7 @@ namespace MetForm;
 
 use MetForm\Base\Assets_Enqueue;
 use MetForm\Base\Assets_Register;
+use MetForm\Core\Compatibility\Init as Compatibility;
 use MetForm\Core\Integrations\Onboard\Attr;
 use MetForm\Core\Integrations\Emailkit_Builder;
 use MetForm\Core\Integrations\Onboard\Onboard;
@@ -20,6 +21,7 @@ final class Plugin {
     public function __construct()
     {
         Autoloader::run();
+	   Compatibility::instance()->init();
 	   add_action( 'wp_head', array( $this, 'add_meta_for_search_excluded' ) );
        add_action( 'init', array ($this, 'metform_permalink_setup'));
        add_action("metform/pro_awareness/before_grid_contents", ['\MetForm\Utils\Util', 'banner_consent']);
@@ -115,20 +117,18 @@ final class Plugin {
          *  @set_first_appear_day methods
          * ----------------------------------------
          */
-        if( ! isset($_GET['redirect_from']) || ! $_GET['redirect_from'] == 'mf_promo_banner'){
+        // Skip onboarding when another plugin sends the user straight to form creation.
+        $is_create_form_redirect = isset( $_GET['mf_action'], $_GET['_wpnonce'] )
+            && 'create_form' === sanitize_key( wp_unslash( $_GET['mf_action'] ) )
+            && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'metform_create_form' );
+
+        if( ! $is_create_form_redirect ){
 
             Onboard::instance()->init();
 
             if(isset($_GET['met-onboard-steps']) && isset($_GET['met-onboard-steps-nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['met-onboard-steps-nonce'])),'met-onboard-steps-action')) {
                 Attr::instance();
             }
-        }
-
-        if( get_option('rewrite_rules') == '' && isset($_GET['redirect_from']) && $_GET['redirect_from'] == 'mf_promo_banner'){
-
-            add_action('init', function() {
-                Utils\Util::change_permalink();
-            });
         }
 
         //  Load Text Domain Just In Time error Notice issue fix
@@ -179,16 +179,16 @@ final class Plugin {
             new \Wpmet\Libs\Emailkit();
         }
 
-        // Check if Elementor installed and activated.
-        if (!did_action('elementor/loaded')) {
-            $this->missing_elementor();
-            return;
-        }
-        // Check for required Elementor version.
-        if (!version_compare(ELEMENTOR_VERSION, '3.0.1', '>=')) {
+        // Elementor is optional now that MetForm has its own standalone builder.
+        // Keep the shared/admin features running when Elementor is unavailable,
+        // and register only the Elementor integration when it is compatible.
+        $elementor_is_loaded = did_action('elementor/loaded');
+        $elementor_is_compatible = $elementor_is_loaded
+            && defined('ELEMENTOR_VERSION')
+            && version_compare(ELEMENTOR_VERSION, '3.0.1', '>=');
+
+        if ($elementor_is_loaded && !$elementor_is_compatible) {
             $this->failed_elementor_version();
-            // add_action('admin_notices', array($this, 'failed_elementor_version'));
-            return;
         }
 
         if (current_user_can('manage_options')) {
@@ -197,9 +197,6 @@ final class Plugin {
 
         // Initialize deactivation feedback modal
         new Utils\Feedback\Plugin_Unsubscribe();
-
-        add_action('elementor/editor/before_enqueue_scripts', [$this, 'edit_view_scripts']);
-	    add_action( 'elementor/editor/after_enqueue_scripts', [$this, 'metform_editor_script'] );
 
         add_action('init', [$this, 'metform_load_textdomain_on_init'], 9);
 
@@ -211,16 +208,17 @@ final class Plugin {
             add_action( 'admin_enqueue_scripts', [$this, 'cleanoThemeConflict'], 100 );
         }
 
-        add_action('elementor/frontend/before_enqueue_scripts', [$this, 'elementor_js']);
-
-        add_action('elementor/editor/before_enqueue_styles', [$this, 'elementor_css']);
-
         add_action('admin_footer', [$this, 'footer_data']);
 
+        if ($elementor_is_compatible) {
+            add_action('elementor/editor/before_enqueue_scripts', [$this, 'edit_view_scripts']);
+	        add_action('elementor/editor/after_enqueue_scripts', [$this, 'metform_editor_script']);
+            add_action('elementor/frontend/before_enqueue_scripts', [$this, 'elementor_js']);
+            add_action('elementor/editor/before_enqueue_styles', [$this, 'elementor_css']);
 
-        Controls\Base::instance()->init();
-
-        Widgets\Manifest::instance()->init();
+            Controls\Base::instance()->init();
+            Widgets\Manifest::instance()->init();
+        }
 
         // settings page
         Core\Admin\Base::instance()->init();
@@ -436,6 +434,7 @@ final class Plugin {
 
         Core\Forms\Base::instance()->init();
         Core\Analytics\Base::instance()->init();
+        Core\FormBuilder\Init::instance()->init();
         $this->entries = Core\Entries\Base::instance();
 
      }
@@ -666,34 +665,6 @@ final class Plugin {
             $this->plugin_url() . 'build/assets/images/admin/icon-menu.png',
             5
         );
-    }
-
-    public function missing_elementor()
-    {
-        //phpcs:disable WordPress.Security.NonceVerification -- Can't set nonce. Cause it's fire on 'plugins_loaded' hook
-        if (isset($_GET['activate'])) {
-            unset($_GET['activate']);
-        }
-        //phpcs:enable
-        if (file_exists(WP_PLUGIN_DIR . '/elementor/elementor.php')) {
-            $btn['text'] = esc_html__('Activate Elementor', 'metform');
-            $btn['id'] = 'unsupported-elementor-version';
-            $btn['class'] = 'button-primary';
-            $btn['url'] = wp_nonce_url('plugins.php?action=activate&plugin=elementor/elementor.php&plugin_status=all&paged=1', 'activate-plugin_elementor/elementor.php');
-        } else {
-            $btn['id'] = 'unsupported-elementor-version';
-            $btn['class'] = 'button-primary';
-            $btn['text'] = esc_html__('Install Elementor', 'metform');
-            $btn['url'] = wp_nonce_url(self_admin_url('update.php?action=install-plugin&plugin=elementor'), 'install-plugin_elementor');
-        }
-        // translators: MetForm plugin version requirement. %s is the required Elementor version.
-        $message = sprintf(esc_html__('MetForm requires Elementor version %1$s+, which is currently NOT RUNNING.', 'metform'), '2.6.0');
-
-        \Oxaim\Libs\Notice::instance('metform', 'unsupported-elementor-version')
-            ->set_dismiss('global', (3600 * 24 * 15))
-            ->set_message($message)
-            ->set_button($btn)
-            ->call();
     }
 
     public function failed_elementor_version()

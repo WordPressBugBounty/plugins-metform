@@ -1,5 +1,8 @@
 <?php
 namespace Elementor;
+
+use MetForm\Utils\Util;
+
 defined( 'ABSPATH' ) || exit;
 
 Class MetForm_Input_Switch extends Widget_Base{
@@ -599,7 +602,7 @@ Class MetForm_Input_Switch extends Widget_Base{
 		<div class="mf-input-wrapper">
 			<?php if ( 'yes' == $mf_input_label_status ): ?>
 				<label class="mf-input-label" for="mf-input-switch-<?php echo esc_attr( $this->get_id() ); ?>">
-					<?php echo esc_html(\MetForm\Utils\Util::react_entity_support($mf_input_label, $render_on_editor )); ?>
+					<?php echo Util::esc_mflt_react_entity($mf_input_label, $render_on_editor ); ?>
 					<span class="mf-input-required-indicator"><?php echo esc_html( ($mf_input_required === 'yes') ? '*' : '' );?></span>
 				</label>
 			<?php endif; ?>
@@ -607,7 +610,7 @@ Class MetForm_Input_Switch extends Widget_Base{
 			<span class="mf-input-switch-control mf-input-switch">
 				<input type="checkbox"
 					name="<?php echo esc_attr($mf_input_name); ?>"
-					value="<?php echo esc_attr(trim(\MetForm\Utils\Util::react_entity_support($switch_text_disable, $render_on_editor ))); ?>"
+					value="<?php echo trim(Util::esc_mflt_react_entity($switch_text_disable, $render_on_editor, 'attr' )); ?>"
 					class="mf-input mf-input-control mf-input-switch-box <?php echo esc_attr($class); ?>" id="mf-input-switch-<?php echo esc_attr($this->get_id()); ?>"
 					<?php if ( !$is_edit_mode ): ?>
 						onInput=${ parent.handleSwitch }
@@ -616,8 +619,8 @@ Class MetForm_Input_Switch extends Widget_Base{
 					<?php endif; ?>
 					/>
 				<label
-					data-enable="<?php echo esc_attr(trim(\MetForm\Utils\Util::react_entity_support($switch_text_enable, $render_on_editor ))); ?>"
-					data-disable="<?php echo esc_attr(trim(\MetForm\Utils\Util::react_entity_support($switch_text_disable, $render_on_editor ))); ?>"
+					data-enable="<?php echo trim(Util::esc_mflt_react_entity($switch_text_enable, $render_on_editor, 'attr' )); ?>"
+					data-disable="<?php echo trim(Util::esc_mflt_react_entity($switch_text_disable, $render_on_editor, 'attr' )); ?>"
 					class="mf-input-control-label" for="mf-input-switch-<?php echo esc_attr($this->get_id()); ?>"></label>
 			</span>
 
@@ -628,7 +631,7 @@ Class MetForm_Input_Switch extends Widget_Base{
 					as=${html`<span className="mf-error-message"></span>`}
 					/>
 			<?php endif; ?>
-			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', esc_html( \MetForm\Utils\Util::react_entity_support(trim($mf_input_help_text), $render_on_editor))) : ''); ?>
+			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', Util::esc_mflt_react_entity(trim($mf_input_help_text), $render_on_editor)) : ''); ?>
 		</div>
 
 		<?php

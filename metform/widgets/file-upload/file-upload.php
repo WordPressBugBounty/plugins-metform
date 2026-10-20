@@ -1,5 +1,8 @@
 <?php
 namespace Elementor;
+
+use MetForm\Utils\Util;
+
 defined( 'ABSPATH' ) || exit;
 
 Class MetForm_Input_File_Upload extends Widget_base{
@@ -513,12 +516,12 @@ Class MetForm_Input_File_Upload extends Widget_base{
 		];
 		?>
 		
-		<?php \MetForm\Utils\Util::metform_content_renderer($inputWrapStart); ?>
+		<?php Util::metform_content_renderer($inputWrapStart); ?>
 
 		<div className="mf-input-wrapper">
 			<?php if ( 'yes' == $mf_input_label_status ): ?>
 				<label className="mf-input-label" htmlFor="mf-input-file-upload-<?php echo esc_attr( $this->get_id() ); ?>">
-					<?php echo esc_html(\MetForm\Utils\Util::react_entity_support($mf_input_label, $render_on_editor )); ?>
+					<?php echo Util::esc_mflt_react_entity($mf_input_label, $render_on_editor ); ?>
 					<span className="mf-input-required-indicator"><?php echo esc_html( ($mf_input_required === 'yes') ? '*' : '' );?></span>
 				</label>
 			<?php endif; ?>
@@ -537,7 +540,7 @@ Class MetForm_Input_File_Upload extends Widget_base{
 					/>
 				<label htmlFor="mf-input-file-upload-<?php echo esc_attr($this->get_id()); ?>" className="mf-input-file-upload-label metform-btn">
 					<?php 
-						echo wp_kses('<span>'. \MetForm\Utils\Util::react_entity_support( esc_html($mf_input_choose_file), $render_on_editor ) .'</span>', \MetForm\Utils\Util::get_kses_array());
+						echo wp_kses('<span>'. Util::esc_mflt_react_entity( $mf_input_choose_file, $render_on_editor ) .'</span>', Util::get_kses_array());
 
 						Icons_Manager::render_icon( $settings['mf_input_file_upload_icon'], [ 'aria-hidden' => 'true' ] );
 					?>
@@ -557,7 +560,7 @@ Class MetForm_Input_File_Upload extends Widget_base{
 								</span>
 							</span>
 						`)
-						: html`<span>${parent.getFileLabel('<?php echo esc_attr($mf_input_name); ?>', '<?php echo esc_html($mf_input_no_file); ?>')}</span>`
+						: html`<span>${parent.getFileLabel('<?php echo esc_attr($mf_input_name); ?>', '<?php echo esc_html(Util::esc_mflt_js($mf_input_no_file)); ?>')}</span>`
 					}
 				</div>
 				
@@ -571,10 +574,10 @@ Class MetForm_Input_File_Upload extends Widget_base{
 					/>
 			<?php endif; ?>
 
-			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span className="mf-input-help"> %s </span>', esc_html( \MetForm\Utils\Util::react_entity_support(trim($mf_input_help_text), $render_on_editor))) : ''); ?>
+			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span className="mf-input-help"> %s </span>', Util::esc_mflt_react_entity(trim($mf_input_help_text), $render_on_editor)) : ''); ?>
 		</div>
 
-		<?php \MetForm\Utils\Util::metform_content_renderer($inputWrapEnd); ?>
+		<?php Util::metform_content_renderer($inputWrapEnd); ?>
 
 		<?php
     }

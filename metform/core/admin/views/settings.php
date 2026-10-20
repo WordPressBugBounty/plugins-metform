@@ -973,6 +973,14 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 																</div>
 
 																<div class="mf-setting-input-group">
+																	<label class="mf-setting-label mf-setting-input-heading"><?php esc_html_e('Live webhook signing secret (Optional):', 'metform'); ?></label>
+																	<input type="password" name="mf_stripe_live_webhook_secret" value="<?php echo esc_attr(isset($settings['mf_stripe_live_webhook_secret']) ? $settings['mf_stripe_live_webhook_secret'] : ''); ?>" class="mf-setting-input attr-form-control" autocomplete="new-password">
+																	<p class="description">
+																		<?php esc_html_e('Optional. Existing Stripe payments work without this value. Add the live signing secret only to enable verified asynchronous webhook updates.', 'metform'); ?>
+																	</p>
+																</div>
+
+																<div class="mf-setting-input-group">
 																	<label class="mf-setting-label attr-input-label mf-setting-input-heading">
 																		<?php esc_html_e('Enable sandbox mode:', 'metform'); ?>
 																		<input type="checkbox" value="1" name="mf_stripe_sandbox" <?php echo esc_attr((isset($settings['mf_stripe_sandbox'])) ? 'Checked' : ''); ?> class="mf-admin-control-input input-stripe_sandbox">
@@ -988,6 +996,13 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 																		<input type="text" name="mf_stripe_test_publishiable_key" value="<?php echo esc_attr((isset($settings['mf_stripe_test_publishiable_key'])) ? $settings['mf_stripe_test_publishiable_key'] : ''); ?>" class="mf-setting-input mf-stripe-test-publishiable-key attr-form-control" placeholder="<?php esc_html_e('Stripe test publishiable key', 'metform'); ?>">
 																		<p class="description">
 																			<?php esc_html_e('Enter here your test publishiable key. ', 'metform'); ?><a class="mf-setting-btn-link" target="__blank" href="<?php echo esc_url('https://stripe.com/'); ?>"><?php esc_html_e('Create from here', 'metform'); ?></a>
+																		</p>
+																	</div>
+																	<div class="mf-setting-input-group">
+																		<label class="mf-setting-label mf-setting-input-heading"><?php esc_html_e('Test webhook signing secret (Optional):', 'metform'); ?></label>
+																		<input type="password" name="mf_stripe_test_webhook_secret" value="<?php echo esc_attr(isset($settings['mf_stripe_test_webhook_secret']) ? $settings['mf_stripe_test_webhook_secret'] : ''); ?>" class="mf-setting-input attr-form-control" autocomplete="new-password">
+																		<p class="description">
+																			<?php esc_html_e('Optional. Test payments work without this value. Add the test signing secret only to enable verified asynchronous webhook updates in sandbox mode.', 'metform'); ?>
 																		</p>
 																	</div>
 																	<div class="mf-setting-input-group">

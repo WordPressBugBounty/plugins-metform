@@ -33,13 +33,13 @@ class Autoloader {
 
         // If the class being requested does not start with our prefix
         // we know it's not one in our project.
-        if ( 0 !== strpos( $class_name, __NAMESPACE__ ) ) {
+        if ( 0 !== stripos( $class_name, __NAMESPACE__ . '\\' ) ) {
             return;
         }
         
         $file_name = strtolower(
             preg_replace(
-                [ '/\b'.__NAMESPACE__.'\\\/', '/([a-z])([A-Z])/', '/_/', '/\\\/' ],
+                [ '/\b'.__NAMESPACE__.'\\\/i', '/([a-z])([A-Z])/', '/_/', '/\\\/' ],
                 [ '', '$1-$2', '-', DIRECTORY_SEPARATOR],
                 $class_name
             )

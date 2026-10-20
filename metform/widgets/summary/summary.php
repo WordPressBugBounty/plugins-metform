@@ -1,5 +1,8 @@
 <?php
 namespace Elementor;
+
+use MetForm\Utils\Util;
+
 defined( 'ABSPATH' ) || exit;
 
 Class MetForm_Input_Summary extends Widget_Base{
@@ -101,7 +104,7 @@ Class MetForm_Input_Summary extends Widget_Base{
 		<div class="mf-input-wrapper">
 			<?php if ( 'yes' == $mf_input_label_status ): ?>
 				<label class="mf-input-label mf-summary-wrapper-label" for="mf-input-text-<?php echo esc_attr( $this->get_id() ); ?>">
-					<?php echo esc_html(\MetForm\Utils\Util::react_entity_support($mf_input_label, $render_on_editor )); ?>
+					<?php echo Util::esc_mflt_react_entity($mf_input_label, $render_on_editor ); ?>
 				</label>
 			<?php endif; ?>
 			
@@ -116,7 +119,7 @@ Class MetForm_Input_Summary extends Widget_Base{
 					<?php esc_html_e( 'Summary will be shown on preview.', 'metform' ); ?>
 				</div>
 			<?php endif; ?>
-			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', esc_html( \MetForm\Utils\Util::react_entity_support(trim($mf_input_help_text), $render_on_editor))) : ''); ?>
+			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', Util::esc_mflt_react_entity(trim($mf_input_help_text), $render_on_editor)) : ''); ?>
 		</div>
 
 		<?php

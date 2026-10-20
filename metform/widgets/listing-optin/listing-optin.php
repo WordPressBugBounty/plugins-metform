@@ -1,5 +1,8 @@
 <?php
 namespace Elementor;
+
+use MetForm\Utils\Util;
+
 defined( 'ABSPATH' ) || exit;
 
 Class MetForm_Input_Listing_Optin extends Widget_Base{
@@ -338,7 +341,7 @@ Class MetForm_Input_Listing_Optin extends Widget_Base{
 		<div class="mf-input-wrapper">
 			<?php if ( 'yes' == $mf_input_label_status ): ?>
 				<label class="mf-input-label" for="mf-input-optin-<?php echo esc_attr( $this->get_id() ); ?>">
-					<?php echo esc_html(\MetForm\Utils\Util::react_entity_support( esc_html($mf_input_label), $render_on_editor )); ?>
+					<?php echo Util::esc_mflt_react_entity( $mf_input_label, $render_on_editor ); ?>
 					<span class="mf-input-required-indicator"><?php echo esc_html( ($mf_input_required === 'yes') ? '*' : '' );?></span>
 				</label>
 			<?php endif; ?>
@@ -348,7 +351,7 @@ Class MetForm_Input_Listing_Optin extends Widget_Base{
 					<label>
 						<?php
 							if ( $mf_listing_optin_option_text_position == 'before' ):
-								echo wp_kses(str_replace('`', '\`', $mf_listing_optin_option_text), \MetForm\Utils\Util::get_kses_array());
+								echo Util::esc_mflt_kses( $mf_listing_optin_option_text );
 							endif;
 						?>
 						<input
@@ -365,7 +368,7 @@ Class MetForm_Input_Listing_Optin extends Widget_Base{
 						<span>
 							<?php
 								if ( $mf_listing_optin_option_text_position == 'after' ):
-									echo wp_kses(str_replace('`', '\`', $mf_listing_optin_option_text), \MetForm\Utils\Util::get_kses_array());
+									echo Util::esc_mflt_kses( $mf_listing_optin_option_text );
 								endif;
 							?>
 						</span>
@@ -381,7 +384,7 @@ Class MetForm_Input_Listing_Optin extends Widget_Base{
 					/>
 			<?php endif; ?>
 			
-			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', esc_html( \MetForm\Utils\Util::react_entity_support(trim($mf_input_help_text), $render_on_editor))) : ''); ?>
+			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', Util::esc_mflt_react_entity(trim($mf_input_help_text), $render_on_editor)) : ''); ?>
 		</div>
 
 		<?php

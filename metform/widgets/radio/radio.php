@@ -1,5 +1,8 @@
 <?php
 namespace Elementor;
+
+use MetForm\Utils\Util;
+
 defined( 'ABSPATH' ) || exit;
 
 Class MetForm_Input_Radio extends Widget_Base{
@@ -495,7 +498,7 @@ Class MetForm_Input_Radio extends Widget_Base{
 		<div class="mf-input-wrapper">
 			<?php if ( 'yes' == $mf_input_label_status ): ?>
 				<label class="mf-input-label" for="mf-input-radio-<?php echo esc_attr( $this->get_id() ); ?>">
-					<?php echo esc_html(\MetForm\Utils\Util::react_entity_support($mf_input_label, $render_on_editor )); ?>
+					<?php echo Util::esc_mflt_react_entity($mf_input_label, $render_on_editor ); ?>
 					<span class="mf-input-required-indicator"><?php echo esc_html( ($mf_input_required === 'yes') ? '*' : '' );?></span>
 				</label>
 			<?php endif; ?>
@@ -509,15 +512,15 @@ Class MetForm_Input_Radio extends Widget_Base{
 						<label>
 							<?php
 								if ( $mf_input_option_text_position == 'before' ):
-									echo esc_html(\MetForm\Utils\Util::react_entity_support(  $option['mf_input_option_text'] , $render_on_editor ));
+									echo Util::esc_mflt_react_entity(  $option['mf_input_option_text'] , $render_on_editor );
 								endif;
 							?>
 							<input
 								type="radio"
 								class="mf-input mf-radio-input <?php echo esc_attr($class); ?>"
 								name="<?php echo esc_attr($mf_input_name); ?>"
-								value="<?php echo esc_attr($option['mf_input_option_value']); ?>"
-								data-checked="<?php echo esc_attr($option['mf_input_option_selected']); ?>"
+								value="<?php echo Util::esc_mflt_attr($option['mf_input_option_value']); ?>"
+								data-checked="<?php echo Util::esc_mflt_attr($option['mf_input_option_selected']); ?>"
 								<?php echo esc_attr( $option['mf_input_option_status'] === 'disabled' ? 'disabled' : '' ); ?>
 								<?php if ( !$is_edit_mode ): ?>
 									onChange=${ parent.handleChange }
@@ -536,7 +539,7 @@ Class MetForm_Input_Radio extends Widget_Base{
 							<span>
 								<?php
 									if ( $mf_input_option_text_position == 'after' ):
-										echo esc_html(\MetForm\Utils\Util::react_entity_support( $option['mf_input_option_text'] , $render_on_editor ));
+										echo Util::esc_mflt_react_entity( $option['mf_input_option_text'] , $render_on_editor );
 									endif;
 								?>
 							</span>
@@ -554,7 +557,7 @@ Class MetForm_Input_Radio extends Widget_Base{
 					as=${html`<span className="mf-error-message"></span>`}
 					/>
 			<?php endif; ?>
-			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', esc_html( \MetForm\Utils\Util::react_entity_support(trim($mf_input_help_text), $render_on_editor))) : ''); ?>
+			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', Util::esc_mflt_react_entity(trim($mf_input_help_text), $render_on_editor)) : ''); ?>
 			<input type="hidden" name="<?php echo esc_attr( $mf_input_name ); ?>" value="" />
 		</div>
 

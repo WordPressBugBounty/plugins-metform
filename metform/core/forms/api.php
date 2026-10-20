@@ -3,6 +3,7 @@
 namespace MetForm\Core\Forms;
 
 use MetForm\Core\Entries\Map_El;
+use MetForm\Core\FormBuilder\Document\Repository;
 
 defined('ABSPATH') || exit;
 
@@ -355,26 +356,11 @@ class Api extends \MetForm\Base\Api
         }
 
         return \MetForm\Core\Forms\Template_Library\Import::instance()->run([
-            'template_id' => $this->request['id'],
-            'title'       => isset($this->request['title']) ? $this->request['title'] : '',
-            'form_type'   => isset($this->request['form_type']) ? $this->request['form_type'] : '',
+            'template_id'  => $this->request['id'],
+            'title'        => isset($this->request['title']) ? $this->request['title'] : '',
+            'form_type'    => isset($this->request['form_type']) ? $this->request['form_type'] : '',
+            'builder_type' => isset($this->request['builder_type']) ? sanitize_text_field($this->request['builder_type']) : 'elementor',
         ]);
-    }
-
-    /**
-     * Create a form from a remote template.
-     *
-     * The template browser uses POST so the title travels in the request body.
-     * The GET handler is kept for backwards compatibility with existing
-     * integrations.
-     *
-     * @since 4.1.6
-     *
-     * @return int|\WP_Error Created form post ID, or an error on failure.
-     */
-    public function post_builder_form_id()
-    {
-        return $this->get_builder_form_id();
     }
 
     /**
@@ -395,9 +381,10 @@ class Api extends \MetForm\Base\Api
         }
 
         $form_id = \MetForm\Core\Forms\Template_Library\Import::instance()->run([
-            'template_id' => $this->request['id'],
-            'title'       => isset($this->request['title']) ? $this->request['title'] : '',
-            'form_type'   => isset($this->request['form_type']) ? $this->request['form_type'] : '',
+            'template_id'  => $this->request['id'],
+            'title'        => isset($this->request['title']) ? $this->request['title'] : '',
+            'form_type'    => isset($this->request['form_type']) ? $this->request['form_type'] : '',
+            'builder_type' => isset($this->request['builder_type']) ? sanitize_text_field($this->request['builder_type']) : 'elementor',
         ]);
 
         if (is_wp_error($form_id)) {
@@ -585,7 +572,15 @@ class Api extends \MetForm\Base\Api
 		}
 
         $form_id = $this->request['id'];
-        $input_widgets = \Metform\Widgets\Manifest::instance()->get_input_widgets();
+
+        // Standalone Form Builder document support lives in Document\Repository.
+        $builder_fields = Repository::get_fields($form_id);
+        if ($builder_fields !== null) {
+            return $builder_fields;
+        }
+
+        // Fallback to Legacy Elementor data
+        $input_widgets = \MetForm\Widgets\Manifest::instance()->get_input_widgets();
 
         $widget_input_data = get_post_meta($form_id, '_elementor_data', true);
         $widget_input_data = json_decode($widget_input_data);

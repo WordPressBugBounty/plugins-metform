@@ -1,5 +1,8 @@
 <?php
 namespace Elementor;
+
+use MetForm\Utils\Util;
+
 defined( 'ABSPATH' ) || exit;
 
 Class MetForm_Input_Recaptcha extends Widget_Base{
@@ -55,7 +58,7 @@ Class MetForm_Input_Recaptcha extends Widget_Base{
 			[
 				'label' => esc_html__( 'reCAPTCHA configure: ', 'metform' ),
 				'type' => Controls_Manager::RAW_HTML,
-				'raw' => \MetForm\Utils\Util::kses( 'Turn on recaptcha from form setting.<br>Then you have to must configure recaptcha site and secret key from MetForm -> Settings <a target="__blank" href="'.get_dashboard_url().'admin.php?page=metform-menu-settings#mf-general_options'.'">from here.</a><br><a target="__blank" href="https://wpmet.com/doc/recaptcha-integration/">See Documentation.</a>', 'metform-pro' ),
+				'raw' => Util::kses( 'Turn on recaptcha from form setting.<br>Then you have to must configure recaptcha site and secret key from MetForm -> Settings <a target="__blank" href="'.get_dashboard_url().'admin.php?page=metform-menu-settings#mf-general_options'.'">from here.</a><br><a target="__blank" href="https://wpmet.com/doc/recaptcha-integration/">See Documentation.</a>', 'metform-pro' ),
 				'content_classes' => 'mf-input-map-api-notice',
 			]
 		);
@@ -133,7 +136,7 @@ Class MetForm_Input_Recaptcha extends Widget_Base{
 					?>
 
 					<div
-						class="g-recaptcha <?php echo esc_attr( $mf_recaptcha_class_name ); ?>"
+						class="g-recaptcha <?php echo Util::esc_mflt_attr( $mf_recaptcha_class_name ); ?>"
 						id="g-recaptcha"
 						data-sitekey="<?php echo esc_attr($recaptcha_key_v2 != '') ? $recaptcha_key_v2  : 'dummy'; ?>"
 						<?php if ( !$is_edit_mode ): ?>
@@ -184,7 +187,7 @@ Class MetForm_Input_Recaptcha extends Widget_Base{
 				if($mf_recaptcha_type == 'recaptcha-v3'){
 					?>
 
-					<div id="recaptcha_site_key_v3" data-sitekey="<?php echo esc_attr( $recaptcha_key_v3 ); ?>"  class="recaptcha_site_key_v3 <?php echo esc_attr($mf_recaptcha_class_name); ?>">
+					<div id="recaptcha_site_key_v3" data-sitekey="<?php echo esc_attr( $recaptcha_key_v3 ); ?>"  class="recaptcha_site_key_v3 <?php echo Util::esc_mflt_attr($mf_recaptcha_class_name); ?>">
 						<input type="hidden" class="g-recaptcha-response-v3" name="g-recaptcha-response-v3" />
 					</div>
 

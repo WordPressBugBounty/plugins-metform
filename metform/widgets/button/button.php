@@ -1,5 +1,8 @@
 <?php
 namespace Elementor;
+
+use MetForm\Utils\Util;
+
 defined( 'ABSPATH' ) || exit;
 
 Class MetForm_Input_Button extends Widget_Base{
@@ -142,7 +145,7 @@ Class MetForm_Input_Button extends Widget_Base{
 			foreach($hidden_inputs as $input){
 				$input = (object) $input;
 				?>
-					<input type="hidden" name="<?php echo esc_attr( $input->mf_hidden_input_name ); ?>" class="<?php echo esc_attr( $input->mf_hidden_input_class ); ?>" value="<?php echo esc_attr( $input->mf_hidden_input_value ); ?>" ref=${parent.setDefault} />
+					<input type="hidden" name="<?php echo Util::esc_mflt_attr( $input->mf_hidden_input_name ); ?>" class="<?php echo Util::esc_mflt_attr( $input->mf_hidden_input_class ); ?>" value="<?php echo Util::esc_mflt_attr( $input->mf_hidden_input_value ); ?>" ref=${parent.setDefault} />
 				<?php
 			}
 		}
@@ -151,25 +154,25 @@ Class MetForm_Input_Button extends Widget_Base{
 			'button',
 			[
 				'type'	=> 'submit',
-				'class'	=> 'metform-btn metform-submit-btn ' . $settings['mf_btn_class'],
-				'id'	=> htmlspecialchars( wp_kses_post( $settings['mf_btn_id'] ) ),
+				'class'	=> 'metform-btn metform-submit-btn ' . Util::esc_mflt_js( $settings['mf_btn_class'] ),
+				'id'	=> Util::esc_mflt_js( $settings['mf_btn_id'] ),
 			]
 		);
 		?>
 		<div class="mf-btn-wraper <?php echo esc_attr($class); ?>" data-mf-form-conditional-logic-requirement="<?php echo esc_attr(isset($settings['mf_conditional_logic_form_and_or_operators']) ? $settings['mf_conditional_logic_form_and_or_operators'] : ''); ?>">
 			<?php if($icon_align == 'right'): ?>
 				<button <?php echo wp_kses($this->get_render_attribute_string( 'button' ), []); ?>>
-					<span><?php echo esc_html(\MetForm\Utils\Util::react_entity_support($btn_text, $render_on_editor )); ?></span>
+					<span><?php echo Util::esc_mflt_react_entity($btn_text, $render_on_editor ); ?></span>
 					<?php if($settings['mf_btn_icon']['value'] != ''): ?><?php Icons_Manager::render_icon( $settings['mf_btn_icon'], [ 'aria-hidden' => 'true' ] ); ?><?php endif; ?>
 				</button>
 			<?php elseif ($icon_align == 'left') : ?>
 				<button <?php echo wp_kses($this->get_render_attribute_string( 'button' ), []); ?>>
 					<?php if($settings['mf_btn_icon']['value'] != ''): ?><?php Icons_Manager::render_icon( $settings['mf_btn_icon'], [ 'aria-hidden' => 'true' ] ); ?><?php endif; ?>
-					<span><?php echo esc_html(\MetForm\Utils\Util::react_entity_support($btn_text, $render_on_editor )); ?></span>
+					<span><?php echo Util::esc_mflt_react_entity($btn_text, $render_on_editor ); ?></span>
 				</button>
 			<?php else : ?>
 				<button <?php echo wp_kses($this->get_render_attribute_string( 'button' ), []); ?>>
-					<span><?php echo esc_html(\MetForm\Utils\Util::react_entity_support($btn_text, $render_on_editor )); ?></span>
+					<span><?php echo Util::esc_mflt_react_entity($btn_text, $render_on_editor ); ?></span>
 				</button>
 			<?php endif; ?>
         </div>

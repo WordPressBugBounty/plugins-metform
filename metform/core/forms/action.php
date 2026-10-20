@@ -2,6 +2,9 @@
 
 namespace MetForm\Core\Forms;
 
+use MetForm\Core\FormBuilder\Document\Repository;
+use MetForm\Core\FormBuilder\Editor\Controller as Editor_Controller;
+
 defined('ABSPATH') || exit;
 
 Class Action {
@@ -143,6 +146,10 @@ Class Action {
 		$this->response['data']['id'] = $this->form_id;
 		$this->response['data']['title'] = $this->title;
 		$this->response['data']['type'] = $this->post_type;
+		$is_builder = Repository::is_builder_form( $this->form_id );
+		$this->response['data']['is_builder_form'] = $is_builder;
+		$this->response['data']['builder_type']    = $is_builder ? 'metform' : 'elementor';
+		$this->response['data']['editor_url']      = Editor_Controller::get_editor_url( $this->form_id );
 	}
 
 	public function get_fields() {
@@ -171,6 +178,7 @@ Class Action {
 	 * @return array|null
 	 */
 	public function get_all_data($post_id) {
+		$post_id = absint( $post_id );
 
 		// this hide all the response after form submission 
         // if(!current_user_can('manage_options')) {
@@ -287,6 +295,11 @@ Class Action {
 			$decoded = json_decode( $mf_cr_rules, true );
 			$all_settings['mf_conditional_redirect_rules'] = is_array( $decoded ) ? $decoded : [];
 		}
+
+		$is_builder = Repository::is_builder_form( $post_id );
+		$all_settings['is_builder_form'] = $is_builder;
+		$all_settings['builder_type']    = $is_builder ? 'metform' : 'elementor';
+		$all_settings['editor_url']      = Editor_Controller::get_editor_url( $post_id );
 
 		return $all_settings;
 	}

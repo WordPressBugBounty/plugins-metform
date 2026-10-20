@@ -1,5 +1,8 @@
 <?php
 namespace Elementor;
+
+use MetForm\Utils\Util;
+
 defined( 'ABSPATH' ) || exit;
 
 Class MetForm_Input_Simple_Captcha extends Widget_Base{
@@ -410,14 +413,14 @@ Class MetForm_Input_Simple_Captcha extends Widget_Base{
 		<div class="mf-input-wrapper">
 			<?php if ( 'yes' == $mf_input_label_status ): ?>
 				<label class="mf-input-label" for="mf-input-captcha-<?php echo esc_attr( $this->get_id() ); ?>">
-					<?php echo esc_html(\MetForm\Utils\Util::react_entity_support($mf_input_label, $render_on_editor )); ?>
+					<?php echo Util::esc_mflt_react_entity($mf_input_label, $render_on_editor ); ?>
 					<span class="mf-input-required-indicator"><?php echo esc_html__( '*', 'metform' );?></span>
 				</label>
 			<?php endif; ?>
 
 			<div class="mf-captcha-input-wrapper <?php echo esc_attr('mf-captcha-'.$mf_input_input_captcha_display); ?>">
 				<img
-					src=<?php \MetForm\Utils\Util::metform_content_renderer($img_src);?>
+					src=<?php Util::metform_content_renderer($img_src);?>
 					alt="CAPTCHA" height="50px"
 					class="mf-input mf-captcha-image"
 					/>
@@ -448,7 +451,7 @@ Class MetForm_Input_Simple_Captcha extends Widget_Base{
 				<${validation.ErrorMessage} errors=${validation.errors} name="mf-captcha-challenge" as=${html`<span className="mf-error-message"></span>`} />
 			<?php endif; ?>
 			
-			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', esc_html( \MetForm\Utils\Util::react_entity_support(trim($mf_input_help_text), $render_on_editor))) : ''); ?>
+			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', Util::esc_mflt_react_entity(trim($mf_input_help_text), $render_on_editor)) : ''); ?>
 
 		</div>
 

@@ -244,6 +244,12 @@ class Cpt extends \MetForm\Base\Cpt
             'mf_stripe_test_secret_key' => [
                 'name' => 'mf_stripe_test_secret_key',
             ],
+			'mf_stripe_live_webhook_secret' => [
+				'name' => 'mf_stripe_live_webhook_secret',
+			],
+			'mf_stripe_test_webhook_secret' => [
+				'name' => 'mf_stripe_test_webhook_secret',
+			],
             'mf_payment_submit_before_payment' => [
                 'name' => 'mf_payment_submit_before_payment',
             ],
@@ -582,7 +588,7 @@ class Cpt extends \MetForm\Base\Cpt
             'label' => esc_html__('Forms', 'metform'),
             'description' => esc_html__('metform form', 'metform'),
             'labels' => $labels,
-            'supports' => array('title', 'editor', 'elementor', 'permalink'),
+            'supports' => array('title', 'editor', 'elementor', 'permalink', 'revisions'),
             'hierarchical' => true,
             'public' => true,
             'show_ui' => true,

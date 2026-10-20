@@ -118,6 +118,12 @@ abstract class Assets_Base {
                 'manifest' => 'admin/form-analytics/index.asset.php',
             ],
             [
+                'type'    => self::SCRIPT,
+                'handle'   => 'metform-builder',
+                'src'      => 'form-builder/index.js',
+                'manifest' => 'form-builder/index.asset.php',
+            ],
+            [
                 'type'     => self::SCRIPT,
                 'handle'   => 'metform-form-picker-modal',
                 'src'      => 'admin/form-picker-modal/index.js',
@@ -152,6 +158,12 @@ abstract class Assets_Base {
                 'handle'   => 'metform-form-analytics',
                 'src'      => 'admin/form-analytics/index.css',
                 'manifest' => 'admin/form-analytics/index.asset.php',
+            ],
+            [
+                'type'     => self::STYLE,
+                'handle'   => 'metform-builder',
+                'src'      => 'form-builder/index.css',
+                'manifest' => 'form-builder/index.asset.php',
             ],
             [
                 'type'     => self::STYLE,
@@ -240,6 +252,18 @@ abstract class Assets_Base {
      */
     private function get_frontend_asset_definitions(): array {
         return [
+            [
+                'type'    => self::SCRIPT,
+                'handle'   => 'metform-builder-frontend',
+                'src'      => 'frontend/form-builder/index.js',
+                'manifest' => 'frontend/form-builder/index.asset.php',
+            ],
+            [
+                'type'     => self::STYLE,
+                'handle'   => 'metform-builder-frontend',
+                'src'      => 'frontend/form-builder/index.css',
+                'manifest' => 'frontend/form-builder/index.asset.php',
+            ],
             [
                 'type'    => self::SCRIPT,
                 'handle'   => 'metform-app',
@@ -518,3 +542,4 @@ abstract class Assets_Base {
         return $name !== '' ? '' : [];
     }
 }
+

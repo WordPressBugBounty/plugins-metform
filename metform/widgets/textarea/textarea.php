@@ -1,6 +1,8 @@
 <?php
 namespace Elementor;
 
+use MetForm\Utils\Util;
+
 defined('ABSPATH') || exit;
 
 Class MetForm_Input_Textarea extends Widget_Base{
@@ -188,14 +190,14 @@ Class MetForm_Input_Textarea extends Widget_Base{
 		<div class="mf-input-wrapper">
 			<?php if ( 'yes' == $mf_input_label_status ): ?>
 				<label class="mf-input-label" for="mf-input-text-area-<?php echo esc_attr( $this->get_id() ); ?>">
-					<?php echo esc_html(\MetForm\Utils\Util::react_entity_support($mf_input_label, $render_on_editor )); ?>
+					<?php echo Util::esc_mflt_react_entity($mf_input_label, $render_on_editor ); ?>
 					<span class="mf-input-required-indicator"><?php echo esc_html( ($mf_input_required === 'yes') ? '*' : '' );?></span>
 				</label>
 			<?php endif; ?>
 
 			<textarea class="mf-input mf-textarea <?php echo esc_attr($class); ?>" id="mf-input-text-area-<?php echo esc_attr($this->get_id()); ?>"
 				name="<?php echo esc_attr($mf_input_name); ?>" 
-				placeholder="<?php echo esc_attr(\MetForm\Utils\Util::react_entity_support($mf_input_placeholder, $render_on_editor )); ?>"
+				placeholder="<?php echo Util::esc_mflt_react_entity( $mf_input_placeholder, $render_on_editor, 'attr' ); ?>"
 				cols="30" rows="10"
 				<?php if ( !$is_edit_mode ): ?>
 					onInput=${ parent.handleChange }
@@ -211,7 +213,7 @@ Class MetForm_Input_Textarea extends Widget_Base{
 					as=${html`<span className="mf-error-message"></span>`}
 					/>
 			<?php endif; ?>
-			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', esc_html( \MetForm\Utils\Util::react_entity_support(trim($mf_input_help_text), $render_on_editor))) : ''); ?>
+			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', Util::esc_mflt_react_entity(trim($mf_input_help_text), $render_on_editor)) : ''); ?>
 		</div>
 
 		<?php

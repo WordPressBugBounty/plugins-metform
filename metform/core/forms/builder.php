@@ -7,10 +7,17 @@
 
 namespace MetForm\Core\Forms;
 
+use MetForm\Core\FormBuilder\Document\Repository;
+use MetForm\Core\FormBuilder\Dynamic_Css\Style_Engine;
+use MetForm\Core\FormBuilder\Editor\Controller as Editor_Controller;
+use MetForm\Core\FormBuilder\Migrator\Migrator;
+use MetForm\Core\FormBuilder\Rendering\Form_Renderer;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Creates `metform-form` posts and hands them to the Elementor editor.
+ * Creates `metform-form` posts and hands them to the correct editor
+ * (standalone Form Builder or Elementor).
  */
 class Builder {
 
@@ -33,7 +40,7 @@ class Builder {
 	const META_CLONED_ID = '_metform_cloned_id';
 
 	/**
-	 * Redirect to a form's Elementor editor.
+	 * Redirect to a form's editor.
 	 *
 	 * @param int $form_id Form post ID.
 	 * @return void
@@ -50,7 +57,9 @@ class Builder {
 	}
 
 	/**
-	 * Build the Elementor editor URL for a form.
+	 * Build the editor URL for a form.
+	 *
+	 * Standalone vs. Elementor editor routing lives in FormBuilder\Editor\Controller.
 	 *
 	 * @since 4.1.6
 	 *
@@ -58,13 +67,26 @@ class Builder {
 	 * @return string Editor URL.
 	 */
 	public function get_editor_url( $form_id ) {
-		return add_query_arg(
-			[
-				'post'   => absint( $form_id ),
-				'action' => 'elementor',
-			],
-			admin_url( 'post.php' )
-		);
+		return Editor_Controller::get_editor_url( absint( $form_id ) );
+	}
+
+	/**
+	 * Gets a form's rendered markup, standalone builder or Elementor.
+	 *
+	 * Backs Api::get_form_content() (GET forms/form_content/{id}). Not
+	 * currently called from any admin/frontend JS — fixed here so the route
+	 * doesn't fatal ("call to undefined method") if it's ever hit, using the
+	 * same builder-vs-Elementor split as get_editor().
+	 *
+	 * @param int $form_id ID of the form.
+	 * @return string Rendered form markup.
+	 */
+	public function get_form_content( $form_id ) {
+		if ( Repository::is_builder_form( $form_id ) ) {
+			return Form_Renderer::instance()->render_saved_form( $form_id );
+		}
+
+		return \MetForm\Utils\Util::render_form_content( $form_id, $form_id, true );
 	}
 
 	/**
@@ -76,6 +98,8 @@ class Builder {
 	 *     Optional. Imported template payload.
 	 *
 	 *     @type string $form_type         MetForm form type.
+	 *     @type string $builder_type      'metform' for the standalone Form Builder,
+	 *                                     'elementor' (default) for the classic editor.
 	 *     @type array  $template_content  Processed Elementor element tree.
 	 *     @type array  $template_settings MetForm settings from the template.
 	 * }
@@ -86,6 +110,19 @@ class Builder {
 		$template_content  = isset( $data['template_content'] ) && is_array( $data['template_content'] ) ? $data['template_content'] : null;
 		$template_settings = isset( $data['template_settings'] ) && is_array( $data['template_settings'] ) ? $data['template_settings'] : [];
 		$title             = '' === trim( (string) $title ) ? 'New Form # ' . time() : $title;
+
+		unset( $data['template_content'], $data['template_settings'] );
+
+		// Older Pro/custom integrations may still provide the legacy template
+		// repository. Never reference it in Free or when the class is absent.
+		if (
+			null === $template_content &&
+			class_exists( '\\MetForm_Pro\\Base\\Package' ) &&
+			class_exists( '\\MetForm\\Templates\\Base' )
+		) {
+			$legacy_template_id = 'template-' . absint( $template_id );
+			$template_content   = \MetForm\Templates\Base::instance()->get_template_contents( $legacy_template_id );
+		}
 
 		$form_id = wp_insert_post(
 			[
@@ -111,10 +148,29 @@ class Builder {
 		}
 
 		$this->save_form_settings( $form_id, $title, $template_settings, $data );
-		$this->save_editor_meta( $form_id, $template_id );
 
-		if ( null !== $template_content ) {
-			$this->save_form_content( $form_id, $template_content );
+		$builder_type = isset( $data['builder_type'] ) ? $data['builder_type'] : 'elementor';
+
+		if ( 'metform' === $builder_type ) {
+			// --- Standalone Builder Configuration ---
+			if ( ! empty( $template_content ) && is_array( $template_content ) ) {
+				$migrated_doc = Migrator::instance()->migrate( $template_content );
+				update_post_meta( $form_id, '_metform_editor_mode', 'metform' );
+				update_post_meta( $form_id, Repository::META_KEY, wp_slash( $migrated_doc ) );
+				Style_Engine::instance()->save_form_css( $form_id, $migrated_doc );
+				if ( $template_id ) {
+					update_post_meta( $form_id, self::META_CLONED_ID, $template_id );
+				}
+			} else {
+				Repository::initialize( $form_id );
+			}
+		} else {
+			// --- Classic Elementor Configuration ---
+			$this->save_editor_meta( $form_id, $template_id );
+
+			if ( null !== $template_content ) {
+				$this->save_form_content( $form_id, $template_content );
+			}
 		}
 
 		return (int) $form_id;

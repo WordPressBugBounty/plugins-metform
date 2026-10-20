@@ -2,6 +2,7 @@
 
 namespace MetForm\Core\Entries;
 
+use MetForm\Core\Entries\Validation\Rule_Validator;
 use MetForm_Pro\Utils\Helper;
 
 defined('ABSPATH') || exit;
@@ -59,7 +60,8 @@ class Action
 
     public function submit($form_id, $form_data, $file_data, $page_id = '')
     {
-        
+        error_log(print_r($form_data, true));
+
         $hidden_fields = isset($form_data['hidden-fields']) ? json_decode($form_data['hidden-fields'], true) : [];
 
         foreach ($hidden_fields as $key) {
@@ -144,11 +146,11 @@ class Action
 
         $email_name = $this->get_input_name_by_widget_type('mf-email')?? [];
 
-      
+
         if(count($email_name) > 0 && class_exists('\MetForm_Pro\Core\Features\Entries\Unique_Validation')){
 
             $validated_data =  \MetForm_Pro\Core\Features\Entries\Unique_Validation::check_unique_fields($form_id, $form_data, $this->fields );
-           
+
             if($validated_data['status'] === 1){
                 $this->response->status = 0;
                 $this->response->failure_type = 'duplicate';
@@ -159,8 +161,8 @@ class Action
             }
         }
 
-        
-        
+
+
 
         $this->email_name = (isset($email_name[0]) ? $email_name[0] : null);
 
@@ -185,7 +187,7 @@ class Action
         }
 
         $filter_validate = apply_filters('mf_after_validation_check', ['is_valid' => $validate, 'form_data' => $form_data , 'file_data' => $file_data]);
-        
+
         if (isset($filter_validate['is_valid']) && $filter_validate['is_valid'] == false) {
             $this->response->status = 0;
             $this->response->failure_type = 'validation';
@@ -281,6 +283,7 @@ class Action
         // user login check and action
         $required_loggin = isset($this->form_settings['require_login']) ? ((int) ($this->form_settings['require_login'])) : 0;
 
+        error_log(print_r($this->form_settings, true));
         if (($required_loggin == 1) && (!is_user_logged_in())) {
             $this->response->status = 0;
             $this->response->failure_type = 'login_required';
@@ -519,27 +522,34 @@ class Action
         // sanitize form submitted data
         $this->sanitize($form_data);
 
+        // Never trust a client-computed Calculation (core/form-builder)
+        // field value — see recompute_calculation_fields()'s own doc
+        // comment / PHP_MIGRATION_MASTER_PLAN.md §5 point 7. Must run
+        // after sanitize() (needs $this->form_data populated) and before
+        // anything below stores/emails/forwards the entry anywhere.
+        $this->recompute_calculation_fields();
+
         //set submitted data array and key to a class
         $all_data = !empty($this->form_data) && is_array($this->form_data) ? $this->form_data : [];
 
         // Get payment method to determine if we need payment-first flow
         $payment_method_check = $this->get_input_name_by_widget_type('mf-payment-method');
         $selected_payment_method = null;
-        
+
         // Only process payment logic if payment method widget exists
         if (!empty($payment_method_check)) {
             // Check if this is a payment-first request (get payment config without storing entries)
             $is_payment_first = isset($form_data['mf_payment_first']) && $form_data['mf_payment_first'] == '1';
             $is_payment_completed = isset($form_data['mf_payment_completed']) && $form_data['mf_payment_completed'] == '1';
-            
+
             if (isset($payment_method_check[0]) && isset($this->form_data[$payment_method_check[0]])) {
                 $selected_payment_method = $this->form_data[$payment_method_check[0]];
             }
         }
-        
+
         $is_payment_first = isset($form_data['mf_payment_first']) && $form_data['mf_payment_first'] == '1';
         $is_payment_completed = isset($form_data['mf_payment_completed']) && $form_data['mf_payment_completed'] == '1';
-        $payment_assistant_active = \Metform\Utils\Util::is_plugin_active('metform-payment-assistant/metform-payment-assistant.php');
+        $payment_assistant_active = \MetForm\Utils\Util::is_plugin_active('metform-payment-assistant/metform-payment-assistant.php');
 
         // If payment-first request for Stripe or PayPal and the payment assistant is active
         if ($payment_assistant_active && $is_payment_first && ($selected_payment_method === 'stripe' || $selected_payment_method === 'paypal')) {
@@ -550,7 +560,7 @@ class Action
                 $this->response->error[0] = esc_html__('Form settings not found. Please check form configuration.', 'metform');
                 return $this->response;
             }
-            
+
             // Create temporary entry to get entry_id for payment processing
             // Using 'auto-draft' status so it won't show in entries list at all
             $defaults = [
@@ -567,7 +577,7 @@ class Action
                 update_post_meta($this->entry_id, $this->key_form_id, $this->form_id);
                 update_post_meta($this->entry_id, 'mf_page_id', $page_id);
                 update_post_meta($this->entry_id, 'mf_payment_pending', '1'); // Flag to hide from entries
-                
+
                 // Store form data temporarily for PayPal
                 update_post_meta($this->entry_id, 'mf_temp_form_data', $this->form_data);
             }
@@ -605,11 +615,11 @@ class Action
                 $payment['sandbox'] = $sandbox;
 
                 $this->response->data['payment_data'] = (object) $payment;
-                
+
                 $rest_url = get_rest_url(null, 'metform/v1/entries/');
                 $this->response->data['ajax_stripe'] = $rest_url . "stripe/pay?entry_id=" . $this->entry_id;
             }
-            
+
             // Return PayPal redirect URL
             if ($selected_payment_method === 'paypal' && class_exists('\MetForm_Pro\Core\Integrations\Payment\Paypal')) {
                 $rest_url = get_rest_url(null, 'metform/v1/entries/');
@@ -632,7 +642,7 @@ class Action
             if ($payment_assistant_active) {
                 // Check if entry already exists (from payment-first flow)
                 $existing_entry_id = isset($form_data['mf_entry_id']) ? intval($form_data['mf_entry_id']) : 0;
-                
+
                 // Only adopt a caller-supplied entry id if it is genuinely a
                 // payment-pending temporary entry minted by this same payment-first
                 // flow. Without this guard an attacker could pass the id of any
@@ -663,16 +673,16 @@ class Action
                 if ($is_valid_pending_entry) {
                     // Update existing entry from payment-first flow
                     $this->entry_id = $existing_entry_id;
-                    
+
                     // Change post status from 'auto-draft' to 'draft' to make it visible in entries
                     wp_update_post([
                         'ID' => $this->entry_id,
                         'post_status' => 'draft'
                     ]);
-                    
+
                     // Remove the payment pending flag
                     delete_post_meta($this->entry_id, 'mf_payment_pending');
-                    
+
                     // Get existing serial number
                     $entry_serial_no = get_post_meta($this->entry_id, 'metform_entries_serial_no', true);
                     if (!$entry_serial_no) {
@@ -682,7 +692,7 @@ class Action
                         update_post_meta($this->entry_id, 'metform_entries_serial_no', $entry_serial_no);
                     }
                     $all_data = array_merge($all_data, ['mf_id' => $entry_serial_no, 'mf_form_name' => $this->title]);
-                    
+
                     // Clean up temporary data
                     delete_post_meta($this->entry_id, 'mf_temp_form_data');
                 } else {
@@ -713,7 +723,7 @@ class Action
             $this->response->store_entries = '0';
         }
 
-        //For shortcode processing need hidden fields too 
+        //For shortcode processing need hidden fields too
         if ( $hidden_fields ) {
             foreach ( $hidden_fields as $value ) {
                $all_data[$value] = "";
@@ -730,7 +740,7 @@ class Action
 
         do_action("metform_before_store_form_data", $form_id, $form_data, $this->form_settings, $attributes);
 
-        $this->form_data = apply_filters("metform_filter_before_store_form_data", $this->form_data, $form_id , $this->form_settings, $attributes); 
+        $this->form_data = apply_filters("metform_filter_before_store_form_data", $this->form_data, $form_id , $this->form_settings, $attributes);
 
         // Store data in database
         $this->store($form_id, $this->form_data);
@@ -748,14 +758,14 @@ class Action
         }
 
         $bypass_form_data = json_decode(get_post_meta($form_id, 'mf_redirect_params_status', true));
-        
+
         if($bypass_form_data){
 
             $url_redirect_params = $this->get_redirect_url_params();
             if($url_redirect_params){
                 $this->response->data['redirect_to'] = add_query_arg($url_redirect_params, $this->response->data['redirect_to']);
             }
-            
+
         }
 
 
@@ -900,14 +910,14 @@ class Action
 
         foreach ($form_data as $key => $value) {
 
-            if (in_array($key, $hidden_fields)) {                
+            if (in_array($key, $hidden_fields)) {
                 continue;
             }
-            
+
             if (!is_array($value)) {
 
                 $is_required = isset($this->fields[$key]->mf_input_required) && $this->fields[$key]->mf_input_required == "yes";
-              
+
                 if(!$is_required && trim($value) == '') {
                    continue;
                 }
@@ -917,46 +927,55 @@ class Action
                 $max = ((isset($this->fields[$key]->mf_input_max_length) && $this->fields[$key]->mf_input_max_length != '') ? $this->fields[$key]->mf_input_max_length : '');
                 $validation_type = ((isset($this->fields[$key]->mf_input_validation_type) && $this->fields[$key]->mf_input_validation_type != '') ? $this->fields[$key]->mf_input_validation_type : 'none');
                 $expression = ((isset($this->fields[$key]->mf_input_validation_expression) && $this->fields[$key]->mf_input_validation_expression != '') ? $this->fields[$key]->mf_input_validation_expression : '');
+                $custom_message_template = (string) ($this->fields[$key]->mf_input_validation_message ?? '');
+                $custom_message = Rule_Validator::resolve_message($custom_message_template, $min, $max);
                 $type = str_replace(['by_', '_length'], '', $validation_type);
                 $str_length = '';
 
                 if ($validation_type == 'by_word_length') {
-                    $str_length = str_word_count($value);
+                    $str_length = Rule_Validator::count_words($value);
                 } else if ($validation_type == 'by_character_length') {
-                    $str_length =  strlen($value);
+                    $str_length = Rule_Validator::count_characters($value);
                     if ($this->fields[$key]->widgetType === 'mf-number') {
                         $str_length =  $value;
                     }
                 }
 
-                if ((!in_array($validation_type, ['none', 'by_expresssion_based'])) && ($min != '') && ($min > $str_length)) {
+                if ((!in_array($validation_type, ['none', 'by_expresssion_based', 'by_expression_based', 'pattern', 'by_range'])) && ($min != '') && ($min > $str_length)) {
                     $errors++;
                     $this->response->status = 0;
-                    $this->response->error[] = esc_html((($this->fields[$key]->mf_input_label != '') ? $this->fields[$key]->mf_input_label : $key) . " minimum input " . $min . " " . $type);
+                    $this->response->error[] = esc_html($custom_message !== '' ? $custom_message : ((($this->fields[$key]->mf_input_label != '') ? $this->fields[$key]->mf_input_label : $key) . " minimum input " . $min . " " . $type));
                 }
-                if ((!in_array($validation_type, ['none', 'by_expresssion_based'])) && ($max != '') && ($max < $str_length)) {
+                if ((!in_array($validation_type, ['none', 'by_expresssion_based', 'by_expression_based', 'pattern', 'by_range'])) && ($max != '') && ($max < $str_length)) {
                     $errors++;
                     $this->response->status = 0;
-                    $this->response->error[] = esc_html((($this->fields[$key]->mf_input_label != '') ? $this->fields[$key]->mf_input_label : $key) . " maximum input " . $max . " " . $type);
+                    $this->response->error[] = esc_html($custom_message !== '' ? $custom_message : ((($this->fields[$key]->mf_input_label != '') ? $this->fields[$key]->mf_input_label : $key) . " maximum input " . $max . " " . $type));
                 }
-                if (($validation_type == 'by_expresssion_based') && ($expression != '') && (!preg_match("/" . $expression . "/", $value))) {
+                if (in_array($validation_type, ['by_expresssion_based', 'by_expression_based', 'pattern']) && ($expression != '') && (false === Rule_Validator::match_expression($expression, $value))) {
                     $errors++;
                     $this->response->status = 0;
-                    $this->response->error[] = esc_html((($this->fields[$key]->mf_input_label != '') ? $this->fields[$key]->mf_input_label : $key) . " input criteria is not matched.");
+                    $this->response->error[] = esc_html($custom_message !== '' ? $custom_message : ((($this->fields[$key]->mf_input_label != '') ? $this->fields[$key]->mf_input_label : $key) . " input criteria is not matched."));
                 }
                 if($validation_type == 'by_range'){
 
                     $min = ((isset($this->fields[$key]->mf_input_min_value) && $this->fields[$key]->mf_input_min_value != '') ? $this->fields[$key]->mf_input_min_value : '');
                     $max = ((isset($this->fields[$key]->mf_input_max_value) && $this->fields[$key]->mf_input_max_value != '') ? $this->fields[$key]->mf_input_max_value : '');
-                    if (($min != '') && ($min > intval(trim($value)))) {
+                    $range_custom_message = Rule_Validator::resolve_message($custom_message_template, $min, $max);
+                    $range_is_number = Rule_Validator::parse_number($value, $numeric_value);
+                    if (!$range_is_number) {
                         $errors++;
                         $this->response->status = 0;
-                        $this->response->error[] = esc_html((($this->fields[$key]->mf_input_label != '') ? $this->fields[$key]->mf_input_label : $key) . " minimum input " . $min . " " . $type);
+                        $this->response->error[] = esc_html($range_custom_message !== '' ? $range_custom_message : ((($this->fields[$key]->mf_input_label != '') ? $this->fields[$key]->mf_input_label : $key) . " input is not a valid number."));
                     }
-                    if (($max != '') && ($max < intval(trim($value)))) {
+                    if ($range_is_number && ($min != '') && ($min > $numeric_value)) {
                         $errors++;
                         $this->response->status = 0;
-                        $this->response->error[] = esc_html((($this->fields[$key]->mf_input_label != '') ? $this->fields[$key]->mf_input_label : $key) . " maximum input " . $max . " " . $type);
+                        $this->response->error[] = esc_html($range_custom_message !== '' ? $range_custom_message : ((($this->fields[$key]->mf_input_label != '') ? $this->fields[$key]->mf_input_label : $key) . " minimum input " . $min . " " . $type));
+                    }
+                    if ($range_is_number && ($max != '') && ($max < $numeric_value)) {
+                        $errors++;
+                        $this->response->status = 0;
+                        $this->response->error[] = esc_html($range_custom_message !== '' ? $range_custom_message : ((($this->fields[$key]->mf_input_label != '') ? $this->fields[$key]->mf_input_label : $key) . " maximum input " . $max . " " . $type));
                     }
                 }
             }
@@ -978,7 +997,7 @@ class Action
         // google sheet
         if(class_exists('\MetForm_Pro\Core\Integrations\Google_Sheet\WF_Google_Sheet')) {
             if(isset($this->form_settings['mf_google_sheet']) && $this->form_settings['mf_google_sheet'] == 1) {
-                
+
                 $sheetdata = null;
 
                 if(isset($this->form_settings['mf_google_spreadsheets_list_id']) && isset($this->form_settings['mf_google_sheets_list_id'])){
@@ -998,28 +1017,28 @@ class Action
 
             }
         }
-        
+
         // google drive
-        if(class_exists('\MetForm_Pro\Core\Integrations\Google_Drive\MF_Google_Drive')) {            
+        if(class_exists('\MetForm_Pro\Core\Integrations\Google_Drive\MF_Google_Drive')) {
             if(isset($this->form_settings['mf_google_drive']) && $this->form_settings['mf_google_drive'] == 1) {
-                $google_drive_folder_list_id = isset($this->form_settings['mf_google_drive_folder_list_id']) ? 
+                $google_drive_folder_list_id = isset($this->form_settings['mf_google_drive_folder_list_id']) ?
                     ["folder_id" => $this->form_settings['mf_google_drive_folder_list_id']] : null;
-                
+
                 // Filter file_upload_info to only include mf-file-upload widget data
-                $filtered_file_upload_info = isset($this->file_upload_info['mf-file-upload']) ? 
+                $filtered_file_upload_info = isset($this->file_upload_info['mf-file-upload']) ?
                     ['mf-file-upload' => $this->file_upload_info['mf-file-upload']] : [];
-                
+
                     // Proceed only if there are files from mf-file-upload widget
                     if (!empty($filtered_file_upload_info) && !empty($google_drive_folder_list_id)) {
                     $drive = \MetForm_Pro\Core\Integrations\Google_Drive\MF_Google_Drive::instance()->insert_file(
-                        $this->form_id, 
-                        $this->title, 
-                        $this->form_data, 
-                        $filtered_file_upload_info, 
-                        $this->get_fields($this->form_id), 
+                        $this->form_id,
+                        $this->title,
+                        $this->form_data,
+                        $filtered_file_upload_info,
+                        $this->get_fields($this->form_id),
                         $google_drive_folder_list_id
                     );
-                    
+
                     if ($drive === false) {
                         $this->response->failure_type = 'integration';
                         $this->response->error[] = esc_html__('Google Drive upload failed: SSL certificate or OAuth credentials problem', 'metform');
@@ -1033,22 +1052,22 @@ class Action
         // dropbox file upload
         if (class_exists('\MetForm_Pro\Core\Integrations\Dropbox\MF_Dropbox')) {
             if (isset($this->form_settings['mf_dropbox']) && $this->form_settings['mf_dropbox'] == '1') {
-                
+
                 $dropbox_folder_path = isset($this->form_settings['mf_dropbox_list_id']) ? $this->form_settings['mf_dropbox_list_id'] : '';
-                
+
                 // Only process files from mf-file-upload widget
                 if (!empty($dropbox_folder_path) && isset($this->file_upload_info['mf-file-upload']) && is_array($this->file_upload_info['mf-file-upload'])) {
                     $dropbox = \MetForm_Pro\Core\Integrations\Dropbox\MF_Dropbox::instance();
-                    
+
                     // Process each uploaded file from mf-file-upload widget
                     foreach ($this->file_upload_info['mf-file-upload'] as $file) {
                         if (!is_array($file)) {
                             continue;
                         }
-                        
+
                         // Check for 'file' key (actual structure) or 'file_path' key (legacy)
                         $file_path = isset($file['file']) ? $file['file'] : (isset($file['file_path']) ? $file['file_path'] : '');
-                        
+
                         if (!empty($file_path) && file_exists($file_path)) {
                             // Use 'name' key from file array, fallback to basename
                             $file_name = isset($file['name']) ? $file['name'] : basename($file_path);
@@ -1062,7 +1081,7 @@ class Action
                 }
             }
         }
-        
+
         $form_settings = $this->form_settings;
         $form_id = $this->form_id;
 
@@ -1115,22 +1134,22 @@ class Action
             $this->response->status = 1;
         }
 
-        // entries of logged in user data  
+        // entries of logged in user data
         if (is_user_logged_in()) {
            update_post_meta($this->entry_id, 'metform_entries__user_id', get_current_user_id());
         }
 
         $this->response->status = 1;
         $this->response->data['store'] = $this->form_data;
-        //## set stransient token for data access checking 
+        //## set stransient token for data access checking
         set_transient('transient_mf_form_data_entry_id_'.$this->entry_id, $this->entry_id, 15*60);
-        
+
        // Generate a cryptographically secure random token
         $mf_secure_token = wp_generate_password(32, false);
         // Store the hashed token in a transient keyed by entry ID
         $mf_token_hash = hash('sha256', $mf_secure_token);
         set_transient('transient_mf_token_hash_'.$this->entry_id, $mf_token_hash, 15*60);
-        
+
         // Set the raw token as an HttpOnly, Secure, SameSite cookie
         $cookie_options = array(
             'expires' => time() + (60 * 15),
@@ -1173,7 +1192,7 @@ class Action
 
     public function send_user_email($form_data, $file_info)
     {
-        
+
         // get user mail from form data
         $user_mail = null;
         $all_email_names = $this->get_input_name_by_widget_type('mf-email') ?? [];
@@ -1205,7 +1224,7 @@ class Action
             $body = "<html><body><h2 style='text-align: center;'>" . get_the_title($this->form_id) . "</h2><h4 style='text-align: center;'>" . $body . "</h4>" . "</body></html>";
         }
 
-        // body will be in the filter hook 
+        // body will be in the filter hook
 
         $body = apply_filters('metform_confirmation_user_email_body', $body, $this->form_id, $form_data, $file_info, $this->form_settings);
 
@@ -1280,7 +1299,7 @@ class Action
             'X-Mailer: PHP/' . phpversion();
 
         $mail = isset($this->form_settings['admin_email_to']) ? $this->form_settings['admin_email_to'] : null;
-        $mail = Metform_Shortcode::instance()->get_process_shortcode($mail); 
+        $mail = Metform_Shortcode::instance()->get_process_shortcode($mail);
         if (!$mail) {
 		if(current_user_can( 'manage_options' )){
 			$this->response->status = 0;
@@ -1318,12 +1337,40 @@ class Action
             $this->form_id = $form_id;
         }
 
-        $input_widgets = \Metform\Widgets\Manifest::instance()->get_input_widgets();
+        if (empty($this->form_id)) {
+            return [];
+        }
 
+        // core/form-builder forms (`_metform_builder_document`) are handled
+        // by the dedicated Form_Builder_Document class — see its class doc.
+        $form_builder_fields = Form_Builder_Document::get_fields($this->form_id);
+        if ($form_builder_fields !== null) {
+            return $form_builder_fields;
+        }
+
+        // Fallback to Legacy Elementor data
+        $input_widgets = \MetForm\Widgets\Manifest::instance()->get_input_widgets();
         $widget_input_data = get_post_meta($this->form_id, '_elementor_data', true);
         $widget_input_data = json_decode($widget_input_data);
 
         return Map_El::data($widget_input_data, $input_widgets)->get_el();
+    }
+
+    /**
+     * Recursively extracts normalized field definitions from a standalone document tree.
+     *
+     * @deprecated Moved to `Form_Builder_Document::extract_fields_from_standalone_doc()`
+     *             — all form-builder-document logic now lives in that
+     *             dedicated class. Kept here, unchanged, as a thin
+     *             passthrough for backward compatibility with any external
+     *             caller of this method.
+     *
+     * @param array $elements Array of element nodes from _metform_builder_document.
+     * @return array Normalized array of field definition objects.
+     */
+    public function extract_fields_from_standalone_doc(array $elements): array
+    {
+        return Form_Builder_Document::extract_fields_from_standalone_doc($elements);
     }
 
     public function sanitize($form_data, $fields = null)
@@ -1335,7 +1382,7 @@ class Action
         foreach ($form_data as $key => $value) {
 
             if (isset($fields[$key])) {
-                
+
                 $this->form_data[$key] = $value;
 
                 /**
@@ -1386,18 +1433,37 @@ class Action
         }
     }
 
+    /**
+     * Server-side "never trust the client" recompute for every Calculation
+     * (core/form-builder) block in this submission.
+     *
+     * Delegates to `Form_Builder_Document::recompute_calculation_fields()`
+     * — see that method's doc comment for the full reasoning (why this
+     * exists, why it must run after `sanitize()`, and why it's a no-op for
+     * Elementor-widget forms). Kept here as a thin wrapper so `submit()`'s
+     * call site and this class's own private-method convention are
+     * unchanged.
+     */
+    private function recompute_calculation_fields()
+    {
+        $this->form_data = Form_Builder_Document::recompute_calculation_fields(
+            $this->form_id,
+            is_array($this->form_data) ? $this->form_data : []
+        );
+    }
+
     public function upload_file($file_data, $file_input_names)
     {
-        
+
         foreach ($file_input_names as $i => $input_name) {
             // initial upload status, status use as array for multiple file
             $upload[$input_name]['status'] = false;
-            $this->handle_file($file_data, $input_name); 
+            $this->handle_file($file_data, $input_name);
         }
     }
 
 
-    
+
     /**
      * Allow additional MIME types for wp_handle_upload().
      * WordPress does not include .iges / .igs in its default list,
@@ -1418,8 +1484,8 @@ class Action
     }
 
     private function handle_file($file_data, $input_name)
-    { 
-         
+    {
+
         if (empty($file_data[$input_name])) {
             return;
         }
@@ -1428,10 +1494,10 @@ class Action
             require_once ABSPATH . 'wp-admin/includes/file.php';
         }
 
-        // Allow extra MIME types (e.g. .iges, .igs, .stp, .step) that WordPress does not permit by default. 
+        // Allow extra MIME types (e.g. .iges, .igs, .stp, .step) that WordPress does not permit by default.
         add_filter('upload_mimes', [$this, 'allow_extra_upload_mimes']);
 
-         
+
          // Filter to modify upload directory
          add_filter('upload_dir', [$this, 'modify_metform_upload_dir']);
 
@@ -1446,7 +1512,7 @@ class Action
             if (isset($files['name'][$index]) && $files['name'][$index] != '') {
 
                 $file = [
-                    'name' => "entry-file-".wp_hash(microtime(), 'secure_auth').'.'.pathinfo($files['name'][$index], PATHINFO_EXTENSION), 
+                    'name' => "entry-file-".wp_hash(microtime(), 'secure_auth').'.'.pathinfo($files['name'][$index], PATHINFO_EXTENSION),
                     'type' => $files['type'][$index],
                     'tmp_name' => $files['tmp_name'][$index],
                     'error' => isset($files['error'][$index]) ? $files['error'][$index] : null,
@@ -1476,42 +1542,42 @@ class Action
         } else {
             $this->file_upload_info[$input_name] = $uploaded_info;
             $this->response->status = 1;
-        } 
+        }
     }
-    
+
     /**
      * Modify default upload directory for upload metform entires
      */
 
     public function modify_metform_upload_dir($upload_dir) {
         $custom_upload_folder = 'metform-uploads';
-    
+
         // Initialize WordPress filesystem
         global $wp_filesystem;
         if (empty($wp_filesystem)) {
             require_once ABSPATH . '/wp-admin/includes/file.php';
             WP_Filesystem();
         }
-    
+
         // Setup paths
         $upload_path = $upload_dir['basedir'] . '/' . $custom_upload_folder;
         $upload_url = $upload_dir['baseurl'] . '/' . $custom_upload_folder;
-    
+
         $upload_dir['path'] = $upload_path;
         $upload_dir['url'] = $upload_url;
         $upload_dir['subdir'] = '/' . $custom_upload_folder;
-    
+
         // Create directory if it doesn't exist
         if (!$wp_filesystem->is_dir($upload_path)) {
             $wp_filesystem->mkdir($upload_path);
         }
-    
+
         // Create index.php file for folder protection
         $index_file = $upload_path . '/index.php';
         if (!$wp_filesystem->exists($index_file)) {
             $wp_filesystem->put_contents($index_file, '<?php // Silence is golden.');
         }
-    
+
         // Create .htaccess file for additional security rules
         $htaccess_file = $upload_path . '/.htaccess';
         if (!$wp_filesystem->exists($htaccess_file)) {
@@ -1529,7 +1595,7 @@ class Action
     <IfModule headers_module>
         Header set X-Robots-Tag "noindex"
     </IfModule>';
-    
+
          /**
 		 * A filter to allow the htaccess rules
 		 *
@@ -1545,24 +1611,24 @@ class Action
 			insert_with_markers( $htaccess_file, 'MetForm', $rules );
 		}
         }
-    
+
         return $upload_dir;
     }
-    
+
     private function get_redirect_url_params(){
 
         $url_data = [];
 
-        // get current form redirect url params 
+        // get current form redirect url params
         $redireact_params = get_post_meta($this->form_id, 'mf_redirect_params', true);
 
         if(trim($redireact_params)){
             $redireact_params = json_decode($redireact_params, true);
             if(is_array($redireact_params)){
 
-                foreach($redireact_params as $r_key => $r_params){ 
+                foreach($redireact_params as $r_key => $r_params){
                     foreach($this->form_data as $d_key => $f_data){
-                    
+
                         // check for key match
                         if(trim($r_params) == trim($d_key)){
                                 $url_data[$r_key] = $f_data;
@@ -1700,11 +1766,11 @@ class Action
             // Exclude entries with 'auto-draft' status and entries with payment pending flag.
             // This ensures only completed entries (including those with completed payments) are counted.
             $entry_count = $wpdb->get_results($wpdb->prepare(
-                "SELECT COUNT(DISTINCT pm.post_id) as `count` 
+                "SELECT COUNT(DISTINCT pm.post_id) as `count`
                 FROM `" . $wpdb->prefix . "postmeta` pm
                 INNER JOIN `" . $wpdb->prefix . "posts` p ON pm.post_id = p.ID
                 LEFT JOIN `" . $wpdb->prefix . "postmeta` pm_pending ON pm.post_id = pm_pending.post_id AND pm_pending.meta_key = 'mf_payment_pending'
-                WHERE pm.meta_key = %s 
+                WHERE pm.meta_key = %s
                 AND pm.meta_value = %d
                 AND p.post_status NOT IN ('auto-draft', 'trash')
                 AND pm_pending.meta_value IS NULL",

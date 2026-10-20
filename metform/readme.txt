@@ -3,7 +3,7 @@ Contributors: Roxnor, Ataurr, aion11
 Tags: form builder, Elementor form, contact form builder, Multi step form, custom form
 Requires at least: 6.0
 Tested up to: 7.1
-Stable tag: 4.3.2
+Stable tag: 4.3.3
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -274,6 +274,16 @@ If you like using the MetForm form builder, then consider checking out our other
 **Check out** [Tutorials, Tips & Tricks](https://wpmet.com/blog)! 👌
 
 == Changelog ==
+
+= Version: 4.3.3 // 2026-10-19 =
+- Added: Introduced a completely new MetForm Builder that no longer depends on Elementor.
+- Improved: Added SEO plugin compatibility for AIOSEO, Rank Math, SEOPress, and Yoast SEO.
+- Improved: Centralized template-literal escaping helpers.
+- Improved: MetForm Forms list layout, column alignment, and action button spacing.
+- Fixed: Prevented SEO and instant-indexing plugins from processing MetForm internal post types.
+- Fixed: Resolved Rank Math post-type warnings caused by incompatible post-type list formats.
+- Fixed: Secured widget values in JavaScript templates.
+- Fixed: Unauthenticated permalink change issue reported via Patchstack.  
 
 = Version: 4.3.2 // 2026-10-02 =
 - Fixed: Form not showing when using the shortcode.

@@ -2,12 +2,17 @@
 
 namespace MetForm\Base;
 
+use MetForm\Core\FormBuilder\Document\Repository as Form_Builder_Repository;
+use MetForm\Core\FormBuilder\Rendering\Frontend as Form_Builder;
+use MetForm\Traits\Singleton;
+use MetForm\Utils\Util;
+
 defined('ABSPATH') || exit;
 
 class Shortcode
 {
 
-	use \MetForm\Traits\Singleton;
+	use Singleton;
 
 
 	public function __construct()
@@ -66,12 +71,37 @@ class Shortcode
 		return ob_get_clean();
 	}
 
+	/**
+	 * Prints late styles for new Form Builder forms when wp_head has already run
+	 * (e.g. inside Elementor editor or Elementor AJAX widget refresh).
+	 *
+	 * @param string[] $styles_before Style handles queued before rendering.
+	 * @return string HTML <link> tags for the form's stylesheets.
+	 */
+	private function get_builder_late_styles( array $styles_before ): string {
+		if ( ! did_action( 'wp_head' ) && ! wp_doing_ajax() ) {
+			return '';
+		}
+
+		$wp_styles = wp_styles();
+		if ( ! ( $wp_styles instanceof \WP_Styles ) ) {
+			return '';
+		}
+
+		$handles = array_unique(
+			array_merge(
+				[ 'metform-builder-frontend' ],
+				array_diff( $wp_styles->queue, $styles_before )
+			)
+		);
+
+		ob_start();
+		wp_print_styles( $handles );
+		return (string) ob_get_clean();
+	}
 
 	public function render_form($atts)
 	{
-		$styles_before = wp_styles()->queue;
-		$this->enqueue_form_assets();
-
 		if( isset($atts['form_id']) ){
 			$atts['form_id'] = absint(sanitize_text_field($atts['form_id']));
 		}
@@ -79,11 +109,21 @@ class Shortcode
 		$attributes = shortcode_atts(array(
 			'form_id' => 'test',
 		), $atts);
+		$form_id = absint($attributes['form_id']);
 
-		$form_content = \MetForm\Utils\Util::render_form_content($attributes['form_id'], $attributes['form_id']);
-		$late_styles  = $this->get_late_styles( $styles_before );
+		if ( $form_id && Form_Builder_Repository::is_builder_form( $form_id ) ) {
+			$styles_before   = wp_styles() instanceof \WP_Styles ? wp_styles()->queue : [];
+			$builder_content = Form_Builder::get_markup( $form_id );
 
-		return $late_styles . '<div class="mf-form-shortcode">' . $form_content . '</div>';
+			if ( null !== $builder_content ) {
+				$late_styles = $this->get_builder_late_styles( $styles_before );
+				return $late_styles . $builder_content;
+			}
+		}
+
+		$this->enqueue_form_assets();
+
+		return '<div class="mf-form-shortcode">' . Util::render_form_content($attributes['form_id'], $attributes['form_id']) . '</div>';
 	}
 
 	public function render_thank_you_page($atts)
@@ -317,3 +357,4 @@ class Shortcode
 		return $status;
 	}
 }
+

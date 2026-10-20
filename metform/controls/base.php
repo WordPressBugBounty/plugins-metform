@@ -1,6 +1,7 @@
 <?php
 namespace MetForm\Controls;
 use MetForm\Base\Assets_Enqueue;
+use MetForm\Core\FormBuilder\Document\Repository;
 defined( 'ABSPATH' ) || exit;
 
 class Base{
@@ -87,6 +88,12 @@ class Base{
             'post_status' => 'publish',
             'numberposts' => -1,
         ] );
+
+        // Filter out standalone / new MetForm Builder forms so only Elementor-compatible forms are available in Elementor editor
+        $form_posts = array_filter( $form_posts, function( $post ) {
+            return ! Repository::is_builder_form( $post->ID );
+        } );
+
         $saved_forms = array_map( function( $post ) {
             return [ 'id' => (string) $post->ID, 'title' => $post->post_title ];
         }, $form_posts );

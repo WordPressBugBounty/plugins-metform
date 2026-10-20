@@ -1,13 +1,14 @@
 <?php
 namespace Elementor;
 defined( 'ABSPATH' ) || exit;
+use MetForm\Core\FormBuilder\Document\Repository;
 
 class Widget_Met_Form_Basic extends Widget_Base {
 
 	public function get_name() {
 		return 'metform-basic';
     }
-    
+
 	public function get_title() {
 		return esc_html__( 'MetForm Basic', 'metform' );
 	}
@@ -31,18 +32,20 @@ class Widget_Met_Form_Basic extends Widget_Base {
 			'post_type'   => 'metform-form',
 			'post_status' => 'publish',
 		);
-		   
+
 		$forms = get_posts( $args );
 
 		foreach($forms as $form){
-			$form_list[$form->ID] = $form->post_title;
+			if ( ! Repository::is_builder_form( $form->ID ) ) {
+				$form_list[$form->ID] = $form->post_title;
+			}
 		}
 
 		return $form_list;
 	}
 
 	protected function register_controls() {
-		
+
         $this->start_controls_section(
 			'content_section',
 			[
@@ -51,7 +54,7 @@ class Widget_Met_Form_Basic extends Widget_Base {
 			]
 		);
 
-		
+
 		$this->add_control(
 			'mf_form_id',
 			[

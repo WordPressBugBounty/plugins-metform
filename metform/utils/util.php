@@ -88,29 +88,29 @@ class Util{
 	}
 
     /**
-     * Support For HTML Entities
-     *
-     * @since 1.3.1
-     * @access public
-     */
-    /**
      * Wrap a widget string into the JS template literal the frontend compiles
      * with new Function(). Escape it for that context first: a backtick or
      * "${" would break out and run as code (esc_html() leaves both alone).
      * Backslash goes first so a trailing one cannot eat the next escape.
+     *
+     * @since 4.3.3
+     *
+     * @param string $str              Widget string to prepare.
+     * @param bool   $render_on_editor Whether the widget is rendered in the editor.
+     * @param string $context          Output context. Accepts 'html' or 'attr'.
+     *
+     * @return string Original or React-wrapped template-literal-safe string.
      */
-    public static function react_entity_support($str, $render_on_editor) {
+	public static function esc_mflt_react_entity( $str, $render_on_editor, $context = 'html' ) {
+		$str = 'attr' === $context ? esc_attr( $str ) : esc_html( $str );
+
 		if ( !\Elementor\Plugin::$instance->editor->is_edit_mode() || $render_on_editor ):
-			  $str = str_replace(
-				  array( '\\', '`', '${' ),
-				  array( '\\\\', '\\`', '\\${' ),
-				  (string) $str
-			  );
-			  $str = '${ parent.decodeEntities(`'. $str .'`) } ';
+			$str = self::esc_mflt( $str );
+			$str = '${ parent.decodeEntities(`'. $str .'`) } ';
 		endif;
-		
+
 		return $str;
-    }
+	}
 
     /**
      * Get metform older version if has any.
@@ -409,6 +409,138 @@ class Util{
 		return $elementor_instance->frontend->get_builder_content_for_display( $content_id, true );
 	}
 
+	/**
+	 * Neutralise JS template-literal metacharacters inside every data-settings
+	 * attribute value. Elementor fills data-settings with the widget's raw
+	 * settings JSON (option text, label, placeholder, help text, ...); that
+	 * attribute is interpolated into the html`...` template MetFormEl compiles
+	 * with new Function(), so a backtick closes the literal and ${ opens a
+	 * substitution, either of which lets an Editor run script for every visitor.
+	 * Re-encoding them as JSON \u escapes is inert inside the template literal
+	 * and JSON.parse turns them back into the original characters at runtime, so
+	 * the stored values are unchanged. Covers every setting via this one route,
+	 * rather than escaping individual fields.
+	 *
+	 * @since 4.3.3
+	 *
+	 * @param string $html Rendered HTML containing template-literal attributes.
+	 *
+	 * @return string HTML with template-literal metacharacters neutralized.
+	 */
+	public static function esc_mflt_html_attributes( $html ) {
+		return preg_replace_callback(
+			'/(?:data-settings|(?<=\s)className|(?<=\s)class|(?<=\s)id)="([^"]*)"/',
+			function ( $m ) {
+				$value = $m[1];
+				$dirty = strpos( $value, '`' ) !== false || strpos( $value, '$' ) !== false;
+				if ( ! $dirty ) {
+					return $m[0];
+				}
+				$value = self::replace_mflt_characters( $value, true );
+				return substr( $m[0], 0, strpos( $m[0], '"' ) + 1 ) . $value . '"';
+			},
+			$html
+		);
+	}
+
+	/**
+	 * esc_attr for a value that will sit in an HTML attribute INSIDE the
+	 * html`...` template MetFormEl compiles with new Function(). esc_attr does
+	 * not touch the backtick or $, so a user value such as an option value of
+	 * `,alert(1),` would close the template literal and run as code. Neutralise
+	 * both as JSON-style \u escapes: inert while the literal is parsed, and the
+	 * template-literal evaluation turns them back into the original characters,
+	 * so the rendered attribute value is unchanged.
+	 *
+	 * @since 4.3.3
+	 *
+	 * @param mixed $value Attribute value to escape.
+	 *
+	 * @return string Escaped attribute value safe for an HTML template literal.
+	 */
+	public static function esc_mflt_attr( $value ) {
+		$value = self::replace_mflt_characters( $value, true );
+		return esc_attr( $value );
+	}
+
+	/**
+	 * Escape a value for JavaScript inside an HTML template literal.
+	 *
+	 * @since 4.3.3
+	 *
+	 * @param mixed $value Value to escape.
+	 *
+	 * @return string Escaped JavaScript value with template-literal characters neutralized.
+	 */
+	public static function esc_mflt_js( $value ) {
+		$value = \esc_js( (string) $value );
+		return self::replace_mflt_characters( $value, true );
+	}
+
+	/**
+	 * Escape backslashes, backticks, and interpolation markers in a template literal.
+	 *
+	 * @since 4.3.3
+	 *
+	 * @param mixed $value Value to escape.
+	 *
+	 * @return string Template-literal-safe value.
+	 */
+	public static function esc_mflt( $value ) {
+		return self::replace_mflt_characters( $value );
+	}
+
+	/**
+	 * Sanitize allowed HTML and escape it for use inside a template literal.
+	 *
+	 * @since 4.3.3
+	 *
+	 * @param mixed $value HTML value to sanitize and escape.
+	 *
+	 * @return string Sanitized, template-literal-safe HTML.
+	 */
+	public static function esc_mflt_kses( $value ) {
+		return wp_kses( self::esc_mflt( $value ), self::get_kses_array() );
+	}
+
+	/**
+	 * Sanitize template-literal HTML while preserving ampersands in attributes.
+	 *
+	 * @since 4.3.3
+	 *
+	 * @param mixed $value HTML value to sanitize and escape.
+	 *
+	 * @return string Sanitized, template-literal-safe HTML with decoded ampersands.
+	 */
+	public static function esc_mflt_kses_ampersand( $value ) {
+		return str_replace( '&amp;', '&', self::esc_mflt_kses( $value ) );
+	}
+
+	/**
+	 * Replace characters that can terminate or interpolate a template literal.
+	 *
+	 * Unicode escapes are used for values processed by another contextual escaping
+	 * function. Backslash escapes are used for direct template-literal content.
+	 *
+	 * @since 4.3.3
+	 *
+	 * @param mixed $value       Value containing template-literal characters.
+	 * @param bool  $use_unicode Whether to use JavaScript Unicode escapes.
+	 *
+	 * @return string Value with template-literal characters replaced.
+	 */
+	private static function replace_mflt_characters( $value, $use_unicode = false ) {
+		if ( $use_unicode ) {
+			return str_replace( array( '`', '$' ), array( '\\u0060', '\\u0024' ), (string) $value );
+		}
+
+		return str_replace(
+			array( '\\', '`', '${' ),
+			array( '\\\\', '\\`', '\\${' ),
+			(string) $value
+		);
+	}
+
 	public static function img_meta($id){
 		$attachment = get_post($id);
 		if($attachment == null || $attachment->post_type != 'attachment'){
@@ -675,6 +807,14 @@ class Util{
 							$form_content = \MetForm\Utils\Util::mfConvertStyleToReactObj($form_content);
 							$form_content = str_replace( $replaceStrings['from'], $replaceStrings['to'], $form_content );
 							$form_content = preg_replace( '/<!--(.|\s)*?-->/', '', $form_content ); // Removes HTML Comments
+							// Issue 4 (stored XSS, data-settings route): the whole widget
+							// markup below is interpolated into an html`...` template literal that
+							// MetFormEl compiles with new Function(). Elementor writes every widget
+							// setting (option text, label, ...) raw into each element's data-settings
+							// attribute, so a backtick or ${ there would close that literal and run
+							// as code for any visitor. Neutralise them inside every data-settings
+							// value (JSON \u escapes JSON.parse restores at runtime, so data is unchanged).
+							$form_content = self::esc_mflt_html_attributes( $form_content );
 							echo $form_content; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ignore this because of if escape this content does not append in preview and frontend.
 						?>
 					`}
@@ -751,7 +891,11 @@ class Util{
     }
 
 	public static function change_permalink(){
-			global $wp_rewrite; 
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
+
+			global $wp_rewrite;
 			$wp_rewrite->set_permalink_structure('/%postname%/'); 
 			
 			//Set the option

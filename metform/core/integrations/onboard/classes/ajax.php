@@ -88,14 +88,14 @@ class Ajax {
 		$plugins_message = [
 			'setup_configurations' => esc_html__('Setup Configurations', 'metform'),
 			'elementskit-lite/elementskit-lite.php' => esc_html__('Page Builder Elements Activated', 'metform'),
-			'getgenie/getgenie.php' => esc_html__('AI Content & SEO Tool Activated', 'metform'),
+			'rox-dynamic-cpt-fields-engine/rox-dynamic-cpt-fields-engine.php' => esc_html__('Dynamic CPT Fields Activated', 'metform'),
+			'rox-appointment-booking/rox-appointment-booking.php' => esc_html__('Appointment Booking Activated', 'metform'),
 			'shopengine/shopengine.php' => esc_html__('WooCommerce Builder Activated', 'metform'),
+			'getgenie/getgenie.php' => esc_html__('AI Content & SEO Tool Activated', 'metform'),
 			'metform/metform.php' => esc_html__('Form Builder Activated', 'metform'),
 			'emailkit/EmailKit.php' => esc_html__('Email Customizer Activated', 'metform'),
-			'wp-fundraising-donation/wp-fundraising.php' => esc_html__('Fundraising & Donations', 'metform'),
 			'gutenkit-blocks-addon/gutenkit-blocks-addon.php' => esc_html__('Page Builder Blocks Activated', 'metform'),
-			'popup-builder-block/popup-builder-block.php' => esc_html__('Popup Builder Activated', 'metform'),
-			'table-builder-block/table-builder-block.php' => esc_html__('Table Builder Activated', 'metform')
+			'popup-builder-block/popup-builder-block.php' => esc_html__('Popup Builder Activated', 'metform')
 		];
 
 		if ( array_key_exists( $plugin_slug, $plugins_message ) ) {

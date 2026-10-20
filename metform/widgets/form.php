@@ -57,6 +57,8 @@ class Widget_Met_Form extends Widget_Base {
 				'tab' => Controls_Manager::TAB_CONTENT,
 			]
 		);
+		$new_builder_url = admin_url( 'admin.php?action=metform-new-builder' );
+
 		$this->add_control(
             'important_note',
             [
@@ -67,11 +69,21 @@ class Widget_Met_Form extends Widget_Base {
 					. '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">'
 					. '<path d="M10.95 3.07006L11.61 2.41007C12.1568 1.86331 13.0432 1.86331 13.59 2.41007C14.1367 2.95683 14.1367 3.84329 13.59 4.39005L12.93 5.05004M10.95 3.07006L6.51043 7.5096C6.17209 7.848 5.93207 8.27187 5.81602 8.73607L5.33337 10.6667L7.26397 10.184C7.72817 10.068 8.15204 9.82793 8.49044 9.4896L12.93 5.05004M10.95 3.07006L12.93 5.05004" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>'
 					. '<path d="M12.6666 9.00016C12.6666 11.1918 12.6666 12.2876 12.0613 13.0252C11.9505 13.1602 11.8267 13.284 11.6917 13.3948C10.9541 14.0002 9.85827 14.0002 7.6666 14.0002H7.33333C4.81917 14.0002 3.56211 14.0002 2.78106 13.2191C2.00002 12.4381 2 11.181 2 8.66683V8.3335C2 6.14184 2 5.04602 2.60529 4.30846C2.71611 4.17343 2.83993 4.04961 2.97496 3.93879C3.71253 3.3335 4.80835 3.3335 7 3.3335" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>'
-					. '</svg> %s </button>',
+					. '</svg> %s </button>'
+					. '<hr class="mf-builder-separator">'
+					. '<div class="mf-standalone-builder-note">%s</div>'
+					. '<a href="%s" target="_blank" class="mf-new-builder-btn">'
+					. '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">'
+					. '<rect x="2" y="2.667" width="12" height="10.667" rx="1.5" stroke="white" stroke-width="1.2"/>'
+					. '<path d="M2 5.667h12M5.333 5.667v7.666M8 8.333h4M8 10.667h2.667" stroke="white" stroke-width="1.2" stroke-linecap="round"/>'
+					. '</svg> %s </a>',
 					esc_html__('See this video tutorial how to use metform.', 'metform'),
 					esc_url('https://youtu.be/8R4-Q14cu-w'),
 					esc_html__('Click here', 'metform'),
-					esc_html__('Edit Form', 'metform')
+					esc_html__('Edit Form', 'metform'),
+					esc_html__('We have a new standalone Form Builder! You can create and customize forms independently.', 'metform'),
+					esc_url( $new_builder_url ),
+					esc_html__('New Form Builder', 'metform')
 				),
             ]
 		);

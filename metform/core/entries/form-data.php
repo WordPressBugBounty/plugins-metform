@@ -19,6 +19,117 @@ class Form_Data
         return static::$form_data = json_decode(json_encode($map_data), true);
     }
 
+    /**
+     * Simple Repeater: sub-field name => label, from the field's
+     * `mf_input_repeater` list (form-builder forms get it from
+     * Map_Block_Document; legacy Elementor forms store the same keys).
+     *
+     * @param array $field_map One field's map data.
+     * @return array<string,string>
+     */
+    protected static function repeater_labels_by_name($field_map)
+    {
+        $labels = [];
+        foreach ((array) ($field_map['mf_input_repeater'] ?? []) as $sub) {
+            $name  = is_array($sub) ? (string) ($sub['mf_input_repeater_name'] ?? '') : '';
+            $label = is_array($sub) ? (string) ($sub['mf_input_repeater_label'] ?? '') : '';
+            // Sub-fields with option lists keep the older display path,
+            // which can show option names instead of raw values.
+            $has_options = is_array($sub) && !empty($sub['mf_input_repeater_option']);
+            if ('' !== $name && '' !== $label && !$has_options) {
+                $labels[$name] = $label;
+            }
+        }
+        return $labels;
+    }
+
+    /**
+     * Label for one processed repeater key ("phone-2" → label of "phone"),
+     * or null to fall back to the older position-based lookup.
+     *
+     * @param array  $labels repeater_labels_by_name() result.
+     * @param string $key    Processed key: "{name}-{row}".
+     * @return string|null
+     */
+    protected static function repeater_label_for_key($labels, $key)
+    {
+        if (empty($labels)) {
+            return null;
+        }
+        $name = preg_replace('/-\d+$/', '', (string) $key);
+        return isset($labels[$name]) ? $labels[$name] : null;
+    }
+
+    /**
+     * Resolves raw submitted value(s) against an options list,
+     * returning title, value, and composite display strings.
+     *
+     * Supports scalar values, comma-separated strings, and native array inputs.
+     * Matches both modern {label, value} and legacy Elementor {mf_input_option_text, mf_input_option_value} schemas.
+     *
+     * @param mixed $raw_value    Submitted field value.
+     * @param array $options_list The widget's mf_input_list array.
+     * @return array<int, array{title: string, value: string, display: string}>
+     */
+    protected static function resolve_option_display_items($raw_value, array $options_list): array
+    {
+        if (null === $raw_value || '' === $raw_value) {
+            return [];
+        }
+
+        $selected_values = is_array($raw_value)
+            ? array_map('trim', array_map('strval', $raw_value))
+            : array_map('trim', explode(',', (string) $raw_value));
+
+        $selected_values = array_filter($selected_values, static fn($v) => '' !== $v);
+        if (empty($selected_values)) {
+            return [];
+        }
+
+        $results = [];
+
+        foreach ($selected_values as $selected) {
+            $matched = false;
+
+            foreach ($options_list as $opt) {
+                if (!is_array($opt)) {
+                    continue;
+                }
+
+                $opt_val = (string) ($opt['value'] ?? $opt['mf_input_option_value'] ?? '');
+                $opt_title = (string) (
+                    $opt['label']
+                    ?? $opt['mf_input_option_text']
+                    ?? $opt['mf_image_select_title']
+                    ?? $opt_val
+                );
+
+                if ($opt_val === (string) $selected) {
+                    $results[] = [
+                        'title'   => $opt_title,
+                        'value'   => $opt_val,
+                        'display' => ($opt_title !== '' && $opt_title !== $opt_val)
+                            ? ($opt_title . ' - ' . $opt_val)
+                            : $opt_val,
+                    ];
+                    $matched = true;
+                    break;
+                }
+            }
+
+            // Fallback if submitted value does not match defined options
+            if (!$matched) {
+                $results[] = [
+                    'title'   => (string) $selected,
+                    'value'   => (string) $selected,
+                    'display' => (string) $selected,
+                ];
+            }
+        }
+
+        return $results;
+    }
+
     protected static function criteriaMet($conditional_value, $conditional_operator, $conditional_field_value)
     {
         switch ($conditional_operator) {
@@ -102,28 +213,16 @@ class Form_Data
 
                 // ── Standard text-like fields ──────────────────────────
                 if (!in_array($value['widgetType'], ['mf-file-upload', 'mf-textarea', 'mf-simple-repeater', 'mf-signature', 'mf-like-dislike', 'mf-credit-card', 'mf-image-select', 'mf-checkbox', 'mf-mobile'])) {
-                    $label = isset($map_data[$key]['mf_input_label']) ? $map_data[$key]['mf_input_label'] : '';
+                    $has_options = isset($map_data[$key]['mf_input_list']) && is_array($map_data[$key]['mf_input_list']) && !empty($map_data[$key]['mf_input_list']);
+                    $show_names  = !empty($form_settings['mf_field_name_show']) && (int) $form_settings['mf_field_name_show'] === 1;
 
-                    if ($label && isset($map_data[$key]['mf_input_list']) && is_array($map_data[$key]['mf_input_list']) && isset($form_settings['mf_field_name_show']) && $form_settings['mf_field_name_show'] == 1) {
-                        $selected_values = isset($form_data[$key]) ? explode(',', $form_data[$key]) : array();
-                        $values = array();
-                        $option_text = '';
-
-                        foreach ($map_data[$key]['mf_input_list'] as $item) {
-                            if (isset($item['label']) && in_array($item['value'], $selected_values)) {
-                                $values[$item['label']] = $item['label'];
+                    if ($has_options) {
+                        $items = static::resolve_option_display_items($form_data[$key] ?? null, $map_data[$key]['mf_input_list']);
+                        if (!empty($items)) {
+                            foreach ($items as $item) {
+                                $text = $show_names ? $item['display'] : $item['value'];
+                                echo "<span class='mf-entries-badge-pill'>" . esc_html($text) . "</span>";
                             }
-                            if (isset($item['mf_input_option_text']) && isset($item['mf_input_option_value']) && $item['mf_input_option_value'] == $form_data[$key]) {
-                                $option_text = $item['mf_input_option_text'];
-                            }
-                        }
-
-                        if (!empty($values)) {
-                            foreach ($values as $pill) {
-                                echo "<span class='mf-entries-badge-pill'>" . esc_html($pill) . "</span>";
-                            }
-                        } else {
-                            echo esc_html($option_text);
                         }
                     } else if (isset($value['widgetType']) && $value['widgetType'] == 'mf-text-editor') {
                         echo wp_kses_post($form_data[$key]);
@@ -140,33 +239,28 @@ class Form_Data
 
                 // ── Checkbox ──────────────────────────────────────────
                 if (isset($value['widgetType']) && $value['widgetType'] == 'mf-checkbox') {
-                    $label = isset($map_data[$key]['mf_input_label']) ? $map_data[$key]['mf_input_label'] : '';
-                    if ($label && isset($map_data[$key]['mf_input_list']) && is_array($map_data[$key]['mf_input_list']) && isset($form_settings['mf_field_name_show']) && $form_settings['mf_field_name_show'] == 1) {
-                        $selected_values = isset($form_data[$key]) ? explode(',', $form_data[$key]) : array();
-                        foreach ($map_data[$key]['mf_input_list'] as $item) {
-                            if (isset($item['mf_input_option_text']) && in_array($item['mf_input_option_value'], $selected_values)) {
-                                echo "<span class='mf-entries-badge-pill'>" . esc_html($item['mf_input_option_text']) . "</span>";
-                            }
-                        }
-                    } else {
-                        $output = isset($form_data[$key]) ? (is_array($form_data[$key]) ? implode(',', $form_data[$key]) : $form_data[$key]) : '';
-                        if (!empty($output)) {
-                            foreach (array_filter(array_map('trim', explode(',', $output))) as $pill) {
-                                echo "<span class='mf-entries-badge-pill'>" . esc_html($pill) . "</span>";
-                            }
+                    $options_list = (isset($map_data[$key]['mf_input_list']) && is_array($map_data[$key]['mf_input_list'])) ? $map_data[$key]['mf_input_list'] : [];
+                    $show_names   = !empty($form_settings['mf_field_name_show']) && (int) $form_settings['mf_field_name_show'] === 1;
+
+                    $items = static::resolve_option_display_items($form_data[$key] ?? null, $options_list);
+                    if (!empty($items)) {
+                        foreach ($items as $item) {
+                            $text = $show_names ? $item['display'] : $item['value'];
+                            echo "<span class='mf-entries-badge-pill'>" . esc_html($text) . "</span>";
                         }
                     }
                 }
 
                 // ── Image Select ──────────────────────────────────────
                 if (isset($value['widgetType']) && $value['widgetType'] == 'mf-image-select') {
-                    $selected_value = isset($form_data[$key]) ? $form_data[$key] : '';
-                    $selected_values = is_array($selected_value) ? $selected_value : explode(',', $selected_value);
+                    $options_list = (isset($map_data[$key]['mf_input_list']) && is_array($map_data[$key]['mf_input_list'])) ? $map_data[$key]['mf_input_list'] : [];
+                    $show_names   = !empty($form_settings['mf_field_name_show']) && (int) $form_settings['mf_field_name_show'] === 1;
 
-                    foreach ($map_data[$key]['mf_input_list'] as $item) {
-                        if (isset($item['mf_input_option_value']) && in_array($item['mf_input_option_value'], $selected_values)) {
-                            $pill_txt = (isset($item['mf_image_select_title']) && $item['mf_image_select_title'] !== '') ? $item['mf_image_select_title'] : $item['mf_input_option_value'];
-                            echo "<span class='mf-entries-badge-pill'>" . esc_html($pill_txt) . "</span>";
+                    $items = static::resolve_option_display_items($form_data[$key] ?? null, $options_list);
+                    if (!empty($items)) {
+                        foreach ($items as $item) {
+                            $text = $show_names ? $item['display'] : $item['value'];
+                            echo "<span class='mf-entries-badge-pill'>" . esc_html($text) . "</span>";
                         }
                     }
                 }
@@ -189,8 +283,14 @@ class Form_Data
                 if (isset($value['widgetType']) && $value['widgetType'] == 'mf-simple-repeater') {
                     $repeater_data = (array_key_exists($key, $form_data)) ? $form_data[$key] : [];
                     $count_index = 0; $previous_level = null;
+                    $repeater_labels = static::repeater_labels_by_name($map_data[$key] ?? []);
                     foreach ($repeater_data as $k => $v) {
-                        $repeater_level = null;
+                        $repeater_level = static::repeater_label_for_key($repeater_labels, $k);
+                        if (null !== $repeater_level) {
+                            echo "<div class='mf-entries-repeater-row'><strong>" . esc_html($repeater_level) . ": </strong><span>" . esc_html($v) . "</span></div>";
+                            $count_index++;
+                            continue;
+                        }
                         if (isset($map_data[$key]["mf_input_repeater"][$count_index]["mf_input_repeater_label"])) {
                             $repeater_level = $map_data[$key]["mf_input_repeater"][$count_index]["mf_input_repeater_label"];
                         }
@@ -200,16 +300,25 @@ class Form_Data
                         if ($repeater_level == null && $previous_level != null) { $repeater_level = $previous_level; }
 
                         echo "<div class='mf-entries-repeater-row'><strong>" . esc_html(($repeater_level != null) ? $repeater_level : $k) . ": </strong>";
-                        if ($repeater_level && isset($map_data[$key]["mf_input_repeater"][$count_index]["mf_input_repeater_option"]) && isset($form_settings['mf_field_name_show']) && $form_settings['mf_field_name_show'] == 1) {
-                            $options = explode("\n", $map_data[$key]["mf_input_repeater"][$count_index]["mf_input_repeater_option"]);
-                            $optionOutput = []; $selected_options = explode(',', $v);
+                        $show_names  = !empty($form_settings['mf_field_name_show']) && (int) $form_settings['mf_field_name_show'] === 1;
+                        $rep_opt_str = $map_data[$key]["mf_input_repeater"][$count_index]["mf_input_repeater_option"] ?? '';
+
+                        if ($show_names && '' !== trim((string) $rep_opt_str)) {
+                            $options = array_filter(array_map('trim', explode("\n", (string) $rep_opt_str)));
+                            $optionOutput = [];
+                            $selected_options = is_array($v) ? $v : array_map('trim', explode(',', (string) $v));
+
                             foreach ($options as $option) {
-                                list($optionName, $optionValue) = explode('|', $option);
-                                if (in_array($optionValue, $selected_options)) { $optionOutput[] = $optionName; }
+                                $parts = explode('|', $option, 2);
+                                $optionName = $parts[0];
+                                $optionValue = $parts[1] ?? $parts[0];
+                                if (in_array($optionValue, $selected_options, true) || in_array($optionName, $selected_options, true)) {
+                                    $optionOutput[] = ($optionName !== $optionValue) ? "$optionName - $optionValue" : $optionName;
+                                }
                             }
-                            echo "<span>" . esc_html(implode(", ", $optionOutput)) . "</span>";
+                            echo "<span>" . esc_html(!empty($optionOutput) ? implode(", ", $optionOutput) : (is_array($v) ? implode(', ', $v) : $v)) . "</span>";
                         } else {
-                            echo "<span>" . esc_html($v) . "</span>";
+                            echo "<span>" . esc_html(is_array($v) ? implode(', ', $v) : $v) . "</span>";
                         }
                         echo "</div>";
                         $count_index++;
@@ -314,42 +423,13 @@ class Form_Data
                         echo "<td width='20'>&nbsp;</td>";
 
                         if (!in_array($value['widgetType'], ['mf-file-upload', 'mf-textarea', 'mf-simple-repeater', 'mf-signature', 'mf-like-dislike', 'mf-credit-card','mf-image-select','mf-checkbox','mf-mobile'])) {                            
-                          
-                            $label = isset($map_data[$key]['mf_input_label']) ? $map_data[$key]['mf_input_label'] : '';                             
-                            
-                            if ($label && 
-                                isset($map_data[$key]['mf_input_list']) 
-                                && is_array($map_data[$key]['mf_input_list']) 
-                                && isset($form_settings['mf_field_name_show'] ) 
-                                &&  $form_settings['mf_field_name_show']  == 1) {
-                                
-                                $selected_values = isset($form_data[$key]) ? explode(',', $form_data[$key]) : array();                                
-                                $values = array();     
-                                $option_text = '';                           
-                               
-                                foreach ($map_data[$key]['mf_input_list'] as $item) {
-                                    
-                                    
-                                    // Check if 'label' key exists in the item
-                                    if ( isset($item['label']) && in_array($item['value'], $selected_values) ) { 
-                                        $values[$item['label']] = $item['label'] . ' - ' . $item['value'];
-                                    }
+                            $has_options = isset($map_data[$key]['mf_input_list']) && is_array($map_data[$key]['mf_input_list']) && !empty($map_data[$key]['mf_input_list']);
+                            $show_names  = !empty($form_settings['mf_field_name_show']) && (int) $form_settings['mf_field_name_show'] === 1;
 
-                                    if ( isset($item['mf_input_option_text']) 
-                                        &&  isset($item['mf_input_option_value']) 
-                                        && $item['mf_input_option_value'] == $form_data[$key]  ) {
-
-                                        $option_text = $item['mf_input_option_text'] .' - '. $item['mf_input_option_value'] ;   
-                                    }
-                                    
-                                } 
-                                $result =  implode(', ', $values);
-
-                                if(!empty($result)){
-                                    echo "<td>" . esc_html($result) . "</td>";
-                                }else{
-                                    echo "<td>" . esc_html( $option_text ) . "</td>";
-                                }
+                            if ($has_options) {
+                                $items = static::resolve_option_display_items($form_data[$key] ?? null, $map_data[$key]['mf_input_list']);
+                                $rendered = array_map(static fn($it) => $show_names ? $it['display'] : $it['value'], $items);
+                                echo "<td>" . esc_html(implode(', ', $rendered)) . "</td>";
                             } else if(isset($value['widgetType']) && $value['widgetType'] == 'mf-text-editor') {
                                 echo "<td>" . wp_kses_post($form_data[$key]) . "</td>";
                             }else{
@@ -364,54 +444,21 @@ class Form_Data
                         }
                         
                         if (isset($value['widgetType']) && $value['widgetType'] == 'mf-checkbox') {
-                            $label = isset($map_data[$key]['mf_input_label']) ? $map_data[$key]['mf_input_label'] : '';
-                        
-                            if ($label && isset($map_data[$key]['mf_input_list']) && is_array($map_data[$key]['mf_input_list']) && isset($form_settings['mf_field_name_show']) && $form_settings['mf_field_name_show'] == 1) {
-                                $selected_values = isset($form_data[$key]) ? explode(',', $form_data[$key]) : array();                                
-                                $values = array();
-                        
-                                foreach ($map_data[$key]['mf_input_list'] as $item) {
-                                    if (isset($item['mf_input_option_text']) && in_array($item['mf_input_option_value'], $selected_values)) {
-                                        $values[$item['mf_input_option_text']] = $item['mf_input_option_text'] . ' - ' . $item['mf_input_option_value'];
-                                    }
-                                }
-                        
-                                $result = implode(', ', $values);
-                        
-                                if (!empty($result)) {
-                                    echo "<td>" . esc_html($result) . "</td>";
-                                }
-                            } else {
-                                $output = isset($form_data[$key]) ? (is_array($form_data[$key]) ? implode(', ', $form_data[$key]) : $form_data[$key]) : '';
-                                echo "<td>" . esc_html($output) . "</td>";
-                            }
+                            $options_list = (isset($map_data[$key]['mf_input_list']) && is_array($map_data[$key]['mf_input_list'])) ? $map_data[$key]['mf_input_list'] : [];
+                            $show_names   = !empty($form_settings['mf_field_name_show']) && (int) $form_settings['mf_field_name_show'] === 1;
+
+                            $items    = static::resolve_option_display_items($form_data[$key] ?? null, $options_list);
+                            $rendered = array_map(static fn($it) => $show_names ? $it['display'] : $it['value'], $items);
+                            echo "<td>" . esc_html(implode(', ', $rendered)) . "</td>";
                         }
 
                         if (isset($value['widgetType']) && $value['widgetType'] == 'mf-image-select') {
-                            $selected_value = isset($form_data[$key]) ? $form_data[$key] : '';
-                            $option_text = '';
-                            $option_value = '';
-                        
-                            foreach ($map_data[$key]['mf_input_list'] as $item) {
-                                if (isset($item['mf_input_option_value']) && $item['mf_input_option_value'] == $selected_value ) {
-                                    if (isset($item['mf_image_select_title']) && $item['mf_image_select_title'] !== '') {
-                                        // If mf_image_select_title is not empty, use it in the option text.
-                                        $option_text = $item['mf_image_select_title'] . ' - ' . $item['mf_input_option_value'];
-                                    } else {
-                                        // If mf_image_select_title is empty, use mf_input_option_value.
-                                        $option_text = $item['mf_input_option_value'];
-                                    }
-                                    
-                                    $option_value = $item['mf_input_option_value'];
-                        
-                                }
-                            }
-                        
-                            if (isset($form_settings['mf_field_name_show']) && $form_settings['mf_field_name_show'] == 1) {
-                                echo "<td>" . esc_html($option_text) . "</td>";
-                            } else {
-                                echo "<td>" . esc_html($option_value) . "</td>";
-                            }
+                            $options_list = (isset($map_data[$key]['mf_input_list']) && is_array($map_data[$key]['mf_input_list'])) ? $map_data[$key]['mf_input_list'] : [];
+                            $show_names   = !empty($form_settings['mf_field_name_show']) && (int) $form_settings['mf_field_name_show'] === 1;
+
+                            $items    = static::resolve_option_display_items($form_data[$key] ?? null, $options_list);
+                            $rendered = array_map(static fn($it) => $show_names ? $it['display'] : $it['value'], $items);
+                            echo "<td>" . esc_html(implode(', ', $rendered)) . "</td>";
                         }                      
                         
                         if (isset($value['widgetType']) && $value['widgetType'] == 'mf-signature') {
@@ -431,9 +478,19 @@ class Form_Data
                             $repeater_data = ((array_key_exists($key, $form_data)) ? $form_data[$key] : []);                            
                             $count_index = 0; // number of repeater input field counter
                             $previous_level = null;
+                            $repeater_labels = static::repeater_labels_by_name($map_data[$key] ?? []);
                         
                             foreach ($repeater_data as $k => $v) {
-                                $repeater_level = null;
+                                $repeater_level = static::repeater_label_for_key($repeater_labels, $k);
+                                if (null !== $repeater_level) {
+                                    echo "<strong>" . esc_html($repeater_level) . ": </strong>" . wp_kses_post("<span>" . esc_html($v) . "</span>") . "<br>";
+                                    $count_index++;
+                                    if (isset($map_data[$key]["mf_input_repeater"]) && $count_index == count($map_data[$key]["mf_input_repeater"])) {
+                                        $count_index = 0;
+                                        echo "<div class='simple-repeater-entry-data-divider'></div>";
+                                    }
+                                    continue;
+                                }
                         
                                 if ((isset($map_data[$key]["mf_input_repeater"][$count_index]["mf_input_repeater_label"]))) {
                                     $repeater_level = $map_data[$key]["mf_input_repeater"][$count_index]["mf_input_repeater_label"];
@@ -447,20 +504,25 @@ class Form_Data
                                 }
                         
                                 echo "<strong>" . esc_html(($repeater_level != null) ? $repeater_level : $k) . ": </strong>";
-                                
-                                if ($repeater_level  && isset($map_data[$key]["mf_input_repeater"][$count_index]["mf_input_repeater_option"]) && isset($form_settings['mf_field_name_show']) && $form_settings['mf_field_name_show'] == 1) {
-                                    $options = explode("\n", $map_data[$key]["mf_input_repeater"][$count_index]["mf_input_repeater_option"]);
+                                $show_names  = !empty($form_settings['mf_field_name_show']) && (int) $form_settings['mf_field_name_show'] === 1;
+                                $rep_opt_str = $map_data[$key]["mf_input_repeater"][$count_index]["mf_input_repeater_option"] ?? '';
+
+                                if ($show_names && '' !== trim((string) $rep_opt_str)) {
+                                    $options = array_filter(array_map('trim', explode("\n", (string) $rep_opt_str)));
                                     $optionOutput = [];
-                                    $selected_options = explode(',', $v);
+                                    $selected_options = is_array($v) ? $v : array_map('trim', explode(',', (string) $v));
+
                                     foreach ($options as $option) {
-                                        list($optionName, $optionValue) = explode('|', $option);
-                                        if (in_array($optionValue, $selected_options)) {
-                                            $optionOutput[] = "$optionName - $optionValue";
+                                        $parts       = explode('|', $option, 2);
+                                        $optionName  = $parts[0];
+                                        $optionValue = $parts[1] ?? $parts[0];
+                                        if (in_array($optionValue, $selected_options, true) || in_array($optionName, $selected_options, true)) {
+                                            $optionOutput[] = ($optionName !== $optionValue) ? "$optionName - $optionValue" : $optionName;
                                         }
                                     }
-                                    echo wp_kses_post("<span>" . implode(", ", $optionOutput) . "</span>");
+                                    echo wp_kses_post("<span>" . esc_html(!empty($optionOutput) ? implode(", ", $optionOutput) : (is_array($v) ? implode(', ', $v) : $v)) . "</span>");
                                 } else {
-                                    echo wp_kses_post("<span>" . esc_html($v) . "</span>");
+                                    echo wp_kses_post("<span>" . esc_html(is_array($v) ? implode(', ', $v) : $v) . "</span>");
                                 }
                         
                                 echo "<br>";

@@ -1,5 +1,8 @@
 <?php
 namespace Elementor;
+
+use MetForm\Utils\Util;
+
 defined( 'ABSPATH' ) || exit;
 
 Class MetForm_Input_Gdpr_Consent extends Widget_Base{
@@ -89,7 +92,7 @@ Class MetForm_Input_Gdpr_Consent extends Widget_Base{
                 'label' => esc_html__( 'Checkbox Option Text', 'metform' ),
                 'type' => Controls_Manager::TEXTAREA,
                 'rows' => 10,
-                'default' => \MetForm\Utils\Util::kses( "Agree on our <a href='#'>terms and condition</a> for using your submitted data?" , 'metform' ),
+                'default' => Util::kses( "Agree on our <a href='#'>terms and condition</a> for using your submitted data?" , 'metform' ),
 				'label_block' => true,
 				'description' => esc_html__('Select option name that will be show to user.', 'metform'),
             ]
@@ -502,7 +505,7 @@ Class MetForm_Input_Gdpr_Consent extends Widget_Base{
 		<div class="mf-input-wrapper">
 			<?php if ( 'yes' == $mf_input_label_status ): ?>
 				<label class="mf-input-label" for="mf-input-gdpr-<?php echo esc_attr( $this->get_id() ); ?>">
-					<?php echo esc_html(\MetForm\Utils\Util::react_entity_support( $mf_input_label, $render_on_editor )); ?>
+					<?php echo Util::esc_mflt_react_entity( $mf_input_label, $render_on_editor ); ?>
 					<span class="mf-input-required-indicator"><?php echo esc_html( ($mf_input_required === 'yes') ? '*' : '' );?></span>
 				</label>
 			<?php endif; ?>
@@ -512,7 +515,7 @@ Class MetForm_Input_Gdpr_Consent extends Widget_Base{
 					<label>
 						<?php
 							if ( $mf_gdpr_consent_option_text_position == 'before' ):
-								echo str_replace('&amp;','&', wp_kses(str_replace('`', '\`', $mf_gdpr_consent_option_text), \MetForm\Utils\Util::get_kses_array()));
+								echo Util::esc_mflt_kses_ampersand( $mf_gdpr_consent_option_text );
 							endif;
 						?>
 						<input
@@ -528,7 +531,7 @@ Class MetForm_Input_Gdpr_Consent extends Widget_Base{
 						<span>
 							<?php
 								if ( $mf_gdpr_consent_option_text_position == 'after' ):
-									echo str_replace('&amp;','&', wp_kses(str_replace('`', '\`', $mf_gdpr_consent_option_text), \MetForm\Utils\Util::get_kses_array()));
+									echo Util::esc_mflt_kses_ampersand( $mf_gdpr_consent_option_text );
 								endif;
 							?>
 						</span>
@@ -544,7 +547,7 @@ Class MetForm_Input_Gdpr_Consent extends Widget_Base{
 					/>
 			<?php endif; ?>
 
-			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', esc_html( \MetForm\Utils\Util::react_entity_support(trim($mf_input_help_text), $render_on_editor))) : ''); ?>
+			<?php echo ('' !== trim($mf_input_help_text) ? sprintf('<span class="mf-input-help"> %s </span>', Util::esc_mflt_react_entity(trim($mf_input_help_text), $render_on_editor)) : ''); ?>
 		</div>
 
 		<?php

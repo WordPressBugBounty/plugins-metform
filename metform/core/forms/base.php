@@ -67,6 +67,11 @@ Class Base extends \MetForm\Base\Common{
                 'hasQuiz'   => Template_Library\Access::has_quiz(),
                 'package'   => Template_Library\Access::get_package(),
                 'wpVersion' => get_bloginfo('version'),
+                'elementorInstalled' => file_exists(WP_PLUGIN_DIR . '/elementor/elementor.php'),
+                'elementorActive' => did_action('elementor/loaded'),
+                'elementorAvailable' => did_action('elementor/loaded')
+                    && defined('ELEMENTOR_VERSION')
+                    && version_compare(ELEMENTOR_VERSION, '3.0.1', '>='),
             ]);
         }
         if ($screen->id == 'metform_page_metform-analytics') {
@@ -93,6 +98,24 @@ Class Base extends \MetForm\Base\Common{
                     'is_metform_pro_active' => $is_metform_pro_active,
                     'is_mid_tier' => $is_mid_tier,
                     'is_top_tier' => $is_top_tier,
+                ]);
+            }
+        }
+
+        if ($screen->id == 'metform_page_metform-builder') {
+            $plugin = \MetForm\Plugin::instance();
+            $asset_file = $plugin->plugin_dir() . 'build/form-builder/index.asset.php';
+
+            if (file_exists($asset_file)) {
+                $asset = include $asset_file;
+                Assets_Enqueue::get('metform-builder');
+
+                wp_localize_script('metform-builder', 'metformFormBuilder', [
+                    'pluginUrl' => $plugin->plugin_url(),
+                    'adminUrl'  => admin_url(),
+                    'nonce'     => wp_create_nonce('wp_rest'),
+                    // no REST calls exist in src/form-builder yet — extend this
+                    // array once the state/slices start fetching data.
                 ]);
             }
         }

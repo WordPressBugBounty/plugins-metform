@@ -1315,9 +1315,14 @@
 
                 <div class="attr-modal-footer">
                     <div class="footer-btn-group">
-                        <button type="button" class="attr-btn attr-btn-default metform-form-save-btn-editor">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"><path fill="#fff" d="M10 0C4.477 0 0 4.477 0 10c0 5.522 4.477 10 10 10s10-4.477 10-10c-.002-5.523-4.478-10-10-10ZM7.5 14.165H5.835V5.833H7.5v8.332Zm6.665 0H9.166V12.5h5v1.665Zm0-3.333H9.166V9.166h5v1.666Zm0-3.333H9.166V5.833h5v1.666Z"/></svg>
-                            <?php esc_html_e('Edit content', 'metform'); ?>
+                        <button type="button" class="attr-btn attr-btn-default metform-form-save-btn-editor" data-builder-type="elementor">
+                            <span class="mf-editor-btn-icon mf-editor-btn-icon--elementor">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"><path fill="#fff" d="M10 0C4.477 0 0 4.477 0 10c0 5.522 4.477 10 10 10s10-4.477 10-10c-.002-5.523-4.478-10-10-10ZM7.5 14.165H5.835V5.833H7.5v8.332Zm6.665 0H9.166V12.5h5v1.665Zm0-3.333H9.166V9.166h5v1.666Zm0-3.333H9.166V5.833h5v1.666Z"/></svg>
+                            </span>
+                            <span class="mf-editor-btn-icon mf-editor-btn-icon--metform" style="display:none;">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="3.5" width="15" height="13" rx="1.5" stroke="#fff" stroke-width="1.2"/><path d="M2.5 7.25h15M6.25 7.25v9.25M9.25 10.25h5.25M9.25 13.25h3.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
+                            </span>
+                            <span class="mf-editor-btn-text"><?php esc_html_e('Edit with Elementor', 'metform'); ?></span>
                         </button>
                         <button type="submit" class="attr-btn attr-btn-primary metform-form-save-btn"><?php esc_html_e('Save changes', 'metform'); ?></button>
                     </div>

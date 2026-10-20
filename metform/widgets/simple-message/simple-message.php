@@ -2,6 +2,8 @@
 
 namespace Elementor;
 
+use MetForm\Utils\Util;
+
 defined( 'ABSPATH' ) || exit;
 
 Class MetForm_Simple_Message extends Widget_Base{
@@ -55,7 +57,7 @@ Class MetForm_Simple_Message extends Widget_Base{
                 'label' => esc_html__( 'Message', 'metform' ),
                 'type' => Controls_Manager::TEXTAREA,
                 'rows' => 4,
-                'default' => \MetForm\Utils\Util::kses( "This is your simple message." , 'metform' ),
+                'default' => Util::kses( "This is your simple message." , 'metform' ),
 				'label_block' => true,
             ]
         );
@@ -154,7 +156,7 @@ Class MetForm_Simple_Message extends Widget_Base{
 			<p class="mf-simple-message-text">
 				<?php
 					if ( ! empty( $settings['mf_simple_message_text'] ) ) {
-						echo esc_html( $settings['mf_simple_message_text'] );
+						echo esc_html( Util::esc_mflt( $settings['mf_simple_message_text'] ) );
 					}
 				?>
 			</p>
