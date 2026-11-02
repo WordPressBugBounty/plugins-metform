@@ -40,6 +40,38 @@ class Builder {
 	const META_CLONED_ID = '_metform_cloned_id';
 
 	/**
+	 * Whether a user may create and publish forms.
+	 *
+	 * Forms are registered with `capability_type => 'page'`, so this resolves
+	 * to `edit_pages` + `publish_pages` (Editor and Administrator by default).
+	 * Contributors and Authors only have the post-level capabilities and are
+	 * refused.
+	 *
+	 * @since 4.3.4
+	 *
+	 * @param int|null $user_id Optional. User ID to check. Defaults to the current user.
+	 * @return bool True when the user may create forms.
+	 */
+	public static function can_create_forms( $user_id = null ) {
+		$post_type = get_post_type_object( Base::instance()->form->get_name() );
+		$caps      = $post_type
+			? [ $post_type->cap->create_posts, $post_type->cap->publish_posts ]
+			: [ 'edit_pages', 'publish_pages' ];
+
+		foreach ( $caps as $cap ) {
+			$allowed = null === $user_id
+				? current_user_can( $cap )
+				: user_can( (int) $user_id, $cap );
+
+			if ( ! $allowed ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Redirect to a form's editor.
 	 *
 	 * @param int $form_id Form post ID.
@@ -103,9 +135,20 @@ class Builder {
 	 *     @type array  $template_content  Processed Elementor element tree.
 	 *     @type array  $template_settings MetForm settings from the template.
 	 * }
-	 * @return int|\WP_Error Created form post ID, or an error when insertion fails.
+	 * @return int|\WP_Error Created form post ID, or an error when the user may
+	 *                       not create forms or insertion fails.
 	 */
 	public function create_form( $title, $template_id = 0, $data = [] ) {
+		// Forms are inserted as published, so every caller must be allowed to
+		// publish this post type. Checked here so no entry point can skip it.
+		if ( ! self::can_create_forms() ) {
+			return new \WP_Error(
+				'metform_forbidden',
+				esc_html__( 'You are not allowed to create forms.', 'metform' ),
+				[ 'status' => 403 ]
+			);
+		}
+
 		$data              = is_array( $data ) ? $data : [];
 		$template_content  = isset( $data['template_content'] ) && is_array( $data['template_content'] ) ? $data['template_content'] : null;
 		$template_settings = isset( $data['template_settings'] ) && is_array( $data['template_settings'] ) ? $data['template_settings'] : [];

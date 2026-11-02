@@ -191,6 +191,11 @@ final class Plugin {
             $this->failed_elementor_version();
         }
 
+        // MetForm Pro older than 4.1.3 doesn't have the features that moved to Pro in MetForm 4.3.4.
+        if (is_admin() && defined('METFORM_PRO_VERSION') && version_compare(METFORM_PRO_VERSION, '4.1.3', '<')) {
+            add_action('current_screen', [$this, 'outdated_pro_notice']);
+        }
+
         if (current_user_can('manage_options')) {
             add_action('admin_menu', [$this, 'admin_menu']);
         }
@@ -465,7 +470,6 @@ final class Plugin {
 
         wp_localize_script('metform-app', 'mf', [
             'postType' => get_post_type(),
-            'restURI' => get_rest_url(null, 'metform/v1/forms/views/'),
             'minMsg1' => __("Minimum length should be ","metform"),
             'Msg2' => __(" character long.","metform"),
             'maxMsg1' => __("Maximum length should be ","metform"),
@@ -679,6 +683,30 @@ final class Plugin {
         \Oxaim\Libs\Notice::instance('metform', 'unsupported-elementor-version')
             ->set_dismiss('global', (3600 * 24 * 15))
             ->set_message($message)
+            ->set_button($btn)
+            ->call();
+    }
+
+    /**
+     * Shown on MetForm screens only, until MetForm Pro is updated to 4.1.3+.
+     *
+     * @param \WP_Screen $screen
+     */
+    public function outdated_pro_notice($screen)
+    {
+        if (empty($screen->id) || strpos($screen->id, 'metform') === false) {
+            return;
+        }
+
+        $btn = [
+            'text'  => esc_html__('Update MetForm Pro', 'metform'),
+            'url'   => self_admin_url('plugins.php'),
+            'class' => 'button-primary',
+        ];
+
+        \Oxaim\Libs\Notice::instance('metform', 'outdated-metform-pro')
+            ->set_type('warning')
+            ->set_message(esc_html__('Confirmation email, submission copy, required login, entry limit, browser data, view count, stop vertical scrolling, CSV export, Mailchimp and Slack now live in MetForm Pro 4.1.3+. Update MetForm Pro to keep them working.', 'metform'))
             ->set_button($btn)
             ->call();
     }

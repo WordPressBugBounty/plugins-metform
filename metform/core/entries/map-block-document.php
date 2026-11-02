@@ -52,6 +52,8 @@ final class Map_Block_Document {
      */
     private const UNNAMED_WIDGET_TYPES = ['simplecaptcha', 'recaptcha'];
 
+    private const PRO_ONLY_TYPES = ['text-editor'];
+
     /** Matches inputControls.js/optionControls.js's `validation.type` values to the legacy strings validate_form_data() switches on. */
     private const VALIDATION_TYPE_MAP = [
         'character' => 'by_character_length',
@@ -71,6 +73,10 @@ final class Map_Block_Document {
             $type = (string) ($element['type'] ?? '');
             $props = is_array($element['props'] ?? null) ? $element['props'] : [];
             $widget_type = self::WIDGET_TYPE_MAP[$type] ?? ('mf-' . $type);
+
+            if (in_array($type, self::PRO_ONLY_TYPES, true) && !class_exists('\MetForm_Pro\Base\Package')) {
+                continue;
+            }
 
             if (in_array($type, self::UNNAMED_WIDGET_TYPES, true)) {
                 $fields[$widget_type] = self::create_field([

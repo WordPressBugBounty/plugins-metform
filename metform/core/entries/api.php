@@ -3,7 +3,6 @@
 namespace MetForm\Core\Entries;
 
 use MetForm\Core\Integrations\Get_Response;
-use MetForm\Core\Integrations\Mail_Chimp;
 
 defined('ABSPATH') || exit;
 
@@ -226,16 +225,6 @@ class Api extends \MetForm\Base\Api
 
         return $keys;
     }
-    public function get_export()
-    {
-        if(!current_user_can('manage_options')) {
-			return;
-		}
-
-        $id = $this->request['id'];
-
-        return Export::instance()->export_data($id);
-    }
 
     public function get_get_response_list_id()
     {
@@ -312,50 +301,6 @@ class Api extends \MetForm\Base\Api
         }
 
         return 'error';
-    }
-
-    public function get_get_mailchimp_list()
-    {
-        if(!current_user_can('manage_options')) {
-			return;
-		}
-        $post_id = $this->request['id'];
-        return get_option('wpmet_get_mailchimp_list_' . $post_id);
-    }
-
-    public function get_store_mailchimp_list()
-    {
-        $nonce = $this->request->get_header('X-WP-Nonce');
-
-        if(!current_user_can('manage_options')) {
-			return;
-		}
-
-
-        if(!wp_verify_nonce($nonce, 'wp_rest')) {
-            return [
-				'status'    => 'fail',
-				'message'   => [  __( 'Nonce mismatch.', 'metform' ) ],
-			];
-        }
-
-        $post_id = $this->request['id'];
-        $data = \MetForm\Core\Forms\Action::instance()->get_all_data($post_id);
-        $api_key = $data['mf_mailchimp_api_key'];
-        
-        if (!preg_match('/^[a-z0-9]{32}-[a-z0-9]{3,4}$/', $api_key)) {
-            return [
-				'status'    => 'fail',
-				'message'   => [  __( 'Invalid_api_key.', 'metform' ) ],
-			];
-        }
-
-        $mailChimp_list = json_decode(Mail_Chimp::get_list($api_key)['body']);
-
-        delete_option('wpmet_get_mailchimp_list_' . $post_id, $mailChimp_list);
-        update_option('wpmet_get_mailchimp_list_' . $post_id, $mailChimp_list);
-
-        return get_option('wpmet_get_mailchimp_list_' . $post_id, $mailChimp_list);
     }
 
     /**

@@ -122,14 +122,18 @@ class Hooks {
 				$current_url = admin_url();
 				$current_url .= "edit.php?post_type=metform-entry&mf_form_id=" . esc_attr($post_id);
 
-				$rest_url = get_rest_url();
-				$mf_ex_nonce = wp_create_nonce('wp_rest');
-				$url = $rest_url . "metform/v1/entries/export/" . $post_id;
-				$export_url = \MetForm\Utils\Util::add_param_url($url, "_wpnonce", $mf_ex_nonce);
+				/**
+				 * URL of the CSV export for this form. MetForm Pro provides it;
+				 * without one, a "Pro" placeholder is shown instead.
+				 *
+				 * @param string $export_url
+				 * @param int    $post_id
+				 */
+				$export_url = apply_filters('metform/forms/list/csv_export_url', '', $post_id);
 
 			?>
-				<a data-metform-form-id="<?php echo esc_attr($post_id); ?>" class='<?php echo class_exists('\MetForm_Pro\Plugin') || $this->is_old_user() ? esc_attr("") : esc_attr("mf-entry-count-btn"); ?>  attr-btn attr-btn-primary mf-entry-filter' href="<?php echo esc_url($current_url); ?>"><?php echo esc_html($count); ?></a>
-				<?php if (class_exists('\MetForm_Pro\Plugin') || $this->is_old_user()) : ?>
+				<a data-metform-form-id="<?php echo esc_attr($post_id); ?>" class='<?php echo $export_url ? esc_attr("") : esc_attr("mf-entry-count-btn"); ?>  attr-btn attr-btn-primary mf-entry-filter' href="<?php echo esc_url($current_url); ?>"><?php echo esc_html($count); ?></a>
+				<?php if ($export_url) : ?>
 					<a class='attr-btn attr-btn-primary mf-entry-export-csv' href="<?php echo esc_url($export_url); ?>"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M2.6665 8.66665V2.66811C2.6665 1.93115 3.26436 1.33396 4.00132 1.33478L8.6637 1.33997L13.3332 5.99998V8.66665M8.6665 1.66665V4.66665C8.6665 5.40303 9.26344 5.99998 9.99984 5.99998H12.9998" stroke="#585960" stroke-linecap="round" stroke-linejoin="round" />
 							<path d="M8.6665 10.6667H7.33317C6.96497 10.6667 6.6665 10.9652 6.6665 11.3334V12C6.6665 12.3682 6.96497 12.6667 7.33317 12.6667H7.99984C8.36804 12.6667 8.6665 12.9652 8.6665 13.3334V14C8.6665 14.3682 8.36804 14.6667 7.99984 14.6667H6.6665M10.3332 10.6667L11.8332 14.6667L13.3332 10.6667M4.99984 14C4.99984 14.3682 4.70136 14.6667 4.33317 14.6667H3.33317C2.96498 14.6667 2.6665 14.3682 2.6665 14V11.3334C2.6665 10.9652 2.96498 10.6667 3.33317 10.6667H4.33317C4.70136 10.6667 4.99984 10.9652 4.99984 11.3334" stroke="#585960" stroke-linecap="round" stroke-linejoin="round" />
@@ -258,21 +262,5 @@ class Hooks {
 				\MetForm\Utils\Util::metform_content_renderer($output);
 				break;
 		}
-	}
-
-	/**
-	 * Check if the user is old user
-	 */
-	public function is_old_user()
-	{
-
-		$install_date = get_option('metform_install_date', false);
-
-		//if install date before 23 november 2025 then it is old user
-		if ($install_date && strtotime($install_date) < strtotime('2025-11-23')) {
-			return true;
-		}
-
-		return false;
 	}
 }

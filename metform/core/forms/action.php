@@ -296,6 +296,17 @@ Class Action {
 			$all_settings['mf_conditional_redirect_rules'] = is_array( $decoded ) ? $decoded : [];
 		}
 
+		// Attach LeadSquared field mapping meta
+		$ls_fields = get_post_meta( $post_id, 'mf_leadsquared_fields', true );
+		if ( ! empty( $ls_fields ) ) {
+			$all_settings['mf_leadsquared_fields'] = $ls_fields;
+		}
+
+		$ls_static = get_post_meta( $post_id, 'mf_leadsquared_static', true );
+		if ( ! empty( $ls_static ) ) {
+			$all_settings['mf_leadsquared_static'] = $ls_static;
+		}
+		
 		$is_builder = Repository::is_builder_form( $post_id );
 		$all_settings['is_builder_form'] = $is_builder;
 		$all_settings['builder_type']    = $is_builder ? 'metform' : 'elementor';
@@ -306,20 +317,5 @@ Class Action {
 
 	public function get_count_views($form_id) {
 		return get_post_meta($form_id, $this->key_form_count_views, true);
-	}
-
-	public function count_views($form_id) {
-
-		$form_setting = $this->get_all_data($form_id);
-		//return $form_setting;
-
-		if(isset($form_setting['count_views']) && $form_setting['count_views'] == '1') {
-			$count = $this->get_count_views($form_id);
-			$count = (int)$count;
-			$count++;
-			update_post_meta($form_id, $this->key_form_count_views, $count);
-
-			return $count;
-		}
 	}
 }

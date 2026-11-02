@@ -57,7 +57,7 @@ class Widget_Met_Form extends Widget_Base {
 				'tab' => Controls_Manager::TAB_CONTENT,
 			]
 		);
-		$new_builder_url = admin_url( 'admin.php?action=metform-new-builder' );
+		$new_builder_url = \MetForm\Core\FormBuilder\Editor\Controller::get_new_builder_url();
 
 		$this->add_control(
             'important_note',
@@ -126,30 +126,38 @@ class Widget_Met_Form extends Widget_Base {
 
 		if(is_array($form_data) && isset($form_data['id'])){
 			unset($settings['mf_form_id']);
-			$form_id = explode('***', $form_data['id']);
-			$form_id = $form_id[0];
+			$template_id = explode('***', (string) $form_data['id']);
+			$template_id = absint($template_id[0]);
+			$form_id     = '';
 
-			$ffarg = get_posts([
-				'numberposts'	=> 1,
-				'p'         	=> $form_id,
-				'post_type' 	=> 'metform-form'
-			]);
+			// A non-numeric ID becomes 0, and `'p' => 0` would match the
+			// newest form, so only look up real IDs.
+			if ( $template_id ) {
+				$ffarg = get_posts([
+					'numberposts'	=> 1,
+					'p'         	=> $template_id,
+					'post_type' 	=> 'metform-form'
+				]);
 
-			$ffarg = (!empty($ffarg) ? $ffarg : get_posts([
-				'numberposts'	=> 1,
-				'post_type' 	=> 'metform-form',
-				'meta_key'		=> '_metform_cloned_id',
-				'meta_value'	=> 'template-' . $form_id,
-			]));
+				$ffarg = (!empty($ffarg) ? $ffarg : get_posts([
+					'numberposts'	=> 1,
+					'post_type' 	=> 'metform-form',
+					'meta_key'		=> '_metform_cloned_id',
+					'meta_value'	=> 'template-' . $template_id,
+				]));
 
-			if(empty($ffarg) && isset($form_data['data'])){
-				$form_id = \MetForm\Core\Forms\Builder::instance()->create_form('', $form_id, 
-					(isset($form_data['data'][0]) ? $form_data['data'][0] : '')
-				);
-				unset($form_data);
-			}else{
-				$form_id = $ffarg[0]->ID;
+				if ( ! empty( $ffarg ) ) {
+					$form_id = $ffarg[0]->ID;
+				} elseif (
+					isset( $form_data['data'][0] ) &&
+					is_array( $form_data['data'][0] ) &&
+					$this->can_create_form_from_template()
+				) {
+					$created = \MetForm\Core\Forms\Builder::instance()->create_form( '', $template_id, $form_data['data'][0] );
+					$form_id = is_wp_error( $created ) ? '' : absint( $created );
+				}
 			}
+			unset($form_data);
 		}else{
 
 			$form_id = explode('***', $settings['mf_form_id']);
@@ -173,5 +181,41 @@ class Widget_Met_Form extends Widget_Base {
 		echo '<div id="mf-response-props-id-'. esc_attr($form_id) .'" data-previous-steps-style="'. (!isset($settings['mf_form_previous_steps_style']) ? '' : esc_attr($settings['mf_form_previous_steps_style'])) .'" data-editswitchopen="'. esc_attr($message_edit_switch) .'" data-response_type="'. esc_attr($response_type) .'" data-erroricon="'. esc_attr($message_error_icon)  .'" data-successicon="'. esc_attr($message_success_icon) .'" data-messageposition="'. esc_attr($message_display_position) .'" class=" ' . esc_attr($direction .' '. (!isset($settings['mf_form_multistep_status']) ? '' : $settings['mf_form_multistep_status']) . $nav .' mf-scroll-top-'. ( (!empty($settings['mf_step_scroll_top']) && 'yes' == $settings['mf_step_scroll_top']) ? ($settings['mf_step_scroll_top']) : 'no' )) .'">';
 			\MetForm\Utils\Util::metform_content_renderer(\MetForm\Controls\Form_Picker_Utils::parse($form_id , $this->get_id()));
 		echo '</div>';
+	}
+
+	/**
+	 * Whether this render may create a form from the template descriptor
+	 * stored in `mf_form_id`.
+	 *
+	 * Anyone who can edit a post can write widget settings (for example a
+	 * Contributor through Elementor's save_builder request), so the descriptor
+	 * is untrusted. A form is only created when:
+	 * - the page is open in the Elementor editor or its preview, never on a
+	 *   normal frontend view, so visitors can't trigger it;
+	 * - the current user may publish forms;
+	 * - the post's author may publish forms too, so an Editor opening a
+	 *   Contributor's draft can't be used to create the Contributor's form.
+	 *
+	 * @since 4.3.4
+	 *
+	 * @return bool
+	 */
+	private function can_create_form_from_template() {
+		if ( ! \MetForm\Core\Forms\Builder::can_create_forms() ) {
+			return false;
+		}
+
+		$elementor = Plugin::$instance;
+		if ( ! $elementor->editor->is_edit_mode() && ! $elementor->preview->is_preview_mode() ) {
+			return false;
+		}
+
+		$document = $elementor->documents->get_current();
+		$post     = $document ? $document->get_main_post() : null;
+		if ( ! $post ) {
+			return false;
+		}
+
+		return \MetForm\Core\Forms\Builder::can_create_forms( (int) $post->post_author );
 	}
 }

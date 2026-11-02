@@ -43,6 +43,20 @@ class Controller {
 	}
 
 	/**
+	 * Gets the nonce-protected URL that creates a new standalone form.
+	 *
+	 * @since 4.3.4
+	 *
+	 * @return string New form URL (HTML-escaped by wp_nonce_url()).
+	 */
+	public static function get_new_builder_url() {
+		return wp_nonce_url(
+			admin_url( 'admin.php?action=metform-new-builder' ),
+			'metform-new-builder'
+		);
+	}
+
+	/**
 	 * Gets the WordPress-rendered canvas document URL.
 	 *
 	 * @since 4.1.8
@@ -101,11 +115,16 @@ class Controller {
 	 * @return void
 	 */
 	public function create_and_open_new_builder() {
-		if ( ! current_user_can( 'edit_posts' ) ) {
+		// This GET request creates a post, so it must carry a nonce to stop
+		// cross-site requests from creating forms.
+		check_admin_referer( 'metform-new-builder' );
+
+		// Forms are published on creation, so require the form post type's own
+		// capabilities instead of the generic `edit_posts` a Contributor has.
+		if ( ! Forms_Builder::can_create_forms() ) {
 			wp_die( esc_html__( 'Sorry, you are not allowed to create forms.', 'metform' ), 403 );
 		}
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$post_id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
 		if ( $post_id && 'metform-form' === get_post_type( $post_id ) && current_user_can( 'edit_post', $post_id ) ) {
 			wp_safe_redirect( self::get_builder_url( $post_id ) );

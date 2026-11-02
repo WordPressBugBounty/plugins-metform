@@ -56,6 +56,29 @@
                 <?php
             }
         }
+
+        if(!function_exists('mf_pro_setting_slot')){
+            /**
+             * Settings controls that MetForm Pro provides. Pro outputs the real
+             * controls through `metform/form_settings/slot/{$slot}`; without it
+             * the "Pro" placeholders are shown.
+             *
+             * @param string $slot
+             * @param array  $placeholders Arguments for mf_dummy_switch_input(), one per placeholder.
+             */
+            function mf_pro_setting_slot( $slot, array $placeholders ){
+                $hook = 'metform/form_settings/slot/' . $slot;
+
+                if ( has_action( $hook ) ) {
+                    do_action( $hook );
+                    return;
+                }
+
+                foreach ( $placeholders as $args ) {
+                    mf_dummy_switch_input( $args );
+                }
+            }
+        }
 ?>
 
 <div class="attr-modal attr-fade" id="metform_form_modal" tabindex="-1" role="dialog" aria-labelledby="metform_form_modalLabel" style="display:none;">
@@ -126,37 +149,21 @@
                                 ]); ?>
                             <?php endif; ?>
 
-                            <?php if(\MetForm\Utils\Util::is_using_feature('require_login') || class_exists('MetForm_Pro\Base\Package')): ?>
-                            <div class="mf-input-group mf-box-style">
-                                <label class="attr-input-label">
-                                    <input type="checkbox" value="1" name="require_login" class="mf-admin-control-input mf-form-modalinput-require_login">
-                                    <span><?php esc_html_e('Required Login:', 'metform'); ?></span>
-                                </label>
-                                <span class='mf-input-help'><?php esc_html_e('Without login, users can\'t submit the form.', 'metform'); ?></span>
-                            </div>
-                            <?php else: ?>
-                                <?php mf_dummy_switch_input([
+                            <?php mf_pro_setting_slot('require_login', [
+                                [
                                     'label' => __('Required Login', 'metform'),
                                     'help' => __('Without login, users can\'t submit the form.', 'metform'),
                                     'badge' => __('Pro', 'metform'),
-                                ]); ?>
-                            <?php endif; ?>
+                                ],
+                            ]); ?>
 
-                            <?php if(\MetForm\Utils\Util::is_using_feature('capture_user_browser_data') || class_exists('MetForm_Pro\Base\Package')): ?>
-                            <div class="mf-input-group mf-box-style">
-                                <label class="attr-input-label">
-                                    <input type="checkbox" value="1" name="capture_user_browser_data" class="mf-admin-control-input mf-form-modalinput-capture_user_browser_data">
-                                    <span><?php esc_html_e('Capture User Browser Data:', 'metform'); ?></span>
-                                </label>
-                                <span class='mf-input-help'><?php esc_html_e('Store user\'s browser data (ip, browser name, etc)', 'metform'); ?></span>
-                            </div>
-                            <?php else: ?>
-                                <?php mf_dummy_switch_input([
+                            <?php mf_pro_setting_slot('capture_browser_data', [
+                                [
                                     'label' => __('Capture User Browser Data', 'metform'),
                                     'help' => __('Store user\'s browser data (ip, browser name, etc)', 'metform'),
                                     'badge' => __('Pro', 'metform'),
-                                ]); ?>
-                            <?php endif; ?>
+                                ],
+                            ]); ?>
 
                             <div class="mf-input-group mf-box-style">
                                 <label class="attr-input-label">
@@ -182,26 +189,13 @@
                                 </div>
                             </div>
 
-                            <?php if(\MetForm\Utils\Util::is_using_feature('limit_total_entries_status') || class_exists('MetForm_Pro\Base\Package')): ?>
-                            <div class="mf-input-group mf-box-style">
-                                <div class="mf-input-group-inner">
-                                    <label class="attr-input-label">
-                                        <input type="checkbox" value="1" name="limit_total_entries_status" class="mf-admin-control-input mf-form-modalinput-limit_status">
-                                        <span><?php esc_html_e('Limit Total Entries:', 'metform'); ?></span>
-                                    </label>
-                                    <div class="mf-input-group" id='limit_status'>
-                                        <input type="number" min="1" name="limit_total_entries" class="mf-form-modalinput-limit_total_entries attr-form-control">
-                                    </div>
-                                </div>
-                                <span class='mf-input-help mf-limit-help'><?php esc_html_e('Limit the total number of submissions for this form.', 'metform'); ?></span>
-                            </div>
-                            <?php else: ?>
-                                <?php mf_dummy_switch_input([
+                            <?php mf_pro_setting_slot('limit_total_entries', [
+                                [
                                     'label' => __('Limit Total Entries', 'metform'),
                                     'help' => __('Limit the total number of submissions for this form.', 'metform'),
                                     'badge' => __('Pro', 'metform'),
-                                ]); ?>
-                            <?php endif; ?>
+                                ],
+                            ]); ?>
                             <?php if(class_exists('MetForm_Pro\Base\Package') ): ?>
                             <div class="mf-input-group mf-box-style">
                                 <label class="attr-input-label">
@@ -252,21 +246,13 @@
                                     'badge' => __('Pro', 'metform'),
                                 ]); ?>
                             <?php endif; ?>
-                            <?php if(\MetForm\Utils\Util::is_using_feature('count_views') || class_exists('MetForm_Pro\Base\Package')): ?>
-                            <div class="mf-input-group mf-box-style">
-                                <label class="attr-input-label">
-                                    <input type="checkbox" value="1" name="count_views" class="mf-admin-control-input mf-form-modalinput-count_views">
-                                    <span><?php esc_html_e('Count views:', 'metform'); ?></span>
-                                </label>
-                                <span class='mf-input-help'><?php esc_html_e('Track form views.', 'metform'); ?></span>
-                            </div>
-                            <?php else: ?>
-                                <?php mf_dummy_switch_input([
+                            <?php mf_pro_setting_slot('count_views', [
+                                [
                                     'label' => __('Count views', 'metform'),
                                     'help' => __('Track form views.', 'metform'),
                                     'badge' => __('Pro', 'metform'),
-                                ]); ?>
-                            <?php endif; ?>
+                                ],
+                            ]); ?>
 
                             <?php if( class_exists('MetForm_Pro\Base\Package') && ( \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier() ) ): ?>
                             <div class="mf-input-group mf-box-style">
@@ -284,21 +270,13 @@
                                 ]); ?>
                             <?php endif; ?>
 
-                            <?php if( \MetForm\Utils\Util::is_using_feature('mf_stop_vertical_scrolling') || ( class_exists('MetForm_Pro\Base\Package') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier()))): ?>
-                            <div class="mf-input-group mf-box-style">
-                                <label class="attr-input-label">
-                                    <input type="checkbox" value="1" name="mf_stop_vertical_scrolling" class="mf-admin-control-input mf-form-modalinput-stop_vertical_scrolling">
-                                    <span><?php esc_html_e('Stop Vertical Scrolling:', 'metform'); ?></span>
-                                </label>
-                                <span class='mf-input-help'><?php esc_html_e('Stop scrolling effect when submitting the form.', 'metform'); ?></span>
-                            </div>
-                            <?php else: ?>
-                                <?php mf_dummy_switch_input([
+                            <?php mf_pro_setting_slot('stop_vertical_scrolling', [
+                                [
                                     'label' => __('Stop Vertical Scrolling', 'metform'),
                                     'help' => __('Stop scrolling effect when submitting the form.', 'metform'),
                                     'badge' => __('Pro', 'metform'),
-                                ]); ?>
-                            <?php endif; ?>
+                                ],
+                            ]); ?>
 
                             <div class="mf-input-group mf-form-top-spacing" style="margin-bottom: <?php echo esc_attr($bottom_margin); ?>";>
                                 <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('Redirect To:', 'metform'); ?></label>
@@ -334,66 +312,17 @@
                     </div>
                     <div role="tabpanel" class="attr-tab-pane" id="mf-confirmation">
                         <div class="attr-modal-body" id="metform_form_modal_body">
-                            <?php if(\MetForm\Utils\Util::is_using_feature('enable_user_notification') || class_exists('MetForm_Pro\Base\Package')): ?>
-                            <div class="mf-input-group mf-box-style">
-                                <label class="attr-input-label">
-                                    <input type="checkbox" value="1" name="enable_user_notification" class="mf-admin-control-input mf-form-user-enable">
-                                    <span><?php esc_html_e('Confirmation mail to user :', 'metform'); ?></span>
-                                </label>
-                                <span class='mf-input-help'>
-                                    <?php esc_html_e('Want to send a submission copy to user by email? Active this one. ', 'metform'); ?>
-                                    <strong><?php esc_html_e('This form must include at least one required Email field.', 'metform'); ?></strong>
-                                </span>
-                            </div>
-                            <?php else: ?>
-                                <?php mf_dummy_switch_input([
+                            <?php mf_pro_setting_slot('user_confirmation', [
+                                [
                                     'label' => __('Confirmation mail to user', 'metform'),
                                     'help' => __('Want to send a submission copy to user by email? Active this one. This form must include at least one required Email field.', 'metform'),
                                     'badge' => __('Pro', 'metform'),
-                                ]); ?>
-                            <?php endif; ?>
-                            
-                            <div class="mf-input-group mf-form-user-confirmation ">
-                                <?php do_action('after_confirmation_mail_to_user_switch'); ?>
-                            </div>
-
-                            <div class="mf-input-group mf-form-user-confirmation mf-form-top-spacing mf-form-bottom-spacing">
-                                <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('Email Subject:', 'metform'); ?></label>
-                                <input type="text" name="user_email_subject" class="mf-form-user-email-subject attr-form-control" placeholder="<?php esc_html_e('Email subject', 'metform'); ?>">
-                                <span class='mf-input-help'><?php esc_html_e('Enter here email subject.', 'metform'); ?></span>
-                            </div>
-
-                            <div class="mf-input-group mf-form-user-confirmation mf-form-bottom-spacing">
-                                <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('Email From:', 'metform'); ?></label>
-                                <input type="email" name="user_email_from" class="mf-form-user-email-from attr-form-control" placeholder="<?php esc_html_e('From email', 'metform'); ?>">
-                                <span class='mf-input-help'><?php esc_html_e('Enter the email by which you want to send email to user.', 'metform'); ?></span>
-                            </div>
-
-                            <div class="mf-input-group mf-form-user-confirmation mf-form-bottom-spacing">
-                                <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('Email Reply To:', 'metform'); ?></label>
-                                <input type="email" name="user_email_reply_to" class="mf-form-user-reply-to attr-form-control" placeholder="<?php esc_html_e('Reply to email', 'metform'); ?>">
-                                <span class='mf-input-help'><?php esc_html_e('Enter email where user can reply/ you want to get reply.', 'metform'); ?></span>
-                            </div>
-
-                            <div class="mf-input-group mf-form-user-confirmation mf-form-bottom-spacing">
-                                <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('Thank you message :', 'metform'); ?></label>
-                                <textarea name="user_email_body" id="" class="mf-form-user-email-body attr-form-control" cols="30" rows="3" placeholder="<?php esc_html_e('Thank you message!', 'metform'); ?>"></textarea>
-                                <span class='mf-input-help'><?php esc_html_e('Enter here your message to include it in email body. Which will be send to user.', 'metform'); ?></span>
-                            </div>
-
-                            <?php if(\MetForm\Utils\Util::is_using_feature('user_email_attach_submission_copy') || class_exists('MetForm_Pro\Base\Package')): ?>
-                            <div class="mf-input-group mf-box-style">
-                                <label class="attr-input-label">
-                                    <input type="checkbox" value="1" name="user_email_attach_submission_copy" class="mf-admin-control-input mf-form-user-submission-copy">
-                                    <span><?php esc_html_e('Want to send a copy of submitted form to user ?', 'metform'); ?></span>
-                                </label>
-                            </div>
-                            <?php else: ?>
-                                <?php mf_dummy_switch_input([
+                                ],
+                                [
                                     'label' => __('Want to send a copy of submitted form to user ?', 'metform'),
                                     'badge' => __('Pro', 'metform'),
-                                ]); ?>
-                            <?php endif; ?>
+                                ],
+                            ]); ?>
 
                             <?php if ( ! class_exists('MetForm_Pro\Base\Package') ) : 
                                 mf_dummy_switch_input([
@@ -529,63 +458,21 @@
                                 ]); ?>
                             <?php endif; ?>
 
-                            <?php if ( class_exists('MetForm_Pro\Base\Package') || \MetForm\Utils\Util::is_using_settings_option('mf_mailchimp_api_key')) : ?>
-                                <div class="mf-box-style">
-                                    <div class="mf-input-group">
-                                        <label class="attr-input-label">
-                                            <input type="checkbox" value="1" name="mf_mail_chimp" class="mf-admin-control-input mf-form-modalinput-mail_chimp">
-                                            <span><?php esc_html_e('Mail Chimp:', 'metform'); ?></span>
-                                        </label>
-                                        <span class='mf-input-help'><?php esc_html_e('Integrate mailchimp with this form. ', 'metform'); ?><strong><?php esc_html_e('This form must include at least one required Email field. ', 'metform'); ?><a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf-newsletter_integration'; ?>"><?php esc_html_e('Configure Mail Chimp.', 'metform'); ?></a></strong></span>
-                                    </div>
-
-                                    <div class="mf-input-group mf-mailchimp mf-form-top-spacing" style="margin-bottom: 4px;">
-                                        <label for="attr-input-label" class="attr-input-label">
-                                            <span><?php esc_html_e('MailChimp List ID:', 'metform'); ?></span>
-                                            <span class="refresh-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" fill="none" class="metfrom-btn-refresh-mailchimp-list">
-                                                    <?php \MetForm\Utils\Util::metform_content_renderer( $refresh_icon_path); ?>
-                                                </svg>
-                                            </span>
-                                        </label>
-
-                                        <select class="attr-form-control mailchimp_list">
-
-                                        </select>
-                                        <input type="hidden" name="mf_mailchimp_list_id" class="mf-mailchimp-list-id attr-form-control" placeholder="<?php esc_html_e('Mailchimp contact list id', 'metform'); ?>">
-                                    </div>
-                                </div>
-                            <?php else: ?>
-                                <?php mf_dummy_switch_input([
+                            <?php mf_pro_setting_slot('mailchimp', [
+                                [
                                     'label' => __('Mail Chimp:', 'metform'),
                                     'help' => __('Integrate mailchimp with this form. This form must include at least one required Email field.', 'metform'),
                                     'badge' => __('Pro', 'metform'),
-                                ]); ?>
-                            <?php endif; ?>
+                                ],
+                            ]); ?>
 
-                            <?php if(\MetForm\Utils\Util::is_using_feature('mf_slack') || (class_exists('MetForm_Pro\Base\Package') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_mid_tier() || \MetForm\Utils\Util::is_top_tier()))): ?>
-                                <div class="mf-box-style">
-                                    <div class="mf-input-group">
-                                        <label class="attr-input-label">
-                                            <input type="checkbox" value="1" name="mf_slack" class="mf-admin-control-input mf-form-modalinput-slack">
-                                            <span><?php esc_html_e('Slack:', 'metform'); ?></span>
-                                        </label>
-                                        <span class='mf-input-help'><?php esc_html_e('Integrate slack with this form. ', 'metform'); ?><strong><?php esc_html_e('slack info.', 'metform'); ?></strong></span>
-                                    </div>
-
-                                    <div class="mf-input-group mf-slack mf-form-top-spacing">
-                                        <label for="attr-input-label" class="attr-input-label"><?php esc_html_e('Slack webhook:', 'metform'); ?></label>
-                                        <input type="text" name="mf_slack_webhook" class="mf-slack-web-hook attr-form-control" placeholder="<?php esc_html_e('Slack webhook', 'metform'); ?>">
-                                        <span class='mf-input-help'><?php esc_html_e('Enter here slack web hook. ', 'metform'); ?><a href="http://slack.com/apps/A0F7XDUAZ-incoming-webhooks"><?php esc_html_e('create from here', 'metform'); ?></a></span>
-                                    </div>
-                                </div>
-                            <?php else: ?>
-                                <?php mf_dummy_switch_input([
+                            <?php mf_pro_setting_slot('slack', [
+                                [
                                     'label' => __('Slack:', 'metform'),
                                     'help' => __('Integrate slack with this form.', 'metform'),
                                     'badge' => __('Pro', 'metform'),
-                                ]); ?>
-                            <?php endif ?>
+                                ],
+                            ]); ?>
                             <?php if (class_exists('MetForm_Pro\Core\Integrations\Rest_Api') && (\MetForm\Utils\Util::is_old_pro_user() || \MetForm\Utils\Util::is_top_tier() || \MetForm\Utils\Util::is_using_feature('mf_rest_api'))) : ?>
                                 <div class="mf-box-style">
                                     <div class="mf-input-group mf-input-group-inner">
@@ -1262,6 +1149,93 @@
 
                             <?php endif; ?>
 
+                            <!-- LeadSquared integration -->
+                            <?php if (class_exists('\MetForm_Pro\Core\Integrations\Crm\Leadsquared\Leadsquared')
+                                && (\MetForm\Utils\Util::is_old_pro_user()
+                                    || \MetForm\Utils\Util::is_top_tier()
+                                    || \MetForm\Utils\Util::is_using_feature('mf_leadsquared'))) : ?>
+
+                                <div class="mf-input-group mf-box-style">
+                                    <label class="attr-input-label">
+                                        <input type="checkbox" value="1" name="mf_leadsquared" class="mf-admin-control-input mf-leadsquared">
+                                        <span><?php esc_html_e('LeadSquared:', 'metform'); ?></span>
+                                    </label>
+                                    <span class='mf-input-help'><?php esc_html_e('Integrate LeadSquared CRM with this form. ', 'metform'); ?><a target="_blank" href="<?php echo esc_url(get_dashboard_url()) . 'admin.php?page=metform-menu-settings#mf_crm'; ?>"><?php esc_html_e('Configure LeadSquared.', 'metform'); ?></a></span>
+
+                                    <div style="display: none;" class="mf_leadsquared_forms_section">
+
+                                        <div class="mf-input-group mf-form-top-spacing">
+                                            <label class="attr-input-label"><?php esc_html_e('Field Mapping', 'metform'); ?></label>
+                                            <div class="mf-inputs mf-cf-fields" style="width:100%">
+                                                <div id="mf-leadsquared-single-field" class="mf-cf-single-field mf-leadsquared-crm-single-field" style="display:none">
+                                                    <div class="mf-cf-single-field-input">
+                                                        <label><?php esc_html_e('MetForm Field', 'metform'); ?></label>
+                                                        <select name="mf-leadsquared-custom-fields[]" class="mf-leadsquared-custom-fields attr-form-control">
+                                                        </select>
+                                                    </div>
+                                                    <div class="mf-cf-single-field-input">
+                                                        <label><?php esc_html_e('LeadSquared Attribute', 'metform'); ?></label>
+                                                        <select name="mf-leadsquared-form-fields[]" class="attr-form-control mf-leadsquared-form-fields">
+                                                            <option value=""><?php esc_html_e('-- Select --', 'metform'); ?></option>
+                                                        </select>
+                                                    </div>
+                                                    <a href="#" class="mf-btn-del-single-field mf-btn-del-single-field-leadsquared"><?php esc_html_e('Delete', 'metform'); ?></a>
+                                                </div>
+                                                <div id="mf-leadsquared-all-form-fields">
+                                                </div>
+                                                <button class="mf-add-leadsquared_fields mf-add-cf" type="button">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="white" viewBox="0 0 20 20">
+                                                            <path fill="#000" fill-rule="evenodd" d="M9 17a1 1 0 1 0 2 0v-6h6a1 1 0 1 0 0-2h-6V3a1 1 0 1 0-2 0v6H3a1 1 0 0 0 0 2h6v6z"/>
+                                                        </svg>
+                                                    </span>
+                                                    <span><?php esc_html_e('Add Field', 'metform'); ?></span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="mf-input-group mf-form-top-spacing">
+                                            <label class="attr-input-label"><?php esc_html_e('Static Fields (Fixed values sent with every submission)', 'metform'); ?></label>
+                                            <div class="mf-inputs mf-cf-fields" style="width:100%">
+                                                <div id="mf-leadsquared-static-fields">
+
+                                                    <div class="mf-cf-single-field mf-leadsquared-static-single-field">
+                                                        <div class="mf-cf-single-field-input">
+                                                            <label><?php esc_html_e('Attribute Name', 'metform'); ?></label>
+                                                            <input type="text" name="mf-leadsquared-static-attr[]" class="attr-form-control" placeholder="<?php esc_attr_e('e.g. Source', 'metform'); ?>">
+                                                        </div>
+                                                        <div class="mf-cf-single-field-input">
+                                                            <label><?php esc_html_e('Fixed Value', 'metform'); ?></label>
+                                                            <input type="text" name="mf-leadsquared-static-val[]" class="attr-form-control" placeholder="<?php esc_attr_e('e.g. Website - Enquiry', 'metform'); ?>">
+                                                        </div>
+                                                        <a href="#" class="mf-btn-del-single-field mf-btn-del-single-field-leadsquared-static"><?php esc_html_e('Delete', 'metform'); ?></a>
+                                                    </div>
+
+                                                </div>
+                                                <button class="mf-add-leadsquared_static_fields mf-add-cf" type="button">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="white" viewBox="0 0 20 20">
+                                                            <path fill="#000" fill-rule="evenodd" d="M9 17a1 1 0 1 0 2 0v-6h6a1 1 0 1 0 0-2h-6V3a1 1 0 1 0-2 0v6H3a1 1 0 0 0 0 2h6v6z"/>
+                                                        </svg>
+                                                    </span>
+                                                    <span><?php esc_html_e('Add Static Field', 'metform'); ?></span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" name="mf_leadsquared_fields" class="mf_leadsquared_fields_data" value="">
+                                        <input type="hidden" name="mf_leadsquared_static" class="mf_leadsquared_static_data" value="">
+
+                                    </div>
+                                </div>
+
+                            <?php else:
+                                mf_dummy_switch_input([
+                                    'label' => __('LeadSquared:', 'metform'),
+                                    'help'  => __('Integrate LeadSquared CRM with this form.', 'metform'),
+                                ]);
+                            endif; ?>
+
                             <div class="mf-box-style">
 
                                 <?php do_action('metform_fluent_crm_editor_markup') ?>
@@ -1274,6 +1248,10 @@
                                 mf_dummy_switch_input([
                                     'label' => __('Helpscout:', 'metform'),
                                     'help' => __('Integrate Helpscout with this form.', 'metform'),
+                                ]);
+                                mf_dummy_switch_input([
+                                    'label' => __('LeadSquared:', 'metform'),
+                                    'help' => __('Integrate LeadSquared CRM with this form.', 'metform'),
                                 ]);
                                 mf_dummy_switch_input([
                                     'label' => __('Fluent:', 'metform'),

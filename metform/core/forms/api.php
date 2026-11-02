@@ -33,6 +33,25 @@ class Api extends \MetForm\Base\Api
             $zoho_fields = isset($form_setting['mf-zoho-custom-fields']) && isset($form_setting['mf-zoho-form-fields'])? array_combine($form_setting['mf-zoho-custom-fields'], $form_setting['mf-zoho-form-fields']) : '';
             update_post_meta($form_id, 'mf_zoho_fields', wp_json_encode( $zoho_fields ) );
         }
+
+        if(isset($form_setting['mf_leadsquared'])){
+            $ls_fields = isset($form_setting['mf-leadsquared-custom-fields']) && isset($form_setting['mf-leadsquared-form-fields'])
+                ? array_combine(
+                    array_map('sanitize_text_field', $form_setting['mf-leadsquared-custom-fields']),
+                    array_map('sanitize_text_field', $form_setting['mf-leadsquared-form-fields'])
+                )
+                : '';
+            update_post_meta($form_id, 'mf_leadsquared_fields', wp_json_encode($ls_fields));
+
+            $ls_static = '';
+            if(isset($form_setting['mf-leadsquared-static-attr']) && isset($form_setting['mf-leadsquared-static-val'])){
+                $ls_static = array_combine(
+                    array_map('sanitize_text_field', $form_setting['mf-leadsquared-static-attr']),
+                    array_map('sanitize_text_field', $form_setting['mf-leadsquared-static-val'])
+                );
+            }
+            update_post_meta($form_id, 'mf_leadsquared_static', wp_json_encode($ls_static));
+        }
         
         
         // Push the for type settings inside the form setting array
@@ -449,12 +468,6 @@ class Api extends \MetForm\Base\Api
         }
 
         exit();
-    }
-
-    public function post_views()
-    {
-        $form_id = $this->request['id'];
-        return Action::instance()->count_views($form_id);
     }
 
     /**

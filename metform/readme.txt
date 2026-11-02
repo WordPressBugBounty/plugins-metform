@@ -3,7 +3,7 @@ Contributors: Roxnor, Ataurr, aion11
 Tags: form builder, Elementor form, contact form builder, Multi step form, custom form
 Requires at least: 6.0
 Tested up to: 7.1
-Stable tag: 4.3.3
+Stable tag: 4.3.4
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
@@ -275,6 +275,14 @@ If you like using the MetForm form builder, then consider checking out our other
 
 == Changelog ==
 
+= Version: 4.3.4 // 2026-11-02 =
+- Fixed: Prevented PHP warnings caused by AIOSEO's Elementor integration on MetForm forms and entries.
+- Fixed: Resolved Google reCAPTCHA v3 token expiry issues during form submission.
+- Fixed: Broken access control in form creation reported via Patchstack.
+- Changed: Moved Confirmation Email, Submission Copy, Required Login, and Entry Limit to MetForm Pro.
+- Changed: Moved Browser Data, View Count, Stop Vertical Scrolling, CSV Export, Mailchimp, and Slack to MetForm Pro.
+- Compatibility: MetForm Pro 4.1.3 or later is required to continue using these features.
+
 = Version: 4.3.3 // 2026-10-19 =
 - Added: Introduced a completely new MetForm Builder that no longer depends on Elementor.
 - Improved: Added SEO plugin compatibility for AIOSEO, Rank Math, SEOPress, and Yoast SEO.
@@ -521,6 +529,10 @@ If you like using the MetForm form builder, then consider checking out our other
 [View changelog for all versions.](https://wpmet.com/plugin/metform/roadmaps#changelog)
 
 == Upgrade Notice ==
+
+= 4.3.4 =
+Confirmation Email, Submission Copy, Required Login, Entry Limit, Browser Data, View Count, Stop Vertical Scrolling, CSV Export, Mailchimp, and Slack now require MetForm Pro 4.1.3 or later. Update MetForm Pro to continue using these features.
+
 Metform 1.3.0-beta1 is a major update. We have reconstructed the form builder's widgets with react and huge optimization for future proof. If you face any issue please contact our support team here https://wpmet.com/support-ticket
 
 == Screenshots ==

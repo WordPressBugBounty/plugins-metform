@@ -1,1 +1,1 @@
-<?php return array('dependencies' => array('regenerator-runtime', 'wp-i18n'), 'version' => 'd5737adbaeb1a7ba5afd');
+<?php return array('dependencies' => array('regenerator-runtime', 'wp-i18n'), 'version' => '5154dd942db11a77d2c4');

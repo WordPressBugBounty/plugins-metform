@@ -453,6 +453,16 @@ class Cpt extends \MetForm\Base\Cpt
             'mf_helpscout_conversation_customer_message' => [
                 'name' => 'mf_helpscout_conversation_customer_message'
             ],
+            // LeadSquared
+            'mf_leadsquared' => [
+                'name' => 'mf_leadsquared'
+            ],
+            'mf_leadsquared_fields' => [
+                'name' => 'mf_leadsquared_fields'
+            ],
+            'mf_leadsquared_static' => [
+                'name' => 'mf_leadsquared_static'
+            ],
             // google sheet
             'mf_google_sheet' => [
                 'name' => 'mf_google_sheet'

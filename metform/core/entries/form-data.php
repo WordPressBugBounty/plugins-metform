@@ -225,7 +225,7 @@ class Form_Data
                             }
                         }
                     } else if (isset($value['widgetType']) && $value['widgetType'] == 'mf-text-editor') {
-                        echo wp_kses_post($form_data[$key]);
+                        echo \MetForm\Utils\Util::kses_entry_rich_text($form_data[$key]);
                     } else {
                         $output = isset($form_data[$key]) ? (is_array($form_data[$key]) ? implode(', ', $form_data[$key]) : $form_data[$key]) : '';
                         echo esc_html($output);
@@ -431,7 +431,7 @@ class Form_Data
                                 $rendered = array_map(static fn($it) => $show_names ? $it['display'] : $it['value'], $items);
                                 echo "<td>" . esc_html(implode(', ', $rendered)) . "</td>";
                             } else if(isset($value['widgetType']) && $value['widgetType'] == 'mf-text-editor') {
-                                echo "<td>" . wp_kses_post($form_data[$key]) . "</td>";
+                                echo "<td>" . \MetForm\Utils\Util::kses_entry_rich_text($form_data[$key]) . "</td>";
                             }else{
                                 $output = isset($form_data[$key]) ? (is_array($form_data[$key]) ? implode(', ', $form_data[$key]) : $form_data[$key]) : '';
                                 echo "<td>" . esc_html($output) . "</td>";

@@ -369,6 +369,39 @@ class Util{
 		return  $allowed_tags;
 	}
 
+	public static function kses_entry_rich_text( $raw ) {
+		$allowed = [
+			'p'          => ['style' => []],
+			'br'         => [],
+			'strong'     => ['style' => []],
+			'b'          => ['style' => []],
+			'em'         => ['style' => []],
+			'i'          => ['style' => []],
+			'u'          => ['style' => []],
+			's'          => ['style' => []],
+			'strike'     => ['style' => []],
+			'sub'        => [],
+			'sup'        => [],
+			'blockquote' => ['style' => []],
+			'pre'        => ['style' => []],
+			'code'       => [],
+			'h1'         => ['style' => []],
+			'h2'         => ['style' => []],
+			'h3'         => ['style' => []],
+			'h4'         => ['style' => []],
+			'h5'         => ['style' => []],
+			'h6'         => ['style' => []],
+			'ul'         => ['style' => []],
+			'ol'         => ['style' => []],
+			'li'         => ['style' => []],
+			'a'          => ['href' => [], 'title' => [], 'target' => [], 'rel' => []],
+			'span'       => ['style' => []],
+			'img'        => ['src' => [], 'alt' => [], 'width' => [], 'height' => []],
+		];
+
+		return wp_kses( $raw, $allowed );
+	}
+
 	public static function kspan($text){
 		return str_replace(['{', '}'], ['<span>', '</span>'], self::kses($text));
 	}
@@ -701,7 +734,26 @@ class Util{
             }elseif ($end_ts && $current_ts > $end_ts) {
 				return '<div class="mf-form-scheduling-message mf-form-expired">'.esc_html($expired_message).'</div>';
             }
-        }		
+        }
+
+		/**
+		 * Extra attributes for the form wrapper, as [ name => value ].
+		 * MetForm Pro uses it for data-stop-vertical-effect and data-views-endpoint.
+		 *
+		 * @param array $attrs
+		 * @param mixed $form_id
+		 * @param array $form_settings
+		 */
+		$wrapper_attrs = apply_filters('metform/form/wrapper_attributes', [], $form_id, $form_settings);
+		$wrapper_attrs_html = '';
+		foreach ( (array) $wrapper_attrs as $attr_name => $attr_value ) {
+			// Skip anything that is not a valid attribute name, so a bad key can't break the tag.
+			if ( ! is_string( $attr_name ) || ! preg_match( '/^[a-zA-Z_:][a-zA-Z0-9_.:-]*$/', $attr_name ) || ! is_scalar( $attr_value ) ) {
+				continue;
+			}
+			$wrapper_attrs_html .= ' ' . esc_attr( $attr_name ) . '="' . esc_attr( (string) $attr_value ) . '"';
+		}
+
 		ob_start();
 		?>
 
@@ -715,8 +767,8 @@ class Util{
 			data-quiz-summery = "<?php echo (!empty($form_settings['quiz_summery']) && class_exists('\MetForm_Pro\Base\Package')) ? "true" : "false"; ?>"
 			data-save-progress = "<?php echo (isset($form_settings['mf_save_progress']) && $form_settings['mf_save_progress'] && class_exists('\MetForm_Pro\Base\Package')) ? "true" : "false"; ?>"
 			data-form-type="<?php echo esc_attr($form_type); ?>"
-			data-stop-vertical-effect="<?php echo esc_attr(isset($form_settings['mf_stop_vertical_scrolling']) ? $form_settings['mf_stop_vertical_scrolling'] : '') ?>"
 			data-payment-submit-before="<?php echo esc_attr(isset($form_settings['mf_payment_submit_before_payment']) ? $form_settings['mf_payment_submit_before_payment'] : '0') ?>"
+			<?php echo $wrapper_attrs_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- each name and value is escaped above. ?>
 			></div>
 
 
@@ -1042,71 +1094,6 @@ class Util{
 	public static function is_using_settings_option( $settings_key ) {
 		$settings = get_option( 'metform_option__settings', array() );
 		return isset( $settings[ $settings_key ] );
-	}
-
-	/**
-	 * Check if the user is an old pro user by checking usage of specific features.
-	 * 
-	 * @return bool True if the user is an old pro user, false otherwise.
-	 */
-	public static function is_used_any_feature(){
-
-		$using_from_modal = [
-			'require_login',
-			'capture_user_browser_data',
-			'limit_total_entries_status',
-			'count_views',
-			'mf_stop_vertical_scrolling',
-			'enable_user_notification',
-			'user_email_attach_submission_copy',
-			'mf_slack',
-			'mf_rest_api',
-			'mf_mail_aweber',
-			'mf_zapier',
-			'mf_paypal',
-			'mf_stripe',
-			'mf_zoho',
-			'quiz_summery',
-			'mf_redirect_params_status',
-			'mf_conditional_redirect_status',
-			'email_verification_enable',
-			'mf_google_sheet',
-			'mf_mail_poet'
-		];
-
-		$using_from_settings = [
-			'mf_mailchimp_api_key',
-			'mf_ckit_api_key',
-			'mf_get_response_api_key',
-			'mf_active_campaign_api_key',
-			'mf_paypal_email',
-			'mf_stripe_live_publishiable_key',
-			'mf_stripe_test_secret_key',
-			'mf_zoho_data_center',
-			'mf_save_progress',
-			'mf_field_name_show',
-			'mf_enable_entry_file_delete',
-			'mf_google_map_api_key',
-			'met_form_aweber_mail_access_token_key',
-			'mf_google_sheet_client_id',
-			'mf_google_sheet_client_secret',
-			'mf_helpscout_app_id',
-			'mf_helpscout_app_secret'
-		];
-
-		foreach ( $using_from_modal as $setting_key ) {
-			if ( self::is_using_feature( $setting_key ) ) {
-				return true;
-			}
-		}
-
-		foreach ( $using_from_settings as $setting_key ) {
-			if ( self::is_using_settings_option( $setting_key ) ) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	/**

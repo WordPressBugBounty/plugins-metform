@@ -147,11 +147,10 @@ class Meta_Data
     function add_browser_data_cmb()
     {
         $post_id = (isset($_GET['post']) ? sanitize_text_field(wp_unslash($_GET['post'])) : '');
-        $form_id = get_post_meta($post_id, 'metform_entries__form_id', true);
-        $form_settings = \MetForm\Core\Forms\Action::instance()->get_all_data($form_id);
 
+        // Read-only view of data that is already stored on the entry.
         $this->browser_data = get_post_meta($post_id, 'metform_form__entry_browser_data', true);
-        if ($this->browser_data == '' && !isset($form_settings['capture_user_browser_data'])) {
+        if (empty($this->browser_data)) {
             return;
         }
 

@@ -4,7 +4,6 @@ namespace MetForm\Core\Admin\Views;
 
 use MetForm\Core\Admin\Base;
 use MetForm\Plugin;
-use MetForm\Core\Integrations\Mail_Chimp;
 use MetForm\Utils\Util;
 use MetForm_Pro\Base\Package;
 use MetForm_Pro\Core\Integrations\Payment\Paypal;
@@ -1203,15 +1202,13 @@ if (!function_exists('mf_dummy_checkbox_input')) {
 						<div class="mf-settings-section" id="mf-newsletter_integration">
 							<div class="mf-settings-single-section">
 								<div class="list-item">
-									<?php if (class_exists(Mail_Chimp::class)) : ?>
-										<div class="tab-header">
-											<h4 class="list-item-header"><?php esc_html_e('Newsletter Integration', 'metform') ?></h4>
-										</div>
+									<div class="tab-header">
+										<h4 class="list-item-header"><?php esc_html_e('Newsletter Integration', 'metform') ?></h4>
+									</div>
 
-										<div class="mf-dashboard__settings-api-wrapper">
-											<?php $news_letter_integration_function($settings); ?>
-										</div>
-									<?php endif; ?>
+									<div class="mf-dashboard__settings-api-wrapper">
+										<?php $news_letter_integration_function($settings); ?>
+									</div>
 								</div>
 							</div>
 						</div>

@@ -3,7 +3,7 @@
  * Plugin Name: MetForm
  * Plugin URI: http://wpmet.com/plugin/metform/
  * Description: Most flexible and design friendly form builder for Elementor
- * Version: 4.3.3
+ * Version: 4.3.4
  * Author: Wpmet
  * Author URI:  https://wpmet.com
  * Text Domain: metform
@@ -18,6 +18,10 @@ define( 'METFORM_PLUGIN_FILE', __FILE__ );
 define( 'METFORM_VERSION', get_file_data( METFORM_PLUGIN_FILE, [ 'version' => 'Version' ] )['version'] );  
 define( 'METFORM_FREE_PATH', plugin_dir_path( METFORM_PLUGIN_FILE ));
 define( 'METFORM_FREE_URL', plugin_dir_url( METFORM_PLUGIN_FILE ));
+
+// Tells MetForm Pro (4.1.3+) that this version fires the hooks for the features
+// that moved to Pro, so Pro runs them. Older free versions run them inline.
+define( 'METFORM_PRO_FEATURE_HOOKS', 1 );
 
 require_once plugin_dir_path( METFORM_PLUGIN_FILE ) . 'utils/notice/notice.php';
 require_once plugin_dir_path( METFORM_PLUGIN_FILE ) . 'utils/banner/banner.php';

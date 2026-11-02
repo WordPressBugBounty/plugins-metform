@@ -76,6 +76,7 @@ class Integration
 		if (!class_exists('\MetForm_Pro\Base\Package')) {
 			Render::sub_tab('Zoho', 'zoho');
 			Render::sub_tab('HelpScout', 'helpscout', ( ! $active_tab || $active_tab === 'helpscout' ) ? 'active' : null);
+			Render::sub_tab('LeadSquared', 'leadsquared', ( $active_tab === 'leadsquared' ) ? 'active' : null);
 		}
 	}
 
@@ -149,6 +150,65 @@ class Integration
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 *  LeadSquared dummy content for pro awareness
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function leadsquared_contents()
+	{
+	?>
+		<div class="mf-pro-missing-wrapper">
+			<div class="mf-pro-missing">
+				<div class="mf-pro-alert">
+					<div class="pro-content">
+						<h5 class="alert-heading"><?php echo esc_html__('You are currently using MetForm free version.', 'metform'); ?></h5>
+						<p class="alert-description"><?php echo esc_html__('Get premium access to integrate LeadSquared CRM with your forms.', 'metform'); ?></p>
+					</div>
+					<div class="pro-btn">
+						<a href="https://wpmet.com/plugin/metform/pricing/" target="_blank"> <svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none">
+								<path d="M10.6 6.40002H2.2C1.53726 6.40002 1 6.93728 1 7.60002V11.8C1 12.4628 1.53726 13 2.2 13H10.6C11.2627 13 11.8 12.4628 11.8 11.8V7.60002C11.8 6.93728 11.2627 6.40002 10.6 6.40002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+								<path d="M3.40039 6.4V4C3.40039 3.20435 3.71646 2.44129 4.27907 1.87868C4.84168 1.31607 5.60474 1 6.40039 1C7.19604 1 7.9591 1.31607 8.52171 1.87868C9.08432 2.44129 9.40039 3.20435 9.40039 4V6.4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+							</svg> <?php echo esc_html__('Upgrade', 'metform'); ?> </a>
+					</div>
+				</div>
+				<div class="attr-row">
+					<div class="mf-setting-input-group">
+						<label class="mf-setting-label"><?php echo esc_html__('Data Center', 'metform'); ?></label>
+						<div class="mf-setting-disabled-input-wrapper">
+							<select disabled class="mf-setting-input attr-form-control">
+								<option><?php echo esc_html__('India (Mumbai)', 'metform'); ?></option>
+							</select>
+						</div>
+					</div>
+					<div class="mf-setting-input-group">
+						<label class="mf-setting-label"><?php echo esc_html__('Access Key', 'metform'); ?></label>
+						<div class="mf-setting-disabled-input-wrapper">
+							<input disabled type="text" class="mf-setting-input attr-form-control" placeholder="<?php echo esc_attr__('LeadSquared Access Key', 'metform'); ?>">
+						</div>
+					</div>
+					<div class="mf-setting-input-group">
+						<label class="mf-setting-label"><?php echo esc_html__('Secret Key', 'metform'); ?></label>
+						<div class="mf-setting-disabled-input-wrapper">
+							<input disabled type="text" class="mf-setting-input attr-form-control" placeholder="<?php echo esc_attr__('LeadSquared Secret Key', 'metform'); ?>">
+						</div>
+					</div>
+					<p class="description" style="margin-top: 10px;">
+						<?php
+							printf(
+								/* translators: %s: LeadSquared help article URL */
+								esc_html__('You can find your Access Key and Secret Key in LeadSquared under Settings > API & Webhooks. %s', 'metform'),
+								'<a href="https://help.leadsquared.com/how-do-i-obtain-api-access-keys-in-leadsquared/" target="_blank" rel="noopener noreferrer">' . esc_html__('Learn more', 'metform') . '</a>'
+							);
+						?>
+					</p>
+				</div>
+			</div>
+		</div>
+	<?php
 	}
 
 	public function contents()
@@ -274,6 +334,7 @@ class Integration
 		if (!class_exists('\MetForm_Pro\Base\Package')) {
 			Render::sub_tab_content('zoho', [$this, 'zoho_contents']);
 			Render::sub_tab_content('helpscout', [$this, 'helpscout_contents'], ( ! $active_tab || $active_tab === 'helpscout' ) ? 'active' : '');
+			Render::sub_tab_content('leadsquared', [$this, 'leadsquared_contents'], ( $active_tab === 'leadsquared' ) ? 'active' : '');
 		}
 	}
 

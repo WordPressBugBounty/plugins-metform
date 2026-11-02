@@ -14,7 +14,6 @@ class Action
     private $key_form_id;
     private $key_form_data;
     //private $key_form_settings;
-    private $key_browser_data;
     private $key_form_total_entries;
     private $key_form_file;
     private $key_payment_status;
@@ -50,7 +49,6 @@ class Action
 
         //$this->key_form_settings = 'metform_form__form_setting';
         $this->key_form_total_entries = 'metform_form__form_total_entries';
-        $this->key_browser_data = 'metform_form__entry_browser_data';
         $this->key_form_id = 'metform_entries__form_id';
         $this->key_form_data = 'metform_entries__form_data';
         $this->key_form_file = 'metform_entries__file_upload_new';
@@ -60,8 +58,6 @@ class Action
 
     public function submit($form_id, $form_data, $file_data, $page_id = '')
     {
-        error_log(print_r($form_data, true));
-
         $hidden_fields = isset($form_data['hidden-fields']) ? json_decode($form_data['hidden-fields'], true) : [];
 
         foreach ($hidden_fields as $key) {
@@ -280,28 +276,23 @@ class Action
             }
         }
 
-        // user login check and action
-        $required_loggin = isset($this->form_settings['require_login']) ? ((int) ($this->form_settings['require_login'])) : 0;
+        /**
+         * Lets an add-on block the submission before anything is stored.
+         * Return a WP_Error to block it: its code becomes the response
+         * failure_type and its message the error shown to the visitor.
+         *
+         * @param null|\WP_Error $pre_check     Null, or a WP_Error from an earlier callback.
+         * @param int            $form_id
+         * @param array          $form_data
+         * @param array          $form_settings
+         */
+        $pre_check = apply_filters('metform/entries/submit/pre_check', null, $form_id, $form_data, $this->form_settings);
 
-        error_log(print_r($this->form_settings, true));
-        if (($required_loggin == 1) && (!is_user_logged_in())) {
+        if (is_wp_error($pre_check)) {
             $this->response->status = 0;
-            $this->response->failure_type = 'login_required';
-            $this->response->error = [ esc_html__('You must be logged in to submit form.', 'metform') ];
+            $this->response->failure_type = $pre_check->get_error_code();
+            $this->response->error = [ $pre_check->get_error_message() ];
             return $this->response;
-        }
-
-        // Total entry limit check and prevent
-        if (isset($this->form_settings['limit_total_entries_status'])) {
-            $entry_limit = ((int) ($this->form_settings['limit_total_entries_status']));
-
-            if (($entry_limit == 1) && ($this->get_entry_count() >= $this->form_settings['limit_total_entries'])) {
-                $this->response->status = 0;
-                $this->response->failure_type = 'entry_limit';
-                $this->response->error = [ esc_html__('Form submission limit exceeded.', 'metform') ];
-
-                return $this->response;
-            }
         }
 
         // signature input upload as image from base64
@@ -343,23 +334,16 @@ class Action
             }
         }
 
-        // mailchimp email store action
-        if (class_exists('\MetForm\Core\Integrations\Mail_Chimp')) {
-            if (isset($this->form_settings['mf_mail_chimp']) && $this->form_settings['mf_mail_chimp'] == '1' && $this->email_name != null && $form_data[$this->email_name] != '') {
-
-                $mail_chimp = new \MetForm\Core\Integrations\Mail_Chimp();
-
-                if (array_key_exists("mf-listing-optin", $this->fields) && isset($form_data['mf-listing-optin'])) {
-                    $response = $mail_chimp->call_api($form_data, ['auth' => $this->form_settings, 'email_name' => $this->email_name]);
-                } elseif (!array_key_exists('mf-listing-optin', $this->fields)) {
-                    $response = $mail_chimp->call_api($form_data, ['auth' => $this->form_settings, 'email_name' => $this->email_name]);
-                }
-
-                $this->response->status = isset($response['status']) ? $response['status'] : 0;
-	            if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your mailchimp integration.', 'metform') ]; }
-
-            }
-        }
+        /**
+         * Lets an add-on send the submission to a third-party service.
+         * Runs before the entry is stored, so $context['entry_id'] is not set
+         * yet and $context['form_data'] is the submitted data as received.
+         * Callbacks report a failure on $response (status, failure_type, error).
+         *
+         * @param object $response The response sent back to the browser.
+         * @param array  $context  See get_hook_context().
+         */
+        do_action('metform/entries/submit/integrations', $this->response, $this->get_hook_context($form_data, $form_data));
 
         // ActiveCampaign email store action
 
@@ -409,29 +393,6 @@ class Action
 
                 $this->response->status = isset($response['status']) ? $response['status'] : 0;
 	            if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your zapier integration.', 'metform') ]; }
-            }
-        }
-
-        // data submit to slack check and action
-        if (class_exists('\MetForm\Core\Integrations\Slack')) {
-            if (isset($this->form_settings['mf_slack']) && $this->form_settings['mf_slack'] == '1' && $this->email_name != null && $form_data[$this->email_name] != '') {
-
-                $url = $this->form_settings['mf_slack_webhook'];
-
-                //$this->response->data['slack_hook'] = $url;
-
-                if (array_key_exists('mf-listing-optin', $this->fields) && isset($form_data['mf-listing-optin'])) {
-
-                    $slack = new \MetForm\Core\Integrations\Slack();
-                    $response = $slack->call_webhook($form_data, ['url' => $url, 'email_name' => $this->email_name]);
-                } elseif (!array_key_exists('mf-listing-optin', $this->fields)) {
-
-                    $slack = new \MetForm\Core\Integrations\Slack();
-                    $response = $slack->call_webhook($form_data, ['url' => $url, 'email_name' => $this->email_name]);
-                }
-
-                $this->response->status = isset($response['status']) ? $response['status'] : 0;
-	            if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your slack integration.', 'metform') ]; }
             }
         }
 
@@ -794,11 +755,15 @@ class Action
 	        if($this->response->status == 0) { $this->response->failure_type = 'integration'; $this->response->error = [ esc_html__('Problem with your RestApi integration.', 'metform') ]; }
         }
 
-        // send confirmation email to user
-        if (isset($this->form_settings['enable_user_notification']) && $this->form_settings['enable_user_notification'] == 1) {
-
-            $this->send_user_email($this->form_data, $this->file_upload_info);
-        }
+        /**
+         * Lets an add-on notify the submitter, for example with a confirmation email.
+         * $context['form_data'] is the sanitised data that was stored.
+         * Callbacks report a failure on $response (status, failure_type, error).
+         *
+         * @param object $response The response sent back to the browser.
+         * @param array  $context  See get_hook_context().
+         */
+        do_action('metform/entries/submit/notify_user', $this->response, $this->get_hook_context($this->form_data, $form_data));
 
         // send notification email to admins
         if (isset($this->form_settings['enable_admin_notification']) && $this->form_settings['enable_admin_notification'] == 1) {
@@ -1129,10 +1094,15 @@ class Action
 
         update_post_meta($this->entry_id, $this->key_form_file, $this->file_upload_info);
 
-        if (isset($form_settings['capture_user_browser_data']) && $form_settings['capture_user_browser_data'] == '1') {
-            update_post_meta($this->entry_id, $this->key_browser_data, $this->get_browser_data());
-            $this->response->status = 1;
-        }
+        /**
+         * Fires after an entry and its form data are saved.
+         *
+         * @param int   $entry_id
+         * @param int   $form_id
+         * @param array $form_data     Sanitised data that was stored.
+         * @param array $form_settings
+         */
+        do_action('metform/entries/after_insert', $this->entry_id, $form_id, $this->form_data, $form_settings);
 
         // entries of logged in user data
         if (is_user_logged_in()) {
@@ -1178,8 +1148,10 @@ class Action
      * "user@site.com\r\nBcc: victim@site.com" would be parsed by wp_mail() as
      * an additional header line, allowing arbitrary Bcc/Cc/header injection
      * (email header / CRLF injection).
+     *
+     * Public so MetForm Pro uses this same function for its emails.
      */
-    private function mf_sanitize_header_field($value)
+    public static function mf_sanitize_header_field($value)
     {
         $value = str_replace("\0", '', (string) $value);
         // Cut at the first line break instead of just deleting CR/LF chars,
@@ -1190,72 +1162,27 @@ class Action
         return trim($value);
     }
 
-    public function send_user_email($form_data, $file_info)
+    /**
+     * Data passed to the `metform/entries/submit/*` actions.
+     *
+     * @param array $form_data     The data the callback should use: as received
+     *                             before the entry is stored, sanitised after.
+     * @param array $raw_form_data The submitted data as received.
+     *
+     * @return array
+     */
+    private function get_hook_context($form_data, $raw_form_data)
     {
-
-        // get user mail from form data
-        $user_mail = null;
-        $all_email_names = $this->get_input_name_by_widget_type('mf-email') ?? [];
-        foreach ($all_email_names as $_email_key) {
-            if (!empty($form_data[$_email_key])) {
-                $user_mail = $form_data[$_email_key];
-                break;
-            }
-        }
-        $subject = isset($this->form_settings['user_email_subject']) ? $this->form_settings['user_email_subject'] : get_bloginfo('name');
-        $from = isset($this->form_settings['user_email_from']) ? $this->form_settings['user_email_from'] : null;
-        $reply_to = isset($this->form_settings['user_email_reply_to']) ? $this->form_settings['user_email_reply_to'] : null;
-        $body = nl2br(isset($this->form_settings['user_email_body']) ? $this->form_settings['user_email_body'] : null);
-        $user_email_attached_submission_copy = isset($this->form_settings['user_email_attach_submission_copy']) ? $this->form_settings['user_email_attach_submission_copy'] : null;
-
-        //replace data from shortcode
-        // Escape values going into the HTML email body, or a submitter can
-        // inject markup through any field the template references. Header
-        // fields stay raw; mf_sanitize_header_field() handles those below.
-        $body = Metform_Shortcode::instance()->get_process_shortcode($body, true);
-        $reply_to = Metform_Shortcode::instance()->get_process_shortcode($reply_to);
-        $subject = Metform_Shortcode::instance()->get_process_shortcode($subject);
-
-        if($user_email_attached_submission_copy == "1"){
-            $body = "<html><body><h2 style='text-align: center;'>" . get_the_title($this->form_id) . "</h2><h4 style='text-align: center;'>" . $body . "</h4>";
-            $form_html = \MetForm\Core\Entries\Form_Data::format_data_for_mail($this->form_id, $form_data, $file_info);
-            $body .= $form_html . "</body></html>";
-        }else{
-            $body = "<html><body><h2 style='text-align: center;'>" . get_the_title($this->form_id) . "</h2><h4 style='text-align: center;'>" . $body . "</h4>" . "</body></html>";
-        }
-
-        // body will be in the filter hook
-
-        $body = apply_filters('metform_confirmation_user_email_body', $body, $this->form_id, $form_data, $file_info, $this->form_settings);
-
-        // Prevent email header (CRLF) injection from user-supplied field values
-        // injected via shortcodes such as [mf-email].
-        $from = $this->mf_sanitize_header_field($from);
-        $reply_to = $this->mf_sanitize_header_field($reply_to);
-        $subject = $this->mf_sanitize_header_field($subject);
-        $user_mail = $this->mf_sanitize_header_field($user_mail);
-
-        $headers = 'MIME-Version: 1.0' . "\r\n";
-        $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-
-        $headers .= 'From: ' . $from . "\r\n" .
-            'Reply-To: ' . $reply_to . "\r\n" .
-            'X-Mailer: PHP/' . phpversion();
-
-        if (!$user_mail) {
-		if(current_user_can( 'manage_options' )){
-			$this->response->status = 0;
-          	$this->response->failure_type = 'email'; $this->response->error[] = esc_html__('Mail not found.', 'metform');
-		}
-        } else {
-		$status = wp_mail($user_mail, $subject, $body, $headers);
-		if(current_user_can( 'manage_options' )){
-			if(empty($status)){
-				$this->response->failure_type = 'email'; $this->response->error[] = esc_html__('Please setup your SMTP mail server.', 'metform');
-				$this->response->status = 0;
-			}
-		}
-	  }
+        return [
+            'form_id'          => $this->form_id,
+            'form_data'        => is_array($form_data) ? $form_data : [],
+            'raw_form_data'    => is_array($raw_form_data) ? $raw_form_data : [],
+            'form_settings'    => $this->form_settings,
+            'fields'           => $this->fields,
+            'email_name'       => $this->email_name,
+            'entry_id'         => $this->entry_id,
+            'file_upload_info' => $this->file_upload_info,
+        ];
     }
 
     public function send_admin_email($form_data, $file_info)
@@ -1795,25 +1722,6 @@ class Action
         $this->entry_count = $entry_count;
 
         return $entry_count;
-    }
-
-    public function get_browser_data()
-    {
-
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = sanitize_text_field(wp_unslash($_SERVER['HTTP_CLIENT_IP']));
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = sanitize_text_field(wp_unslash($_SERVER['HTTP_X_FORWARDED_FOR']));
-        } else {
-            $ip = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])):'';
-        }
-
-        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])):'';
-
-        return [
-            'IP' => $ip,
-            'User_Agent' => $user_agent,
-        ];
     }
 
     public function get_input_name_by_widget_type($widget_type, $fields = null)
