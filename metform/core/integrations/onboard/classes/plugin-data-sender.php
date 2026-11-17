@@ -67,7 +67,7 @@ class Plugin_Data_Sender {
 				'headers'     => [
 					'Content-Type' => 'application/json'
 				],
-				'body'        => json_encode( $this->get_data() )
+				'body'        => wp_json_encode( $this->get_data() )
 			]
 		);
 	}
@@ -81,7 +81,7 @@ class Plugin_Data_Sender {
 				'headers'     => [
 					'Content-Type' => 'application/json'
 				],
-				'body'        => json_encode( $data )
+				'body'        => wp_json_encode( $data )
 			]
 		);
 	}
@@ -104,7 +104,7 @@ class Plugin_Data_Sender {
 					'Accept'       => '*/*',
                     'Content-Type' => 'application/json'
 				],
-				'body'        => json_encode($data)
+				'body'        => wp_json_encode($data)
 			]
 		);
 	}

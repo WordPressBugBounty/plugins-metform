@@ -172,7 +172,20 @@ echo esc_html__('Take your website to the next level', 'metform'); ?></strong></
     </div>
     <div class="mf-onboard-right">
         <a class="mf-continue-button mf-onboard-pagi-btn next" href="#"><?php echo esc_html__('Continue', 'metform'); ?></a>
-        <a class="mf-onboard-btn mf-onboard-pagi-btn mf-onboard-select-all-next-btn next" href="#"><?php echo esc_html__('Unlock All & Continue', 'metform'); ?></a>
+        <a class="mf-onboard-btn mf-onboard-pagi-btn mf-onboard-select-all-next-btn next" href="#" aria-describedby="mf-onboard-unlock-all-tooltip">
+            <?php echo esc_html__('Unlock All & Continue', 'metform'); ?>
+            <span class="mf-onboard-tooltip" onclick="event.preventDefault(); event.stopPropagation();">
+                <svg class="mf-onboard-tooltip--icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+                    <circle cx="8" cy="8" r="6.75" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M8 7.25V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <circle cx="8" cy="5" r="0.9" fill="currentColor"/>
+                </svg>
+                <span class="mf-onboard-tooltip--content" id="mf-onboard-unlock-all-tooltip" role="tooltip">
+                    <strong class="mf-onboard-tooltip--title"><?php echo esc_html__('Unlock all plugins in one click', 'metform'); ?></strong>
+                    <?php echo esc_html__('Installs and activates all listed plugins that aren\'t already active on your site. Existing active plugins remain unchanged.', 'metform'); ?>
+                </span>
+            </span>
+        </a>
     </div>
 </div>
 <div class="mf-onboard-shapes">

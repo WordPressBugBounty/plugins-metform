@@ -1,6 +1,7 @@
 <?php
 namespace MetForm\Core\Entries;
 
+use MetForm\Core\FormBuilder\Block_Registry;
 use MetForm_Pro\Core\FormBuilder\Blocks\Simplerepeater\Simplerepeater;
 
 defined('ABSPATH') || exit;
@@ -52,8 +53,6 @@ final class Map_Block_Document {
      */
     private const UNNAMED_WIDGET_TYPES = ['simplecaptcha', 'recaptcha'];
 
-    private const PRO_ONLY_TYPES = ['text-editor'];
-
     /** Matches inputControls.js/optionControls.js's `validation.type` values to the legacy strings validate_form_data() switches on. */
     private const VALIDATION_TYPE_MAP = [
         'character' => 'by_character_length',
@@ -74,7 +73,7 @@ final class Map_Block_Document {
             $props = is_array($element['props'] ?? null) ? $element['props'] : [];
             $widget_type = self::WIDGET_TYPE_MAP[$type] ?? ('mf-' . $type);
 
-            if (in_array($type, self::PRO_ONLY_TYPES, true) && !class_exists('\MetForm_Pro\Base\Package')) {
+            if (null === Block_Registry::instance()->get($type)) {
                 continue;
             }
 
@@ -192,6 +191,19 @@ final class Map_Block_Document {
                 $field_obj->mf_input_payment_field_name = is_scalar($props['paymentFieldName'] ?? null) ? (string) $props['paymentFieldName'] : '';
                 $field_obj->mf_input_payment_field_amount = is_scalar($props['paymentFieldAmount'] ?? null) ? (string) $props['paymentFieldAmount'] : '';
             }
+            // File Upload: bridge the block's own type/size settings into the
+            // legacy keys File_Data_Validation reads. Without these it fell
+            // back to a hardcoded jpg/jpeg/gif/png list and no size limit,
+            // rejecting e.g. a PDF the block itself allowed.
+            if ('fileupload' === $type) {
+                $field_obj->mf_input_file_types = self::file_types($props['allowedTypes'] ?? null);
+
+                // Same default as Fileupload::get_default_settings(), so the
+                // server limit always matches what the frontend enforces.
+                $max_kb = (int) ($props['maxSize'] ?? 128);
+                $field_obj->mf_input_file_size_status = $max_kb > 0 ? 'on' : '';
+                $field_obj->mf_input_file_size_limit = $max_kb;
+            }
 
             $fields[$name] = $field_obj;
         }
@@ -248,6 +260,35 @@ final class Map_Block_Document {
                 'mf_image_select_title' => $lbl,
             ];
         }, $options));
+    }
+
+    /** Every option the File Upload block's "Allowed File Types" control offers (see Fileupload::register_controls()). */
+    private const FILE_UPLOAD_TYPES = ['.jpg', '.png', '.gif', '.webp', '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.zip', '.mp3', '.mp4'];
+
+    /**
+     * Normalizes the File Upload block's `allowedTypes` into the lowercase,
+     * dot-prefixed extension list File_Data_Validation compares against.
+     * Empty means "allow all" in the block, which maps to every option the
+     * block offers; `.jpg` also allows `.jpeg` (same format).
+     */
+    private static function file_types($allowed): array {
+        $types = [];
+        foreach ((is_array($allowed) ? $allowed : []) as $type) {
+            if (!is_scalar($type) || '' === trim((string) $type)) {
+                continue;
+            }
+            $type = strtolower(trim((string) $type));
+            $types[] = '.' === $type[0] ? $type : '.' . $type;
+        }
+
+        if (empty($types)) {
+            $types = self::FILE_UPLOAD_TYPES;
+        }
+        if (in_array('.jpg', $types, true)) {
+            $types[] = '.jpeg';
+        }
+
+        return array_values(array_unique($types));
     }
 
     /** Distinguishes "not set" from a real 0 (min/max are legitimately allowed to be 0). */

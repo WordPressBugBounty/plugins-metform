@@ -89,7 +89,7 @@ class Advanced_Widget_Mapper {
 					return Content_Widget_Mapper::instance()->map_paragraph( $settings, $node_id, $block_id, $parent_id );
 				}
 				$is_pro        = 'text-editor' === $type && null !== Block_Registry::instance()->get( 'text-editor' );
-				$props         = $property_mapper->map( $settings, $node_id, esc_html__( 'text-editor' === $type ? 'Text Editor' : 'Textarea', 'metform' ) );
+				$props         = $property_mapper->map( $settings, $node_id, 'text-editor' === $type ? esc_html__( 'Text Editor', 'metform' ) : esc_html__( 'Textarea', 'metform' ) );
 				$props['rows'] = isset( $settings['mf_input_textarea_rows'] ) ? (int) Value_Unwrapper::unwrap( $settings['mf_input_textarea_rows'] ) : 4;
 				return array(
 					'id'       => $block_id,

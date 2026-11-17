@@ -138,7 +138,7 @@ final class Plugin {
         $filter_string .= (!class_exists('\MetForm\Plugin') ? '' : ',metform');
         $filter_string .= (!class_exists('\MetForm_Pro\Plugin') ? '' : ',metform-pro');
 
-        if ( is_admin() && \MetForm\Utils\Util::get_settings( 'metform_user_consent_for_banner', 'yes' ) == 'yes' ) {
+        if ( is_admin() && \MetForm\Utils\Util::get_settings( 'metform_user_consent_for_banner', 'no' ) == 'yes' ) {
 
             //Rating notice
             \Wpmet\Libs\Rating::instance('metform')
@@ -175,7 +175,7 @@ final class Plugin {
 
 
 
-        if( class_exists('WooCommerce') && !class_exists('EmailKit') && !did_action('edit_with_emailkit_loaded') && class_exists('\Wpmet\Libs\Emailkit') && \MetForm\Utils\Util::get_settings( 'metform_user_consent_for_banner', 'yes' ) == 'yes') {
+        if( class_exists('WooCommerce') && !class_exists('EmailKit') && !did_action('edit_with_emailkit_loaded') && class_exists('\Wpmet\Libs\Emailkit') && \MetForm\Utils\Util::get_settings( 'metform_user_consent_for_banner', 'no' ) == 'yes') {
             new \Wpmet\Libs\Emailkit();
         }
 

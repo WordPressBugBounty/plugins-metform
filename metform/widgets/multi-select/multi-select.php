@@ -517,14 +517,14 @@ Class MetForm_Input_Multi_Select extends Widget_Base{
                 isOptionDisabled=${option => option.mf_input_option_status === 'disabled'}
                 className=${"mf-input mf-input-multiselect <?php echo esc_attr($class); ?> " + ( validation.errors['<?php echo esc_attr($mf_input_name); ?>'] ? 'mf-invalid' : '' )}
                 classNamePrefix="mf_multiselect"
-                value=${parent.getValue("<?php echo esc_attr($mf_input_name); ?>") && <?php echo json_encode($mf_input_list); ?>.filter(item => {
+                value=${parent.getValue("<?php echo esc_attr($mf_input_name); ?>") && <?php echo wp_json_encode($mf_input_list); ?>.filter(item => {
                     if(parent.state.formData['<?php echo esc_attr($mf_input_name); ?>'] && parent.state.formData['<?php echo esc_attr($mf_input_name); ?>'].indexOf(item.value) != -1 ){
                         return item;
                     }
                 })}
                 name='<?php echo esc_attr($mf_input_name); ?>'
                 placeholder="<?php echo Util::esc_mflt_react_entity( $mf_input_placeholder, $render_on_editor, 'attr' ); ?>"
-                options=${<?php echo json_encode($mf_input_list); ?>}
+                options=${<?php echo wp_json_encode($mf_input_list); ?>}
                 onChange=${(el) => {
                     setValue("<?php echo esc_attr($mf_input_name); ?>", '');
                     if(el != null){
@@ -535,13 +535,13 @@ Class MetForm_Input_Multi_Select extends Widget_Base{
                 ref=${() => {
 				<?php if ( isset($quizData) && ($quizData['correctPoint'] != 0 || $quizData['incorrectPoint'] != 0) ) { ?>
 					!parent.state.answers["<?php echo esc_attr($mf_input_name); ?>"] && (
-					parent.state.answers["<?php echo esc_attr($mf_input_name); ?>"] = <?php echo json_encode($quizData); ?>)
+					parent.state.answers["<?php echo esc_attr($mf_input_name); ?>"] = <?php echo wp_json_encode($quizData); ?>)
 				<?php } ?>
-                    register("<?php echo esc_attr($mf_input_name); ?>", parent.activateValidation(<?php echo json_encode($configData); ?>));
+                    register("<?php echo esc_attr($mf_input_name); ?>", parent.activateValidation(<?php echo wp_json_encode($configData); ?>));
                     if(parent.state?.submitted !== true){
                         if ( parent.getValue("<?php echo esc_attr($mf_input_name); ?>") === '' && <?php echo (count($mf_default_input_list) > 0) ? 'true' : 'false'; ?> ) {
-                            parent.setValue( '<?php echo esc_attr($mf_input_name); ?>', '<?php echo json_encode($default_value); ?>');
-                            parent.multiSelectChange('<?php echo json_encode($mf_default_input_list)?>', '<?php echo esc_attr($mf_input_name); ?>');
+                            parent.setValue( '<?php echo esc_attr($mf_input_name); ?>', '<?php echo wp_json_encode($default_value); ?>');
+                            parent.multiSelectChange('<?php echo wp_json_encode($mf_default_input_list)?>', '<?php echo esc_attr($mf_input_name); ?>');
                         }
                     }
                 }}

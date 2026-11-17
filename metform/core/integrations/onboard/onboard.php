@@ -90,8 +90,15 @@ class Onboard {
 		$this->finish_onboard();
 		if ( isset( $_POST['nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce' ) ) {
 
-			if ( isset( $_POST['settings']['tut_term'] ) && sanitize_text_field( wp_unslash( $_POST['settings']['tut_term'] ) ) == 'user_agreed' ) {
-				Plugin_Data_Sender::instance()->send( 'diagnostic-data' ); // send non-sensitive diagnostic data and details about plugin usage.
+			if ( isset( $_POST['settings']['metform_user_consent_for_banner'] ) ) {
+				$consent = sanitize_text_field( wp_unslash( $_POST['settings']['metform_user_consent_for_banner'] ) ) === 'yes' ? 'yes' : 'no';
+
+				// Banner consent is read from the global MetForm settings, not the onboard options.
+				\MetForm\Utils\Util::save_settings( [ 'metform_user_consent_for_banner' => $consent ] );
+
+				if ( $consent === 'yes' ) {
+					Plugin_Data_Sender::instance()->send( 'diagnostic-data' ); // send non-sensitive diagnostic data and details about plugin usage.
+				}
 			}
 
 			if ( isset( $_POST['settings']['newsletter_email'] ) && ! empty( $_POST['settings']['newsletter_email'] ) ) {

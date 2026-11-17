@@ -16,14 +16,14 @@ echo esc_html__('Check Out the Easy to Understand Video Tutorials to learn the d
 
 <div class="mf-onboard-tut-term">
     <label class="mf-onboard-tut-term--label">
-        <?php $term = MetForm\Core\Integrations\Onboard\Attr::instance()->utils->get_option('settings', []);
-        ?>
-        <input <?php if(empty($term['tut_term']) || $term['tut_term'] !== 'user_agreed') : ?>checked="checked"<?php endif; ?> class="mf-onboard-tut-term--input" name="settings[tut_term]" type="checkbox" value="user_agreed">
-        <?php echo esc_html__('Share non-sensitive diagnostic data and details about plugin usage.', 'metform'); ?>
+        <input type="hidden" name="settings[metform_user_consent_for_banner]" value="no">
+        <input class="mf-onboard-tut-term--input" name="settings[metform_user_consent_for_banner]" type="checkbox" value="yes">
+        <?php echo esc_html__('Share diagnostic data and plugin usage details.', 'metform'); ?>
     </label>
 
-    <p class="mf-onboard-tut-term--helptext"><?php echo esc_html__("We gather non-sensitive diagnostic data as well as information about plugin use. Your site's URL, WordPress and PHP versions, plugins and themes, as well as your email address, will be used to give you a discount coupon. This information enables us to ensure that this plugin remains consistent with the most common plugins and themes at all times. We pledge not to give you any spam, for sure.", 'metform'); ?></p>
-    <p class="mf-onboard-tut-term--help"><?php echo esc_html__('What types of information do we gather?', 'metform'); ?></p>
+    <p class="mf-onboard-tut-term--helptext active"><?php echo esc_html__('We collect limited non-sensitive diagnostic data and plugin usage information to improve MetForm compatibility with popular plugins and themes. By sharing this information, you may also receive special discounts as a thank-you gesture.', 'metform'); ?></p>
+    <p class="mf-onboard-tut-term--helptext active"><?php echo esc_html__('We respect your privacy and won’t send unsolicited promotional emails.', 'metform'); ?></p>
+    <a class="mf-onboard-tut-term--link" href="https://wpmet.com/privacy-policy/" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('What information is collected?', 'metform'); ?></a>
 </div>
 <div class="mf-onboard-pagination">
     <a class="mf-onboard-btn mf-onboard-pagi-btn prev" href="#"><i style="margin-right: -5px; margin-top: 4px;" class="xs-onboard-arrow-left"></i><?php echo esc_html__('Back', 'metform'); ?></a>

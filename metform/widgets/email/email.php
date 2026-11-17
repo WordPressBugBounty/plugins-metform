@@ -289,7 +289,7 @@ class MetForm_Input_Email extends widget_base
 				placeholder="<?php echo Util::esc_mflt_react_entity( $mf_input_placeholder, $render_on_editor, 'attr' ); ?>"
 				<?php if (!$is_edit_mode) : ?> 
 				onBlur=${parent.handleChange} onFocus=${parent.handleChange} aria-invalid="${validation.errors['<?php echo esc_attr($mf_input_name); ?>'] ? 'true' : 'false' }" 
-				ref=${el=> parent.activateValidation(<?php echo json_encode($configData); ?>, el)}
+				ref=${el=> parent.activateValidation(<?php echo wp_json_encode($configData); ?>, el)}
 				<?php endif; ?>
 			/>
 

@@ -24,7 +24,7 @@ class Auto_Install_Notice {
 			return;
 		}
 
-		if ( \MetForm\Utils\Util::get_settings( 'metform_user_consent_for_banner', 'yes' ) !== 'yes' ) {
+		if ( \MetForm\Utils\Util::get_settings( 'metform_user_consent_for_banner', 'no' ) !== 'yes' ) {
 			return;
 		}
 
@@ -53,7 +53,7 @@ class Auto_Install_Notice {
 					<?php esc_html_e( 'Get more from your new plugins 🚀', 'metform' ); ?>
 				</h3>
 				<p style="margin: 0; color: #50575E; font-family: Inter, sans-serif; font-weight: 500; font-size: 16px; line-height: 24px; letter-spacing: 0;">
-					<?php esc_html_e( 'Allow us to use non-sensitive data from your site to improve our products and get personalized performance tips.', 'metform' ); ?>
+					<?php esc_html_e( 'Allow us to use non-sensitive data and basic info from your site to improve our products and send you personalized performance tips.', 'metform' ); ?> <a href="https://wpmet.com/privacy-policy/" target="_blank" rel="noopener noreferrer"><?php echo esc_html__( 'Read Privacy Policy.', 'metform' ); ?></a>
 				</p>
 			</div>
 			<div style="flex: 0 0 auto; display: flex; gap: 10px;">

@@ -578,7 +578,7 @@ Class MetForm_Input_Range extends Widget_Base{
                     formatLabel=${ val => `<?php echo isset($mf_input_enable_range_prefix) && $mf_input_enable_range_prefix === 'yes' ? Util::esc_mflt_js($mf_input_range_prefix_text) . ' ' : ''; ?>${val}<?php echo isset($mf_input_enable_range_suffix) && $mf_input_enable_range_suffix === 'yes' ? ' ' . Util::esc_mflt_js($mf_input_range_suffix_text) : ''; ?>`}
                     <?php endif; ?>
 					ref=${input => {
-						register("<?php echo esc_attr($mf_input_name); ?>", parent.activateValidation(<?php echo json_encode($configData); ?>));
+						register("<?php echo esc_attr($mf_input_name); ?>", parent.activateValidation(<?php echo wp_json_encode($configData); ?>));
 
 						if (<?php echo ($default_value !== '') ? 'true' : 'false'; ?>) {
 							if (!parent.state.formData['<?php echo esc_attr($mf_input_name); ?>']) {
@@ -614,7 +614,7 @@ Class MetForm_Input_Range extends Widget_Base{
                         formatLabel=${ val => `<?php echo isset($mf_input_enable_range_prefix) && $mf_input_enable_range_prefix === 'yes' ? Util::esc_mflt_js($mf_input_range_prefix_text) . ' ' : ''; ?>${val}<?php echo isset($mf_input_enable_range_suffix) && $mf_input_enable_range_suffix === 'yes' ? ' ' . Util::esc_mflt_js($mf_input_range_suffix_text) : ''; ?>`}
                         <?php endif; ?>
 						ref=${ input => {
-							register("<?php echo esc_attr($mf_input_name); ?>", parent.activateValidation(<?php echo json_encode($configData); ?>));
+							register("<?php echo esc_attr($mf_input_name); ?>", parent.activateValidation(<?php echo wp_json_encode($configData); ?>));
 							if ( parent.getValue("<?php echo esc_attr($mf_input_name); ?>") === '' && <?php echo ($default_value !== '') ? 'true' : 'false'; ?> ) {
 								parent.handleChange({
 									target: {

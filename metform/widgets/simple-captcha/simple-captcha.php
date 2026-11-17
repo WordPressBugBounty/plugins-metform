@@ -442,7 +442,7 @@ Class MetForm_Input_Simple_Captcha extends Widget_Base{
 					<?php if ( !$is_edit_mode ): ?>
 						onInput=${ parent.handleChange }
 						aria-invalid=${validation.errors['mf-captcha-challenge'] ? 'true' : 'false'}
-						ref=${ el => parent.activateValidation(<?php echo json_encode($configData); ?>, el) }
+						ref=${ el => parent.activateValidation(<?php echo wp_json_encode($configData); ?>, el) }
 					<?php endif; ?>
 					/>
 			</div>

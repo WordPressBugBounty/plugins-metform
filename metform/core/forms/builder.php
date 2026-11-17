@@ -118,7 +118,7 @@ class Builder {
 			return Form_Renderer::instance()->render_saved_form( $form_id );
 		}
 
-		return \MetForm\Utils\Util::render_form_content( $form_id, $form_id, true );
+		return \MetForm\Utils\Util::render_form_content( $form_id, $form_id );
 	}
 
 	/**

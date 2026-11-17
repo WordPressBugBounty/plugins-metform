@@ -463,7 +463,8 @@ final class Fileupload extends Block_Base {
 			<input
 				id="<?php echo esc_attr( $id ); ?>"
 				type="file"
-				name="<?php echo esc_attr( $settings['name'] ) . ( $multiple ? '[]' : '' ); ?>"
+				<?php // Always `[]`, even for a single file: core/entries/action.php's handle_file() only reads $_FILES[name]['name'] as an array and silently stores nothing otherwise. ?>
+				name="<?php echo esc_attr( $settings['name'] ); ?>[]"
 				class="mfb-upload__input-native"
 				<?php echo $accept ? 'accept="' . esc_attr( $accept ) . '"' : ''; ?>
 				<?php echo $multiple ? 'multiple' : ''; ?>

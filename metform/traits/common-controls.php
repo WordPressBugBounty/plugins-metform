@@ -983,6 +983,155 @@ trait Common_Controls{
 		);
 	}
 
+	/**
+	 * Icon inside the input, for picker inputs (date, time). Off by default.
+	 *
+	 * @param string $default_icon Font Awesome regular icon class.
+	 */
+	protected function input_icon_controls( $default_icon ) {
+
+		$this->add_control(
+			'mf_input_icon_status',
+			[
+				'label' => esc_html__( 'Show Icon', 'metform' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Yes', 'metform' ),
+				'label_off' => esc_html__( 'No', 'metform' ),
+				'return_value' => 'yes',
+				'default' => '',
+				'separator' => 'before',
+				// Its selectors alone would only swap CSS in the editor; the icon markup needs a re-render.
+				'render_type' => 'template',
+				'selectors' => [
+					'{{WRAPPER}} .mf-input-icon-wrap' => 'position: relative;',
+					// MetForm makes the picker wrapper full width only as a direct child of .mf-input-wrapper.
+					'{{WRAPPER}} .mf-input-icon-wrap > .flatpickr-wrapper' => 'display: block;',
+					'{{WRAPPER}} .mf-input-icon' => 'position: absolute; top: 50%; transform: translateY(-50%); display: flex; align-items: center; font-size: var(--mf-icon-size, 16px); line-height: 1; pointer-events: none;',
+					'{{WRAPPER}} .mf-input-icon svg' => 'width: 1em; height: 1em; fill: currentColor;',
+				],
+			]
+		);
+
+		$this->add_control(
+			'mf_input_icon',
+			[
+				'label' => esc_html__( 'Icon', 'metform' ),
+				'type' => Controls_Manager::ICONS,
+				'label_block' => true,
+				'default' => [
+					'value' => $default_icon,
+					'library' => 'fa-regular',
+				],
+				'condition' => [
+					'mf_input_icon_status' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'mf_input_icon_position',
+			[
+				'label' => esc_html__( 'Icon Position', 'metform' ),
+				'type' => Controls_Manager::CHOOSE,
+				'options' => [
+					'left' => [
+						'title' => esc_html__( 'Left', 'metform' ),
+						'icon' => 'eicon-h-align-left',
+					],
+					'right' => [
+						'title' => esc_html__( 'Right', 'metform' ),
+						'icon' => 'eicon-h-align-right',
+					],
+				],
+				'default' => 'right',
+				'toggle' => false,
+				'selectors' => [
+					'{{WRAPPER}} .mf-input-icon' => '{{VALUE}}: var(--mf-icon-space, 14px);',
+					'{{WRAPPER}} .mf-input-icon-wrap .mf-input' => 'padding-{{VALUE}}: calc(var(--mf-icon-space, 14px) * 2 + var(--mf-icon-size, 16px));',
+				],
+				'condition' => [
+					'mf_input_icon_status' => 'yes',
+				],
+			]
+		);
+	}
+
+	protected function input_icon_style_controls() {
+
+		$this->add_control(
+			'mf_input_icon_color',
+			[
+				'label' => esc_html__( 'Color', 'metform' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .mf-input-icon' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'mf_input_icon_color_focus',
+			[
+				'label' => esc_html__( 'Focus Color', 'metform' ),
+				'type' => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .mf-input-icon-wrap:focus-within .mf-input-icon' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'mf_input_icon_size',
+			[
+				'label' => esc_html__( 'Size', 'metform' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range' => [
+					'px' => [
+						'min' => 8,
+						'max' => 48,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .mf-input-icon-wrap' => '--mf-icon-size: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'mf_input_icon_spacing',
+			[
+				'label' => esc_html__( 'Spacing', 'metform' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 50,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .mf-input-icon-wrap' => '--mf-icon-space: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+	}
+
+	/**
+	 * Icon markup for the input, or '' when the icon is off.
+	 *
+	 * @param array $settings Widget settings.
+	 * @return string
+	 */
+	protected function input_icon_html( $settings ) {
+		if ( 'yes' !== ( $settings['mf_input_icon_status'] ?? '' ) || empty( $settings['mf_input_icon']['value'] ) ) {
+			return '';
+		}
+		ob_start();
+		\Elementor\Icons_Manager::render_icon( $settings['mf_input_icon'], [ 'aria-hidden' => 'true' ] );
+		return '<span className="mf-input-icon" aria-hidden="true">' . ob_get_clean() . '</span>';
+	}
+
 	public function input_get_params_controls() {
 
 		if(class_exists('\MetForm_Pro\Plugin')){

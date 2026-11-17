@@ -152,7 +152,7 @@ Class MetForm_Input_Recaptcha extends Widget_Base{
 							name="g-recaptcha-response"
 							className="mf-input mf-mobile-hidden"
 							value=${parent.getValue('g-recaptcha-response')}
-							ref=${el => parent.activateValidation(<?php echo json_encode($configData); ?>, el)}
+							ref=${el => parent.activateValidation(<?php echo wp_json_encode($configData); ?>, el)}
 							/>
 
 						<${validation.ErrorMessage} errors=${validation.errors} name="g-recaptcha-response" as=${html`<span className="mf-error-message"></span>`} />

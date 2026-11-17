@@ -92,6 +92,7 @@ Class MetForm_Input_Time extends Widget_Base{
 			]
 		);
 
+		$this->input_icon_controls( 'far fa-clock' );
 
 		$this->end_controls_section();
 
@@ -135,6 +136,21 @@ Class MetForm_Input_Time extends Widget_Base{
         );
 
         $this->input_controls();
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'icon_section',
+			[
+				'label' => esc_html__( 'Icon', 'metform' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'mf_input_icon_status' => 'yes',
+				],
+			]
+		);
+
+		$this->input_icon_style_controls();
 
 		$this->end_controls_section();
 
@@ -204,6 +220,8 @@ Class MetForm_Input_Time extends Widget_Base{
 			$timeConfig['dateFormat']	= 'H:i';
 		}
 
+		$input_icon = $this->input_icon_html( $settings );
+
 		?>
 
 		<?php Util::metform_content_renderer($inputWrapStart); ?>
@@ -216,11 +234,12 @@ Class MetForm_Input_Time extends Widget_Base{
 				</label>
 			<?php endif; ?>
 
+			<?php if ( $input_icon ) : ?><div className="mf-input-icon-wrap"><?php endif; ?>
 			<${props.Flatpickr}
 					name="<?php echo esc_attr( $mf_input_name ); ?>"
 					className="mf-input mf-date-input mf-time-input mf-left-parent <?php echo esc_attr( $class ); ?>"
 					placeholder="<?php echo Util::esc_mflt_react_entity( $mf_input_placeholder, $render_on_editor, 'attr' ); ?>"
-					options=${<?php echo json_encode( $timeConfig ); ?>}
+					options=${<?php echo wp_json_encode( $timeConfig ); ?>}
 					value=${parent.getValue('<?php echo esc_attr( $mf_input_name ); ?>')}
 					onInput=${parent.handleDateTime}
 					aria-invalid="${validation.errors['<?php echo esc_attr( $mf_input_name ); ?>'] ? 'true' : 'false'}"
@@ -233,7 +252,7 @@ Class MetForm_Input_Time extends Widget_Base{
                 instance.input.nextSibling.classList.remove('value-found');
             }
         }
-        parent.activateValidation(<?php echo json_encode($configData); ?>, instance.input);
+        parent.activateValidation(<?php echo wp_json_encode($configData); ?>, instance.input);
     }
 }
 onChange=${
@@ -249,6 +268,7 @@ onChange=${
 }
 
 					/>
+			<?php if ( $input_icon ) : ?><?php echo $input_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons_Manager markup. ?></div><?php endif; ?>
 
 			<?php if ( !$is_edit_mode ) : ?>
 				<${validation.ErrorMessage}

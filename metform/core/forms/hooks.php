@@ -48,15 +48,13 @@ class Hooks {
 				return $builder_content;
 			}
 
-			// $is_trusted_source = true: this echoes metform-form's own raw
-			// post_content, which requires Editor+ capability to populate
-			// (capability_type 'page') - not the Contributor-reachable Elementor
-			// widget setting that render_form_content() otherwise guards against.
-			// (Re-deriving this via render_elementor_content(get_the_ID()) instead
-			// would re-enter Elementor's builder-content-for-display for the same
-			// post that's already being rendered; Elementor's own recursion guard
-			// then returns empty content, breaking every form's own preview page.)
-			return \MetForm\Utils\Util::render_form_content($content, $post_id, true);
+			// Elementor's editor needs its original editable widget wrappers.
+			// This content is HTML, not a MetForm JavaScript template.
+			if ( \Elementor\Plugin::instance()->editor->is_edit_mode() ) {
+				return $content;
+			}
+
+			return \MetForm\Utils\Util::render_form_content($post_id, $post_id);
 		}
 		return $content;
 	}

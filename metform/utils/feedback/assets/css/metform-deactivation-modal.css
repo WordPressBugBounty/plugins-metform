@@ -332,6 +332,14 @@
 	border: 1px solid #f5c6cb;
 }
 
+.mf-deactivation-helptext {
+	padding: 0 20px;
+	margin-top: 0;
+	color: #5D5E65;
+	font-size: 13px;
+	line-height: 20px;
+}
+
 @media (max-width: 768px) {
 	.mf-deactivation-content {
 		width: 95%;

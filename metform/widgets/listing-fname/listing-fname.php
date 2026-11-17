@@ -180,7 +180,7 @@ Class MetForm_Input_Listing_Fname extends Widget_Base{
 					];
 				?>
 					aria-invalid="${validation.errors['<?php echo esc_attr($mf_input_name); ?>'] ? 'true' : 'false'}"
-					ref=${ el => parent.activateValidation(<?php echo json_encode($configData); ?>, el) }
+					ref=${ el => parent.activateValidation(<?php echo wp_json_encode($configData); ?>, el) }
 				<?php endif; ?>
 			/>
 

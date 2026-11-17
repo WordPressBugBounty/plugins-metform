@@ -16,7 +16,7 @@ class Form_Data
 
         $map_data = \MetForm\Core\Entries\Action::instance()->get_fields($form_id);
 
-        return static::$form_data = json_decode(json_encode($map_data), true);
+        return static::$form_data = json_decode(wp_json_encode($map_data), true);
     }
 
     /**

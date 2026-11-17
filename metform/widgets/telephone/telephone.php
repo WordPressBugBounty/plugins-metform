@@ -182,7 +182,7 @@ Class MetForm_Input_Telephone extends Widget_Base{
 				<?php if ( !$is_edit_mode ): ?>
 					onInput=${parent.handleChange}
 					aria-invalid="${validation.errors['<?php echo esc_attr($mf_input_name); ?>'] ? 'true' : 'false'}"
-					ref=${el => parent.activateValidation(<?php echo json_encode($configData); ?>, el)}
+					ref=${el => parent.activateValidation(<?php echo wp_json_encode($configData); ?>, el)}
 				<?php endif; ?>
 				/>
 			

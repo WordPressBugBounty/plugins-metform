@@ -40,7 +40,7 @@
 <div id="success-notice" class="metform-success-notice">Success! Your action was completed.</div>
 <div class="metform-user-consent-for-banner notice notice-error">
 	<p>
-		<input type="checkbox" <?php echo ( \MetForm\Utils\Util::get_settings( 'metform_user_consent_for_banner', 'yes' ) == 'yes' ? 'checked' : '' ); ?>  value="yes" class="metform-admin-control-input" name="metform-user-consent-for-banner" id="metform-admin-switch__metform-user-consent-for-banner">
+		<input type="checkbox" <?php echo ( \MetForm\Utils\Util::get_settings( 'metform_user_consent_for_banner', 'no' ) == 'yes' ? 'checked' : '' ); ?>  value="yes" class="metform-admin-control-input" name="metform-user-consent-for-banner" id="metform-admin-switch__metform-user-consent-for-banner">
 		<label for="metform-admin-switch__metform-user-consent-for-banner"><?php esc_html_e( 'Show update & fix related important messages, essential tutorials and promotional images on WP Dashboard', 'metform' ); ?></label>
 
 	</p>

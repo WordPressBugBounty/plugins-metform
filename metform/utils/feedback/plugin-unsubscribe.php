@@ -118,6 +118,11 @@ class Plugin_Unsubscribe {
 								<?php $this->render_reason_item( $reason ); ?>
 							<?php endforeach; ?>
 						</div>
+						<p class="mf-deactivation-helptext">
+							<?php echo esc_html__( 'Clicking “Submit & Deactivate” will help us improve MetForm by sharing your feedback and usage insights. Choose “Skip & Deactivate” to deactivate the plugin without sharing any data.', 'metform' ); ?>
+
+							<a href="https://wpmet.com/privacy-policy/" target="_blank" rel="noopener noreferrer"><?php echo esc_html__( 'Privacy Policy', 'metform' ); ?></a>
+						</p>
 
 						<?php $this->render_modal_footer(); ?>
 

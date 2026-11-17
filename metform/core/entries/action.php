@@ -738,11 +738,11 @@ class Action
             $ref_url = isset($_SERVER['HTTP_REFERER']) ? sanitize_url($_SERVER['HTTP_REFERER']) : '';
             $response = $rest_api->call_api(
                 [
-                    'entries' => json_encode($this->form_data),
+                    'entries' => wp_json_encode($this->form_data),
                     'entry_id' => (($this->entry_id != null) ? $this->entry_id : ''),
                     'form_id' => $form_data['id'],
                     'version' => \MetForm\Plugin::instance()->version(),
-                    'file_uploads' => json_encode($this->file_upload_info),
+                    'file_uploads' => wp_json_encode($this->file_upload_info),
                     'referrer_url' => $ref_url
                 ],
                 [

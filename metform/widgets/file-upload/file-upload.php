@@ -536,7 +536,7 @@ Class MetForm_Input_File_Upload extends Widget_base{
 					accept="<?php echo esc_attr($accept != null ? $accept : '');?>"
 					onInput=${ parent.handleFileUpload }
 					aria-invalid="${validation.errors['<?php echo esc_attr($mf_input_name); ?>'] ? 'true' : 'false'}"
-					ref=${ el => parent.activateValidation(<?php echo json_encode($configData); ?>, el) }
+					ref=${ el => parent.activateValidation(<?php echo wp_json_encode($configData); ?>, el) }
 					/>
 				<label htmlFor="mf-input-file-upload-<?php echo esc_attr($this->get_id()); ?>" className="mf-input-file-upload-label metform-btn">
 					<?php 

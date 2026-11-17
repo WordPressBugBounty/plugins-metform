@@ -434,6 +434,8 @@ Class MetForm_Input_Date extends Widget_Base{
 			]
 		);
 
+		$this->input_icon_controls( 'far fa-calendar-alt' );
+
 		$this->input_get_params_controls();
 
 		$this->end_controls_section();
@@ -644,6 +646,21 @@ Class MetForm_Input_Date extends Widget_Base{
 		$this->end_controls_section();
 
 		$this->start_controls_section(
+			'icon_section',
+			[
+				'label' => esc_html__( 'Icon', 'metform' ),
+				'tab' => Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'mf_input_icon_status' => 'yes',
+				],
+			]
+		);
+
+		$this->input_icon_style_controls();
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
 			'placeholder_section',
 			[
 				'label' => esc_html__( 'Place Holder', 'metform' ),
@@ -748,6 +765,8 @@ Class MetForm_Input_Date extends Widget_Base{
 			'time_24hr'		=> (isset($mf_input_time_24h) && !empty($mf_input_time_24h)) ? true : false
 		];
 
+		$input_icon = $this->input_icon_html( $settings );
+
 		if ( $locale ):
 			wp_enqueue_script( 'flatpickr-' . $locale );
 		endif;
@@ -762,22 +781,24 @@ Class MetForm_Input_Date extends Widget_Base{
 				</label>
 			<?php endif; ?>
 
+			<?php if ( $input_icon ) : ?><div className="mf-input-icon-wrap"><?php endif; ?>
 			<${props.Flatpickr}
 					name="<?php echo esc_attr( $mf_input_name ); ?>"
 					className="mf-input mf-date-input mf-left-parent <?php echo esc_attr($mf_input_range_date == 'yes' ? 'mf-date-range' : ''); ?> <?php echo esc_attr( $class ); ?>"
 					placeholder="<?php echo Util::esc_mflt_react_entity( $mf_input_placeholder, $render_on_editor, 'attr' ); ?>"
-					options=${<?php echo json_encode( $dateConfig ); ?>}
+					options=${<?php echo wp_json_encode( $dateConfig ); ?>}
 					value=${parent.getValue('<?php echo esc_attr( $mf_input_name ); ?>')}
 					onInput=${parent.handleDateTime}
 					aria-invalid="${validation.errors['<?php echo esc_attr( $mf_input_name ); ?>'] ? 'true' : 'false'}"
 					onReady=${(dates, dateStr, instance) => props.DateWidget(
 		instance,
 		'<?php echo esc_attr( $locale ) ?>',
-		<?php echo json_encode($configData); ?>,
+		<?php echo wp_json_encode($configData); ?>,
 		register,
 		parent
 	)}
 					/>
+			<?php if ( $input_icon ) : ?><?php echo $input_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icons_Manager markup. ?></div><?php endif; ?>
 
 			<?php if ( !$is_edit_mode ) : ?>
 				<${validation.ErrorMessage}

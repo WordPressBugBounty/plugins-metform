@@ -528,10 +528,10 @@ Class MetForm_Input_Radio extends Widget_Base{
 									ref=${el =>{
 										<?php if ( isset($quizData) && ($quizData['correctPoint'] != 0 || $quizData['incorrectPoint'] != 0) ) { ?>
 										!parent.state.answers["<?php echo esc_attr($mf_input_name); ?>"] && (
-										parent.state.answers["<?php echo esc_attr($mf_input_name); ?>"] = <?php echo json_encode($quizData); ?>)
+										parent.state.answers["<?php echo esc_attr($mf_input_name); ?>"] = <?php echo wp_json_encode($quizData); ?>)
 										<?php } ?>
 										parent.handleRadioDefault(el);
-										parent.activateValidation(<?php echo json_encode($configData); ?>, el)
+										parent.activateValidation(<?php echo wp_json_encode($configData); ?>, el)
 									}}
 									checked=${'<?php echo esc_attr( $value ); ?>' === parent.getValue('<?php echo esc_attr( $mf_input_name ); ?>')}
 								<?php endif; ?>

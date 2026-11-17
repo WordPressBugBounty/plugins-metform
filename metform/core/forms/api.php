@@ -238,7 +238,7 @@ class Api extends \MetForm\Base\Api
             // Check if $form_redirection_values is empty or not.
             if (!empty($form_redirection_values)) {
 
-                $json_encoded_values = json_encode($form_redirection_values);
+                $json_encoded_values = wp_json_encode($form_redirection_values);
                 
                 // Update the post meta with the JSON-encoded values.
                 update_post_meta($form_id, 'mf_redirect_params', $json_encoded_values);

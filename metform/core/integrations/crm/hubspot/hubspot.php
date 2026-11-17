@@ -45,7 +45,7 @@ class Hubspot
                 ]
             ]
         ];
-        $post_json = json_encode($arr);
+        $post_json = wp_json_encode($arr);
 
         if(isset($settings_option['mf_hubsopt_token_type']) || !empty($settings_option['mf_hubsopt_token_type'])){
             
@@ -122,7 +122,7 @@ class Hubspot
             }
         }        
         $api_url = 'https://api.hsforms.com/submissions/v3/integration/submit/' . $portal_id . '/' . $gu_id;
-        $body = json_encode(['fields' => $data]);       
+        $body = wp_json_encode(['fields' => $data]);       
         try{
             $response = wp_remote_post(
                 $api_url,

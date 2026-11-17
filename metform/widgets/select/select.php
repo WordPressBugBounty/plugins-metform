@@ -663,15 +663,15 @@ Class MetForm_Input_Select extends Widget_Base{
                 name="<?php echo esc_attr($mf_input_name); ?>"
                 placeholder="<?php echo Util::esc_mflt_react_entity( $mf_input_placeholder, $render_on_editor, 'attr' ); ?>"
                 isSearchable=${false}
-                options=${<?php echo json_encode($mf_input_list_array); ?>}
-                value=${parent.getValue("<?php echo esc_attr($mf_input_name); ?>") ? <?php echo json_encode($mf_input_list); ?>.filter(item => item.value === parent.getValue("<?php echo esc_attr($mf_input_name); ?>"))[0] : <?php echo json_encode( $mf_default_input_list ); ?>}
+                options=${<?php echo wp_json_encode($mf_input_list_array); ?>}
+                value=${parent.getValue("<?php echo esc_attr($mf_input_name); ?>") ? <?php echo wp_json_encode($mf_input_list); ?>.filter(item => item.value === parent.getValue("<?php echo esc_attr($mf_input_name); ?>"))[0] : <?php echo wp_json_encode( $mf_default_input_list ); ?>}
                 onChange=${(e)=> parent.handleSelect(e, "<?php echo esc_attr( $mf_input_name ); ?>")}
                 ref=${() => {
 				<?php if ( isset($quizData) && ($quizData['correctPoint'] != 0 || $quizData['incorrectPoint'] != 0) ) { ?>
 					!parent.state.answers["<?php echo esc_attr($mf_input_name); ?>"] && (
-					parent.state.answers["<?php echo esc_attr($mf_input_name); ?>"] = <?php echo json_encode($quizData); ?>)
+					parent.state.answers["<?php echo esc_attr($mf_input_name); ?>"] = <?php echo wp_json_encode($quizData); ?>)
 				<?php } ?>
-                    register("<?php echo esc_attr($mf_input_name); ?>", parent.activateValidation(<?php echo json_encode($configData); ?>));
+                    register("<?php echo esc_attr($mf_input_name); ?>", parent.activateValidation(<?php echo wp_json_encode($configData); ?>));
                     if ( parent.getValue("<?php echo esc_attr($mf_input_name); ?>") === '' && <?php echo (count($mf_default_input_list) > 0) ? 'true' : 'false'; ?> ) {
 				    parent.setValue( '<?php echo esc_attr($mf_input_name); ?>', '<?php echo (count($mf_default_input_list) > 0) ? esc_attr( $mf_default_input_list["value"] ) : ''; ?>', true );
                         parent.handleChange({

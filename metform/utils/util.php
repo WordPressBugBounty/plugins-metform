@@ -593,9 +593,9 @@ class Util{
 		return str_replace('.elementor-'.$id.' ', '#elementor .elementor-'.$id.' ', $content);
 	}
 
-	public static function mfConvertStyleToReactObj($content){
+	public static function mfConvertStyleToReactObj($content, $protect_expression = null){
 
-		preg_match_all(' /style=("|\')(.*?)("|\')/', $content, $match);
+		preg_match_all('/(?<![A-Za-z0-9_-])style=(["\'])(.*?)\\1/s', $content, $match);
 		if(isset($match) && !empty($match ) && count($match) <= 0) { return $content; }
 		$exception_styled_property_names = [
 			'--divider-pattern-url'
@@ -619,7 +619,7 @@ class Util{
 				$styles = explode(';', $item);
 				if(isset($styles) && !empty($styles )){
 					foreach($styles as $style){
-						$split = explode(':', $style);
+						$split = explode(':', $style, 2);
 						$key = isset($split[0]) ? trim($split[0]) : '';
 						$value = isset($split[1]) ? trim($split[1]) : '';
 						if(strlen($key) > 0 && strlen($value)){
@@ -628,18 +628,15 @@ class Util{
 					}
 				}
 			}
-			$newStyledData = '';
-			if(!empty($styleData)){
-				$newStyledData .= "{ ";
-				foreach($styleData as $key => $value){
-					$value = addslashes($value);
-					$newStyledData .= "'$key': '{$value}',";
-				}
-				$newStyledData .= " }";
+			// Encode CSS as data rather than concatenating JavaScript strings.
+			$replaceStyle = empty( $styleData ) ? '' : 'style=${' . wp_json_encode(
+				$styleData,
+				JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+			) . '}';
+			if ( $replaceStyle && is_callable( $protect_expression ) ) {
+				$replaceStyle = call_user_func( $protect_expression, $replaceStyle );
 			}
-			//* Replace the old style with new style that capable of react
-			$replaceStyle = (isset($newStyledData) && !empty($newStyledData )) ? 'style=${' . $newStyledData . '}' : '';
-			$content = preg_replace(array('[style=("|\')('. preg_quote($item) .')("|\')]'), $replaceStyle, $content);
+			$content = str_replace( $match[0][ array_search( $item, $match[2], true ) ], $replaceStyle, $content );
 		}
 
 		$modified = str_replace('<style>','<style key="1">',$content);
@@ -671,21 +668,16 @@ class Util{
 		return false;
 	}
 	/**
-	 * @param mixed  $form            A numeric MetForm form ID, or - only when
-	 *                                 $is_trusted_source is true - raw markup to
-	 *                                 echo directly.
-	 * @param mixed  $widget_id
-	 * @param bool   $is_trusted_source Set true only for callers rendering a
-	 *                                 metform-form CPT's own post_content (e.g.
-	 *                                 core/forms/hooks.php on the_content),
-	 *                                 which requires Editor+ capability
-	 *                                 (capability_type 'page') to populate.
-	 *                                 Every other caller passes a value that
-	 *                                 can be forged by Contributor+ via an
-	 *                                 Elementor widget setting and must never
-	 *                                 set this to true.
+	 * Render an existing form through the shared template compiler.
+	 *
+	 * @param mixed $form Numeric MetForm form ID.
+	 * @param mixed $widget_id Widget instance ID.
+	 * @param bool $is_trusted_source Deprecated; raw markup is never accepted.
 	 */
 	public static function render_form_content($form, $widget_id, $is_trusted_source = false){
+		if ( ! is_numeric( $form ) ) {
+			return '';
+		}
 		if ( is_numeric( $form ) ) {
 			$post = get_post( (int) $form );
 			if ( ! $post || 'metform-form' !== $post->post_type ) {
@@ -821,53 +813,8 @@ class Util{
 					<div className="metform-form-main-wrapper" key=${'hide-form-after-submit'} ref=${parent.formRef}>
 					${html`
 						<?php
-							$replaceStrings = array(
-								'from' => array(
-									'class=',
-									'for=',
-									'cellspacing=',
-									'cellpadding=',
-									'srcset',
-									'colspan',
-									'<br>',
-									'<BR>'
-								),
-								'to' => array(
-									'className=',
-									'htmlFor=',
-									'cellSpacing=',
-									'cellPadding=',
-									'srcSet',
-									'colSpan',
-									'<br/>',
-									'<br/>'
-								),
-							);
-							// Security: a numeric $form always resolves through Elementor's own
-							// render pipeline. A non-numeric $form is only ever echoed raw when
-							// $is_trusted_source says this call is rendering a metform-form CPT's
-							// own post_content (Editor+ only, capability_type 'page') - never for
-							// an Elementor widget setting, which Contributor+ can forge. Any other
-							// non-numeric $form falls back to the "No content" message instead of
-							// being echoed. (The previous <script>/</script> -> ${(function(){ /
-							// })()} mapping was removed below - it let any HTML source be turned
-							// into an executable JS template-literal expression once it reached
-							// this point, which was the delivery mechanism for a stored XSS.)
-							$form_content = is_numeric( $form )
-								? \MetForm\Utils\Util::render_elementor_content( $form )
-								: ( $is_trusted_source ? $form : '<div class="mf-widget-container">' . esc_html__( 'No content is added yet.', 'metform' ) . '</div>' );
-							$form_content = \MetForm\Utils\Util::mfConvertStyleToReactObj($form_content);
-							$form_content = str_replace( $replaceStrings['from'], $replaceStrings['to'], $form_content );
-							$form_content = preg_replace( '/<!--(.|\s)*?-->/', '', $form_content ); // Removes HTML Comments
-							// Issue 4 (stored XSS, data-settings route): the whole widget
-							// markup below is interpolated into an html`...` template literal that
-							// MetFormEl compiles with new Function(). Elementor writes every widget
-							// setting (option text, label, ...) raw into each element's data-settings
-							// attribute, so a backtick or ${ there would close that literal and run
-							// as code for any visitor. Neutralise them inside every data-settings
-							// value (JSON \u escapes JSON.parse restores at runtime, so data is unchanged).
-							$form_content = self::esc_mflt_html_attributes( $form_content );
-							echo $form_content; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ignore this because of if escape this content does not append in preview and frontend.
+							$template = new Form_Template();
+							echo $template->render( $form ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- literal HTML escaped; plugin bindings preserved.
 						?>
 					`}
 					</div>

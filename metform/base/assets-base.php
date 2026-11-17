@@ -141,6 +141,13 @@ abstract class Assets_Base {
                 'src'      => 'admin/form-picker-modal/index.js',
                 'manifest' => 'admin/form-picker-modal/index.asset.php',
             ],
+             [
+                'type'     => self::SCRIPT,
+                'handle'   => 'metform-ui',
+                'src'      => 'admin/metform-ui/index.js',
+                'manifest' => 'admin/metform-ui/index.asset.php',
+                'extra_dependencies' => [ 'jquery' ],
+            ],
             [
                 'type'      => self::STYLE,
                 'handle'    => 'metform-form-picker-modal-react-style',
@@ -361,13 +368,6 @@ abstract class Assets_Base {
                 'handle'   => 'htm',
                 'source'   => self::SOURCE_ASSETS,
                 'src'      => 'libs/htm/htm.js',
-                'manifest' => '',
-            ],
-            [
-                'type'     => self::SCRIPT,
-                'handle'   => 'metform-ui',
-                'source'   => self::SOURCE_ASSETS,
-                'src'      => 'libs/ui/ui.min.js',
                 'manifest' => '',
             ],
             [

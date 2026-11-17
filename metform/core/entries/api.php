@@ -519,7 +519,7 @@ class Api extends \MetForm\Base\Api
         $response = $google->get_all_google_drive_folders();  
         
               
-        return json_encode(['folders' => $response]);
+        return wp_json_encode(['folders' => $response]);
     }
 
     /**

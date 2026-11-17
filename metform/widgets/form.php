@@ -148,13 +148,6 @@ class Widget_Met_Form extends Widget_Base {
 
 				if ( ! empty( $ffarg ) ) {
 					$form_id = $ffarg[0]->ID;
-				} elseif (
-					isset( $form_data['data'][0] ) &&
-					is_array( $form_data['data'][0] ) &&
-					$this->can_create_form_from_template()
-				) {
-					$created = \MetForm\Core\Forms\Builder::instance()->create_form( '', $template_id, $form_data['data'][0] );
-					$form_id = is_wp_error( $created ) ? '' : absint( $created );
 				}
 			}
 			unset($form_data);
@@ -183,39 +176,4 @@ class Widget_Met_Form extends Widget_Base {
 		echo '</div>';
 	}
 
-	/**
-	 * Whether this render may create a form from the template descriptor
-	 * stored in `mf_form_id`.
-	 *
-	 * Anyone who can edit a post can write widget settings (for example a
-	 * Contributor through Elementor's save_builder request), so the descriptor
-	 * is untrusted. A form is only created when:
-	 * - the page is open in the Elementor editor or its preview, never on a
-	 *   normal frontend view, so visitors can't trigger it;
-	 * - the current user may publish forms;
-	 * - the post's author may publish forms too, so an Editor opening a
-	 *   Contributor's draft can't be used to create the Contributor's form.
-	 *
-	 * @since 4.3.4
-	 *
-	 * @return bool
-	 */
-	private function can_create_form_from_template() {
-		if ( ! \MetForm\Core\Forms\Builder::can_create_forms() ) {
-			return false;
-		}
-
-		$elementor = Plugin::$instance;
-		if ( ! $elementor->editor->is_edit_mode() && ! $elementor->preview->is_preview_mode() ) {
-			return false;
-		}
-
-		$document = $elementor->documents->get_current();
-		$post     = $document ? $document->get_main_post() : null;
-		if ( ! $post ) {
-			return false;
-		}
-
-		return \MetForm\Core\Forms\Builder::can_create_forms( (int) $post->post_author );
-	}
 }
